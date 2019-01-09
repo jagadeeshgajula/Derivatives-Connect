@@ -1,0 +1,29 @@
+#include  <iostream>
+#include  "premiums.h"
+
+using  namespace  IRDConnect;
+
+Premiums::Premiums (
+double  amount,
+String   currency,
+Date   paymentDate,
+String  payReceive,
+double    premiumBP,
+String    premiumType
+)
+
+{
+  _amount=amount;
+  _currency=currency;
+  _paymentDate=paymentDate;
+  _payReceive=payReceive;
+  _premiumBP=premiumBP;
+  _premiumType=premiumType;
+
+}
+
+Premiums::~Premiums()
+{
+	//do nothing
+}
+

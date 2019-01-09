@@ -1,0 +1,1905 @@
+
+/*
+ * swapLegs.cpp
+ *
+ *  Created on: 17-Aug-2010
+ *      Author: vishist
+ */
+#include <string>
+#include <fstream>
+#include "swapLeg.h"
+#include "paySchedule.h"
+#include "resetSchedule.h"
+#include "compSchedule.h"
+#include "rollDayConv.h"
+#include "calendarUtil.h"
+#include "marchingConv.h"
+#include "fixingRates.h"
+#include "stubResets.h"
+#include <set>
+#include <list>
+#include <boost/lexical_cast.hpp>
+
+
+using namespace std;
+using namespace boost;
+using namespace IRDConnect;
+using namespace IRDdetail;
+
+SwapLeg::SwapLeg()
+{
+	// do nothing...
+}
+
+SwapLeg::~SwapLeg()
+{
+	// do nothing...
+}
+
+SwapLeg::SwapLeg(
+const BusDayConv * 			accrualBusDay,
+std::set < std::string > 	accrualCalendars,
+Frequency 					accrualFreq,
+const DateMarcher * 		accrualMarching,
+int 						accrualRollDay,
+DayOfWeek 					accrualRollWeek,
+int 						amortRollDay,
+DayOfWeek 					amortRollWeek,
+double 						amortAmount,
+const BusDayConv * 			amortBusDay,
+std::set < std::string > 	amortCalendars,
+Date 						amortEndDate,
+Frequency 					amortFreq,
+const DateMarcher * 		amortMarching,
+Date 						amortStartDate,
+String 						amortType,
+String 						averagingMethod,
+Date 						backStubDate,
+double 						backStubManualRate,
+Frequency 					compFreq,
+String 						compoundingConv,
+const Currency * 			currency,
+DayCountConv * 				dayCount,
+String 						discountCurve,
+Date 						endDate,
+String 						endDateRollFlag,
+String 						endOfMonthIndicator,
+double 						fixedQuote,
+Date 						frontStubDate,
+double 						frontStubManualRate,
+double 						gearFactor,
+std::set < std::string > 	initialQuoteCalendars,
+Date 						initialQuoteDate,
+int 						initialQuoteLag,
+int 						legNo,
+String 						legType,
+String 						marketIndex,
+double 						notional,
+String 						notionalExchange,
+const BusDayConv * 			payBusDay,
+std::set < std::string > 	payCalendars,
+Frequency 					payFreq,
+const DateMarcher * 		payMarching,
+String 						paymentConvention,
+const Currency * 			paymentConversionCurrency,
+String 						paymentConversionIndex,
+int 						paymentConversionLag,
+int 						payRollDay,
+DayOfWeek 					payRollWeek,
+String 						position,
+std::set < std::string > 	quoteCalendars,
+int 						quoteLag,
+int 						rateCutOff,
+String 						resetAveraging,
+String 						resetConvention,
+Frequency 					resetFreq,
+String 						resetType,
+int 						scheduleCustomFlag,
+double 						spread,
+Date 						startDate,
+String 						startDateRollFlag
+)
+{
+_accrualBusDay 			= accrualBusDay;
+_accrualCalendars 		= accrualCalendars;
+_accrualFreq			= accrualFreq;
+_accrualMarching		= accrualMarching;
+_accrualRollDay			= accrualRollDay;
+_accrualRollWeek		= accrualRollWeek;
+_amortRollDay			= amortRollDay;
+_amortRollWeek			= amortRollWeek;
+_amortAmount			= amortAmount;
+_amortBusDay 			= amortBusDay;
+_amortCalendars 		= amortCalendars;
+_amortEndDate 			= amortEndDate;
+_amortFreq				= amortFreq;
+_amortMarching			= amortMarching;
+_amortStartDate 		= amortStartDate;
+_amortType				= amortType;
+_averagingMethod		= averagingMethod;
+_backStubDate			= backStubDate;
+_backStubManualRate		= backStubManualRate;
+_compFreq				= compFreq;
+_compoundingConv		= compoundingConv;
+_currency				= currency;
+_dayCount				= dayCount;
+_discountCurve			= discountCurve;
+_endDate				= endDate;
+_endDateRollFlag		= endDateRollFlag;
+_endOfMonthIndicator	= endOfMonthIndicator;
+_fixedQuote				= fixedQuote;
+_frontStubDate			= frontStubDate;
+_frontStubManualRate	= frontStubManualRate;
+_gearFactor				= gearFactor;
+_initialQuoteCalendars	= initialQuoteCalendars;
+_initialQuoteDate		= initialQuoteDate;
+_initialQuoteLag		= initialQuoteLag;
+_legNo					= legNo;
+_legType				= legType;
+_marketIndex			= marketIndex;
+_notional				= notional;
+_notionalExchange		= notionalExchange;
+_payBusDay				= payBusDay;
+_payCalendars			= payCalendars;
+_payFreq				= payFreq;
+_payMarching			= payMarching;
+_paymentConvention		= paymentConvention;
+_paymentConversionCurrency	=	paymentConversionCurrency;
+_paymentConversionIndex	= paymentConversionIndex;
+_paymentConversionLag	= paymentConversionLag;
+_payRollDay				= payRollDay;
+_payRollWeek			= payRollWeek;
+_position				= position;
+_quoteCalendars			= quoteCalendars;
+_quoteLag				= quoteLag;
+_rateCutOff				= rateCutOff;
+_resetAveraging 		= resetAveraging;
+_resetConvention		= resetConvention;
+_resetFreq				= resetFreq;
+_resetType				= resetType;
+_scheduleCustomFlag		= scheduleCustomFlag;
+_spread					= spread;
+_startDate				= startDate;
+_startDateRollFlag		= startDateRollFlag;
+ }
+
+
+/* generate payment schedule here */
+
+bool SwapLeg::genPaySchedule()
+{
+
+BusOrCalConv  busOrCalConv(CAL);
+
+	if ( getAccrualBusDay() != BusDayConv::find("NONE") && getAccrualRollWeek() != NULL_DOW )
+	{
+		busOrCalConv =  BusOrCalConv(BUS);
+	}
+
+	RollDayConv  * rollDayConv = new RollDayConv  (getAccrualRollWeek(),getAccrualRollDay(), busOrCalConv);
+
+	Date frontStubDate = getFrontStubDate();
+	Date backStubDate = getBackStubDate();
+
+	Date startDate = getStartDate();
+	Date endDate   = getEndDate();
+
+	if ( getStartDateRollFlag() == "Yes" )
+	{
+		startDate = getAccrualBusDay()->adjustToBusDay(startDate,*CalendarUtil::getCalendar(getAccrualCalendars()));
+				 logFile << "\nstub routine : Start Date is : " << startDate << endl;
+	}
+
+	if ( getEndDateRollFlag() == "Yes" )
+	{
+		endDate = getAccrualBusDay()->adjustToBusDay(endDate,*CalendarUtil::getCalendar(getAccrualCalendars()));
+		logFile << "\nstub routine : End Date is : " << endDate << endl;
+	}
+
+
+	if ( frontStubDate == getStartDate() )
+	{
+			// there is no front stub
+			frontStubDate = startDate;  // set to rolled date to calculate schedule
+	}
+
+
+	if ( backStubDate == getEndDate() )
+	{
+		// there is no back stub
+		backStubDate = endDate;  // set to rolled date to calculate schedule
+	}
+
+
+
+	if ( ! isPSGenerated() )
+	{
+		logFile << "GENERATE PAY SCHEDULE " << endl;
+
+		DateMarcher::EventStream  eventStreamPay;
+
+	if ( getAccrualMarching()->eventStream (
+	frontStubDate,
+	backStubDate,
+	getAccrualFreq(),
+	*CalendarUtil::getCalendar(getAccrualCalendars()),
+	getAccrualBusDay(),
+	eventStreamPay,
+	0,  //evenFinalPeriod,
+	rollDayConv  ) )
+	{
+
+
+		if ( startDate != eventStreamPay.getESMinDate() )
+		{
+			logFile << "\nFront Stub Date is : ";
+			logFile << eventStreamPay.getESMinDate() << endl;
+			setFrontStubDate(eventStreamPay.getESMinDate());
+		 }
+
+		if ( endDate != eventStreamPay.getESMaxDate() )
+		{
+			logFile << "\nBack Stub Date is : ";
+			logFile << eventStreamPay.getESMaxDate() << endl;
+			setBackStubDate(eventStreamPay.getESMaxDate());
+
+		}
+
+
+		 eventStreamPay.getEventList().sort(); // for backward dates come in reverse order, so need to order ascending order.
+
+		 std::list<Date>::const_iterator iterEvent = eventStreamPay.getEventList().begin () ;
+
+			int noOfEvents = eventStreamPay.getEventList().size();
+			logFile << "No of Elements are front :" << noOfEvents << endl;
+			int cnt = 0;
+
+		    for ( ; iterEvent != eventStreamPay.getEventList().end () ; ++iterEvent )
+		      {
+		        shared_ptr <PaySchedule> paySchedule( new PaySchedule());
+
+		        cnt++;
+
+		        if ( cnt != noOfEvents )
+		        {
+
+		        	paySchedule->setCouponStartDate(*iterEvent);
+		        	paySchedule->setCouponEndDate(*(++iterEvent));
+		        	paySchedule->setPaymentDate(getPayBusDay()->adjustToBusDay(paySchedule->getCouponEndDate(), *CalendarUtil::getCalendar(getPayCalendars())) );
+		        	paySchedule->setPaymentType("Coupon");
+		        	paySchedule->setNotional(getNotional());
+		        	 --iterEvent;
+		        	 _payScheduleList.push_back(paySchedule);
+		        }
+
+		       }
+
+		    // payment schedule
+		         PayScheduleList::const_iterator iterPay = displayPaySchedule().begin() ;
+
+		         for ( ; iterPay != displayPaySchedule().end() ; ++iterPay )
+		         {
+
+		        	 logFile << "PaySchedule list " << endl;
+		        	 logFile <<"Start Date : " << (*iterPay)->getCouponStartDate() << endl;
+		        	 logFile << "End Date : " << (*iterPay)->getCouponEndDate() << endl;
+		        	 logFile << "Payment Date is : " << (*iterPay)->getPaymentDate() << endl;
+		        	 logFile << endl;
+		         }
+
+
+	}
+
+
+	// let us generate compounding schedule now independently - they should match anyway as reference data inputs are same
+
+ 	if ( getCompoundingConv() != "NONE" )  // compounding is for float leg only ??? - let us give chance for fixed leg as well
+	{
+
+		 DateMarcher::EventStream  eventStreamComp;
+
+		 const DateMarcher * compMarching = getAccrualMarching(); // always forward
+
+
+		 if ( compMarching->eventStream (
+			frontStubDate,
+		 	backStubDate,
+		 	getCompFreq(),
+		 	*CalendarUtil::getCalendar(getAccrualCalendars()),
+		 	getAccrualBusDay(),
+		 	eventStreamComp,
+		 	0,  //evenFinalPeriod,
+		 	rollDayConv  ) )
+		 {
+
+
+			 eventStreamComp.getEventList().sort(); // for backward dates come in reverse order, so need to order ascending order.
+
+			 std::list<Date>::const_iterator iterEvent = eventStreamComp.getEventList().begin () ;
+
+			int noOfEvents = eventStreamComp.getEventList().size();
+			logFile << "No of Elements in comp schedule :" << noOfEvents - 1 << endl;;
+			int cnt = 0;
+
+			for ( ; iterEvent != eventStreamComp.getEventList().end () ; ++iterEvent )
+			{
+				shared_ptr <CompSchedule> compSchedule( new CompSchedule());
+				cnt++;
+
+				if ( cnt != noOfEvents )
+				{
+					compSchedule->setCompStartDate(*iterEvent);
+					compSchedule->setCompEndDate(*(++iterEvent));
+					compSchedule->setNotional(getNotional());
+					--iterEvent;
+					_compScheduleList.push_back(compSchedule);
+					logFile << "Comp start:end dates	:" << compSchedule->getCompStartDate() << ":" << compSchedule->getCompEndDate() << endl;
+				}
+			}
+
+		}
+	} // compounding schedule done
+
+ 	// Amort Schedule : it could start and end on diff dates
+
+ 	if ( getAmortType() != "NONE" )  // compounding is for float leg only ???
+	{
+		 logFile << "GENERATE Amort SCHEDULE " << endl;
+
+		 DateMarcher::EventStream  eventStreamAmort;
+
+		 double amortNotionalTmp = getNotional(); // initialize to leg notional for now
+
+		 Date amortStubDate(01,01,1901);
+
+	 	 const DateMarcher * amortMarching = getAmortMarching(); // always forward
+		 eventStreamAmort.getEventList().clear();
+
+		 if ( amortMarching->eventStream (
+			getAmortStartDate(),
+		 	getAmortEndDate(),
+		 	getAmortFreq(),
+		 	*CalendarUtil::getCalendar(getAmortCalendars()),
+		 	getAmortBusDay(),
+		 	eventStreamAmort,
+		 	0,  //evenFinalPeriod,
+		 	rollDayConv  ) )
+		 {
+
+		 	eventStreamAmort.getEventList().sort(); // for backward, dates come in reverse order, so need to order ascending order.
+
+		 	std::list<Date>::const_iterator iterEvent = eventStreamAmort.getEventList().begin () ;
+
+		 	int noOfEvents = eventStreamAmort.getEventList().size();
+		 	logFile << "No of Elements are front or back - amort :" << noOfEvents - 1 << endl;;
+		 	int cnt = 0;
+
+		  	//Date amortStubDate(01,01,1901);
+
+		 	for ( ; iterEvent != eventStreamAmort.getEventList().end () ; ++iterEvent )
+		 	{
+		 		shared_ptr <AmortSchedule> amortSchedule( new AmortSchedule());
+		 		cnt++;
+
+		 		if ( cnt != 1 )
+		 		{
+		 			if ( getAmortType() == "PERCENT" )
+		 			{
+		 				amortNotionalTmp =  amortNotionalTmp - (amortNotionalTmp * getAmortAmount()/100);
+		 			}
+
+		 			if ( getAmortType() == "AMOUNT" )
+		 			{
+		 				amortNotionalTmp = amortNotionalTmp - getAmortAmount();
+		 			}
+
+		 			if ( getAmortType() == "EQUAL" )
+		 			{
+		 				amortNotionalTmp = amortNotionalTmp - (getNotional()/noOfEvents);
+		 			}
+		 		}
+
+		 		if ( cnt != noOfEvents )
+		 		{
+
+		 			amortSchedule->setStartDate(*iterEvent);
+		 		    amortSchedule->setEndDate(*(++iterEvent));
+
+		 			 --iterEvent;
+
+		 			amortSchedule->setAmortNotional(amortNotionalTmp);
+		 			_amortScheduleList.push_back(amortSchedule);
+		 			logFile << "Amort Dates and Notionals : " << amortSchedule->getStartDate() << " : " << amortSchedule->getEndDate() << " : "
+		 					<< amortSchedule->getAmortNotional() << endl;
+		 		}
+		 		if ( cnt == noOfEvents )
+		 		{
+
+		 			amortSchedule->setStartDate(*iterEvent);
+
+		 			if ( amortSchedule->getStartDate() < getEndDate() )
+		 			{
+		 				amortSchedule->setEndDate(*iterEvent);
+		 				amortSchedule->setAmortNotional(amortNotionalTmp);
+		 				_amortScheduleList.push_back(amortSchedule);
+
+		 				logFile << "Amort Dates and Notionals - last : " << amortSchedule->getStartDate() << " : " << amortSchedule->getEndDate() << " : "
+		 					 << amortSchedule->getAmortNotional() << endl;
+		 			}
+		 		}
+
+		   } // event run loop
+
+		 } // schedule loop
+ 	   } // amort schedule done here
+
+// let us generate reset schedule - they go hand in hand anyway - float leg only
+
+		if ( isFloatLeg())
+			if ( genResetSchedule() )
+			logFile << "\nReset Schedule generated ..." << endl;
+
+		setIsPSGenerated(true); // ps generated now
+
+	} // is ps generated - finished
+
+	return true;
+}
+
+
+// Reset Schedule Routine - can be called independent from payment schedule if needed...
+
+bool SwapLeg::genResetSchedule()
+{
+
+	if ( ! isRSGenerated() )
+	{
+		DateMarcher::EventStream  eventStreamReset;
+
+		BusOrCalConv busOrCalConv(CAL);
+
+		if ( getAccrualBusDay() != BusDayConv::find("NONE") && getAccrualRollDay() == 0 )
+		{
+			 busOrCalConv = BusOrCalConv(BUS);
+		}
+
+		RollDayConv  * rollDayConv = new RollDayConv (getAccrualRollWeek(), getAccrualRollDay(), busOrCalConv);
+
+		Date frontStubDate = getFrontStubDate();
+		Date backStubDate = getBackStubDate();
+
+		Date startDate = getStartDate();
+		Date endDate   = getEndDate();
+
+		if ( getStartDateRollFlag() == "Yes" )
+		{
+			startDate = getAccrualBusDay()->adjustToBusDay(startDate,*CalendarUtil::getCalendar(getAccrualCalendars()));
+		    logFile << "\nstub routine : Start Date is : " << startDate << endl;
+		}
+
+		if ( getEndDateRollFlag() == "Yes" )
+		{
+			endDate = getAccrualBusDay()->adjustToBusDay(endDate,*CalendarUtil::getCalendar(getAccrualCalendars()));
+			logFile << "\nstub routine : End Date is : " << endDate << endl;
+		}
+
+		if ( frontStubDate == getStartDate() )
+		{
+				// there is no front stub
+			frontStubDate = startDate;  // set to rolled date to calculate schedule
+		}
+
+
+		if ( backStubDate == getEndDate() )
+		{
+			// there is no back stub
+			backStubDate = endDate;  // set to rolled date to calculate schedule
+		}
+
+		_resetScheduleList.clear(); // clear the lists
+
+		if ( getAccrualMarching()->eventStream (frontStubDate,backStubDate,	getResetFreq(),
+				*CalendarUtil::getCalendar(getAccrualCalendars()),	getAccrualBusDay(),		eventStreamReset,		0, 		rollDayConv  ) )
+		{
+
+			eventStreamReset.getEventList().sort(); // for backward dates will come in reverse order, so need to sort in ascending order.
+			std::list<Date>::const_iterator iterEventReset = eventStreamReset.getEventList().begin () ;
+
+			int noOfEvents = eventStreamReset.getEventList().size();
+			logFile << "No of Elements are front :" << noOfEvents << endl;
+
+			int lagSign = getQuoteLag() >= 0 ? 1 : -1;
+			logFile << "lag sign is : " << lagSign << endl;
+			const BusDayConv * resetBusDay = lagSign > 0 ? BusDayConv::find("FOL") : BusDayConv::find("PRE") ;
+			int lag = getQuoteLag() * lagSign;
+			logFile << "lag is : " << lag << endl;
+
+			for ( ; iterEventReset != eventStreamReset.getEventList().end () ; ++iterEventReset )
+			{
+			    shared_ptr <ResetSchedule> resetSchedule( new ResetSchedule());
+   	        	resetSchedule->setResetStartDate(*iterEventReset);
+   	        	resetSchedule->setRateIndexType("IRRATE");
+
+        		Date quoteDate = resetSchedule->getResetStartDate();
+
+        		logFile << "Dates are : " << resetSchedule->getResetStartDate() << endl;
+
+        		int cntReset = lag;
+
+				while ( cntReset > 0 )
+				{
+					Period period(lagSign * 1,Days);
+					quoteDate = quoteDate + period;
+					quoteDate = resetBusDay->adjustToBusDay(quoteDate,*CalendarUtil::getCalendar(getQuoteCalendars()) );
+					cntReset--;
+
+				}
+
+				if (  cntReset == 0 )
+					quoteDate = resetBusDay->adjustToBusDay(quoteDate,*CalendarUtil::getCalendar(getQuoteCalendars()) );
+
+				resetSchedule->setQuoteDate( quoteDate );
+				resetSchedule->setRate(getPeriodRate(FixingRates::getFixingRate(quoteDate, getMarketIndex())));
+
+				if ( resetSchedule->getResetStartDate() != backStubDate && getBackStubDate() == getEndDate() )
+					_resetScheduleList.push_back(resetSchedule);
+				else if ( getBackStubDate() != getEndDate() )
+					_resetScheduleList.push_back(resetSchedule);
+
+				if ( getBackStubDate() != getEndDate() && getBackStubDate() == resetSchedule->getResetStartDate() )
+				{
+					// we are going to force generate stub tenors
+					setIsPSGenerated(true);
+
+					if ( ! generateStubs() )
+						logFile << "failed stub generation" << endl;
+
+					setIsPSGenerated(false);
+
+						displayPaySchedule().sort();
+						PayScheduleList::const_iterator iterPay = displayPaySchedule().begin();
+
+						Date couponStartDate(01,01,1901);
+						Date couponEndDate(01,01,1901);
+
+						for ( ; iterPay != displayPaySchedule().end() ; ++iterPay )
+						{
+
+							if ( (*iterPay)->getCouponStartDate() == getBackStubDate() )
+							{
+								couponStartDate = (*iterPay)->getCouponStartDate();
+								couponEndDate = (*iterPay)->getCouponEndDate();
+								break; // no need to continue, got the dates
+							}
+						}
+						_stubResetsList.sort();
+
+						StubResetsList::const_iterator iterStubReset = _stubResetsList.begin() ;
+						String marketIndexA = "";
+						String marketIndexB = "";
+						Period stubTenorA;
+						Period stubTenorB;
+
+						for ( ; iterStubReset != _stubResetsList.end() ; ++iterStubReset )
+						{
+
+							if ( (*iterStubReset)->getStartDate() == resetSchedule->getResetStartDate() && (*iterStubReset)->getStubType() == "BStubA" )
+							{
+								marketIndexA = (*iterStubReset)->getStubMarketIndex();
+								stubTenorA = (*iterStubReset)->getStubTenor();
+
+							}
+							else if ( (*iterStubReset)->getStartDate() == resetSchedule->getResetStartDate() && (*iterStubReset)->getStubType() == "BStubB" )
+							{
+								marketIndexB = (*iterStubReset)->getStubMarketIndex();
+								stubTenorB = (*iterStubReset)->getStubTenor();
+
+							}
+						}
+
+						resetSchedule->setRate(getPeriodRate(FixingRates::getFixingRate( resetSchedule->getQuoteDate(),
+												marketIndexA, marketIndexB, stubTenorA, stubTenorB, couponStartDate ,
+											couponEndDate, getAccrualBusDay() )) );
+
+						_resetScheduleList.pop_back();
+						_resetScheduleList.push_back(resetSchedule); // update with latest info
+
+				}
+
+			  }
+
+		     // take care of front and back stubs now
+
+		     if ( getFrontStubDate() != getStartDate() )
+		     {
+     		     shared_ptr <ResetSchedule> resetScheduleStub( new ResetSchedule());
+
+			     resetScheduleStub->setResetStartDate(startDate);
+
+			     Date quoteDate = resetScheduleStub->getResetStartDate();
+			     int cntReset = lag;
+
+			     while ( cntReset > 0 )
+			     {
+			     	Period period(lagSign * 1,Days);
+			     	quoteDate = quoteDate + period;
+			     	quoteDate = resetBusDay->adjustToBusDay(quoteDate,*CalendarUtil::getCalendar(getQuoteCalendars()) );
+			     	cntReset--;
+
+			     }
+
+			     if (  cntReset == 0 )
+						quoteDate = resetBusDay->adjustToBusDay(quoteDate,*CalendarUtil::getCalendar(getQuoteCalendars()) );
+
+			     resetScheduleStub->setQuoteDate( quoteDate );
+			     resetScheduleStub->setRate(getPeriodRate(FixingRates::getFixingRate(quoteDate, getMarketIndex())));
+
+		    	 displayPaySchedule().sort();
+			     PayScheduleList::const_iterator iterPay = displayPaySchedule().begin();
+
+			     	_resetScheduleList.push_front(resetScheduleStub);
+
+					setIsPSGenerated(true);
+
+					if ( ! generateStubs() )
+						logFile << "failed stub generation" << endl;
+
+					setIsPSGenerated(false);
+
+			     	Date couponStartDate(01,01,1901);
+			     	Date couponEndDate(01,01,1901);
+
+			     		for ( ; iterPay != displayPaySchedule().end() ; ++iterPay )
+			     		{
+
+			     			if ( (*iterPay)->getCouponEndDate() == getFrontStubDate() )
+			     			{
+			     				couponStartDate = (*iterPay)->getCouponStartDate();
+			     				couponEndDate = (*iterPay)->getCouponEndDate();
+			     				break; // no need to continue, got the dates
+			     			}
+			     		}
+
+			     		_stubResetsList.sort();
+
+			     		StubResetsList::const_iterator iterStubReset = _stubResetsList.begin() ;
+			     		String marketIndexA = "";
+			     		String marketIndexB = "";
+			     		Period stubTenorA;
+			     		Period stubTenorB;
+
+			     		for ( ; iterStubReset != _stubResetsList.end() ; ++iterStubReset )
+			     		{
+
+			     			logFile << "details " << (*iterStubReset)->getStartDate() << " : " << startDate << endl;
+
+			     			if ( (*iterStubReset)->getStartDate() == startDate && (*iterStubReset)->getStubType() == "FStubA" )
+			     			{
+			     				marketIndexA = (*iterStubReset)->getStubMarketIndex();
+			     				stubTenorA = (*iterStubReset)->getStubTenor();
+			     			}
+			     			else if ( (*iterStubReset)->getStartDate() == startDate && (*iterStubReset)->getStubType() == "FStubB" )
+			     			{
+			     				marketIndexB = (*iterStubReset)->getStubMarketIndex();
+			     				stubTenorB = (*iterStubReset)->getStubTenor();
+			     			}
+			     		}
+
+			     			resetScheduleStub->setRate(getPeriodRate(FixingRates::getFixingRate( quoteDate,
+			     							marketIndexA, marketIndexB, stubTenorA, stubTenorB, couponStartDate ,
+			     								couponEndDate, getAccrualBusDay() )) );
+
+
+			     _resetScheduleList.pop_front();
+
+			     _resetScheduleList.push_front(resetScheduleStub);
+
+			  }
+
+		      ResetScheduleList::const_iterator iterReset = displayResetSchedule().begin() ;
+
+		      for ( ; iterReset != displayResetSchedule().end() ; ++iterReset )
+   		      {
+				logFile <<"\n Reset Start Date : Quote Date : Period Rate  - ";
+				logFile << (*iterReset)->getResetStartDate() << " : " << (*iterReset)->getQuoteDate() << " : " << (*iterReset)->getRate() << endl;
+
+   		       }
+
+		} // eventstream finished
+
+			setIsRSGenerated(true); // resets generated now
+	} // schedule generation finished
+
+	return true;
+
+}
+
+
+
+bool SwapLeg::genCompSchedule()
+{
+
+return  genPaySchedule(); // no need for separate method
+
+}
+
+bool SwapLeg::genAmortSchedule()
+{
+return  genPaySchedule(); // no need for separate method
+
+}
+
+double SwapLeg::getPeriodRate( double rate)  // gets period rate including spread and gear factor
+{
+
+	if ( getCompoundingConv() == "FLAT/ADJ" || getCompoundingConv() == "FLAT/FLAT"  ||  getCompoundingConv() == "ADJ/FLAT" )
+	   return rate;
+	else if ( getCompoundingConv() == "NONE" ||  getCompoundingConv() == "ADJ/ADJ" )
+		return rate * getGearFactor() + getSpread()/10000; // note spread is in basis points
+
+	return rate; // should never come here
+}
+
+
+bool SwapLeg::generateStubs()
+{
+
+	Date startDate = getStartDate();
+	Date endDate = getEndDate();
+	Date fDate = getStartDate();
+	Date bDate = getEndDate();
+
+
+	if ( getStartDateRollFlag() == "Yes" )
+	{
+		startDate = getAccrualBusDay()->adjustToBusDay(startDate,*CalendarUtil::getCalendar(getAccrualCalendars()));
+		logFile << "\nstub routine : Start Date is : " << startDate << endl;
+	}
+
+	if ( getEndDateRollFlag() == "Yes" )
+	{
+		endDate = getAccrualBusDay()->adjustToBusDay(endDate,*CalendarUtil::getCalendar(getAccrualCalendars()));
+		 logFile << "\nstub routine : End Date is : " << endDate << endl;
+	}
+
+
+	if (! isPSGenerated() ) // generate payment schedule if not generated already
+		if ( ! genPaySchedule() )
+			return false; // issues in generating payment schedule
+
+
+	if ( isFloatLeg() ) // stub tenors should be generated only for float leg
+	{
+
+		shared_ptr <StubResets> fsResetsA( new StubResets());
+		shared_ptr <StubResets> fsResetsB( new StubResets());
+		shared_ptr <StubResets> bsResetsA( new StubResets());
+		shared_ptr <StubResets> bsResetsB( new StubResets());
+
+		Period fsTenorA(0,Days);
+		Period fsTenorB(0,Days);
+		Period bsTenorA(0,Days);
+		Period bsTenorB(0,Days);
+
+		if ( getFrontStubDate() != fDate )
+		{
+			int daysDiff = getFrontStubDate().serialNumber() - startDate.serialNumber();
+
+			if ( daysDiff > 0 && daysDiff <= 2 )
+			{
+				fsTenorA = Period(2,Days);
+				fsTenorB = Period(2,Days);
+				logFile << "Stubf Tenors are : 2D:2D" << endl;
+			}
+
+			if ( daysDiff <= 7 && daysDiff > 2 )
+			{
+				fsTenorA = Period(2,Days);
+				fsTenorB = Period(1,Weeks);
+				logFile << "Stubf Tenors are : 2D:1W " << endl;
+			}
+
+			if ( daysDiff <= 14 && daysDiff > 7)
+			{
+				fsTenorA = Period(1, Weeks);
+				fsTenorB = Period(2, Weeks);
+				logFile << "Stubf Tenors are : 1W:2W" << endl;
+			}
+
+			if ( daysDiff <= startDate.monthLength(startDate.month(),Date::isLeap(startDate.year())) && daysDiff > 14 )
+			{
+				fsTenorA = Period(2, Weeks);
+				fsTenorB = Period(1, Months);
+				logFile << "Stubf Tenors are : 2W:1M" << endl;
+			}
+
+			if ( daysDiff > startDate.monthLength(startDate.month(),Date::isLeap(startDate.year()) ) )
+			{
+				int month = 0;
+				Date tmpDate = startDate;
+
+				while ( tmpDate < getFrontStubDate()  )
+				{
+					tmpDate += Period(1,Months);
+					month++;
+				}
+
+
+				fsTenorA = Period(month-1,Months);
+				fsTenorB = Period(month,Months);
+
+				logFile << "Stubf Tenors are : " << month -1 << "M::" << month << "M" << endl;
+
+			}
+
+			ResetScheduleList::const_iterator iterReset = displayResetSchedule().begin() ;
+
+			for ( ; iterReset != displayResetSchedule().end() ; ++iterReset )
+			{
+				if ( getFrontStubDate() == (*iterReset)->getResetStartDate() )
+				{
+					// note, it is the event that starts before the front stub, we are interested in :-) ...
+
+					fsResetsA->setStartDate((*(--iterReset))->getResetStartDate());
+					++iterReset;
+					fsResetsA->setQuoteDate((*(--iterReset))->getQuoteDate());
+					++iterReset;
+					fsResetsA->setStubRateType("P"); // projected first time even if it is in the past.
+					fsResetsA->setStubMarketIndex(FixingRates::getFixingQuote(getMarketIndex(),fsTenorA));
+					fsResetsA->setStubType("FStubA");
+					fsResetsA->setStubTenor(fsTenorA);
+					fsResetsA->setManualStub(false);
+
+					_stubResetsList.push_back(fsResetsA);
+
+					fsResetsB->setStartDate((*(--iterReset))->getResetStartDate());
+					++iterReset;
+					fsResetsB->setQuoteDate((*(--iterReset))->getQuoteDate());
+					++iterReset;
+					fsResetsB->setStubRateType("P"); // projected first time even if it is in the past
+					fsResetsB->setStubMarketIndex(FixingRates::getFixingQuote(getMarketIndex(),fsTenorB));
+					fsResetsB->setStubType("FStubB");
+					fsResetsB->setStubTenor(fsTenorB);
+					fsResetsB->setManualStub(false);
+
+					_stubResetsList.push_back(fsResetsB);
+				}
+
+			}
+
+		}
+
+		if ( getBackStubDate() != bDate )
+		{
+			int daysDiff = endDate.serialNumber() - getBackStubDate().serialNumber();
+
+			if ( daysDiff > 0 && daysDiff <= 2 )
+			{
+				bsTenorA = Period(2, Days);
+				bsTenorB = Period(2, Days);
+				logFile << "Stub Tenors are : 2D:2D" << endl;
+			}
+
+
+			if ( daysDiff <= 7 && daysDiff > 2 )
+			{
+				bsTenorA = Period(2, Days);
+				bsTenorB = Period(1, Weeks);
+				logFile << "Stub Tenors are : 2D:1W" << endl;
+			}
+
+			if ( daysDiff <= 14 && daysDiff > 7)
+			{
+				bsTenorA = Period(1, Weeks);
+				bsTenorB = Period(2, Weeks);
+				logFile << "Stub Tenors are : 1W:2W" << endl;
+			}
+
+			if ( daysDiff <= endDate.monthLength(endDate.month(),Date::isLeap(endDate.year())) && daysDiff > 14 )
+			{
+				bsTenorA = Period(2, Weeks);
+				bsTenorB = Period(1, Months);
+				logFile << "Stub Tenors are : 2W:1M" << endl;
+			}
+
+			if ( daysDiff > endDate.monthLength(endDate.month(),Date::isLeap(endDate.year()) ) )
+			{
+				int month = 0;
+				Date tmpDate = endDate;
+
+				while ( tmpDate > getBackStubDate()  )
+				{
+					tmpDate = tmpDate - Period(1,Months);
+					month++;
+				}
+
+			  bsTenorA = Period(month -1 , Months );
+			  bsTenorB = Period(month, Months );
+
+			  logFile << "Stub Tenors are : " << month -1 << "M::" << month <<"M" << endl;
+
+			}
+
+			ResetScheduleList::const_iterator iterReset = displayResetSchedule().begin() ;
+
+			for ( ; iterReset != displayResetSchedule().end() ; ++iterReset )
+			{
+				if ( getBackStubDate() == (*iterReset)->getResetStartDate() )
+				{
+						bsResetsA->setStartDate((*iterReset)->getResetStartDate());
+						bsResetsA->setQuoteDate((*iterReset)->getQuoteDate());
+						bsResetsA->setStubRateType("P"); // projected first time even if it is in the past.
+						bsResetsA->setStubMarketIndex(FixingRates::getFixingQuote(getMarketIndex(),bsTenorA));
+						bsResetsA->setStubType("BStubA");
+						bsResetsA->setStubTenor(bsTenorA);
+						bsResetsA->setManualStub(false);
+						_stubResetsList.push_back(bsResetsA);
+
+						bsResetsB->setStartDate((*iterReset)->getResetStartDate());
+						bsResetsB->setQuoteDate((*iterReset)->getQuoteDate());
+						bsResetsB->setStubRateType("P"); // projected first time even if it is in the past
+						bsResetsB->setStubMarketIndex(FixingRates::getFixingQuote(getMarketIndex(),bsTenorB));
+						bsResetsB->setStubType("BStubB");
+						bsResetsB->setStubTenor(bsTenorB);
+						bsResetsB->setManualStub(false);
+						_stubResetsList.push_back(bsResetsB);
+
+				}
+
+			}
+
+		}
+
+	} // now we have stub tenors generated
+
+		return true;
+}
+
+
+// generate cash flow method can be called separately
+
+bool SwapLeg::genLegCashFlows()
+{
+
+
+	if (! isPSGenerated() ) // generate payment schedule if not generated already
+		if ( ! genPaySchedule() )
+			return false; // issues in generating payment schedule
+
+
+	PayScheduleList::const_iterator iterPay = displayPaySchedule().begin();
+	Date amortStubDate(01,01,1901);
+	double lastAmortNotional = getNotional();
+	double dcfNot = 0.0;
+	double periodRate = 0.0;
+
+
+	for ( ; iterPay != displayPaySchedule().end() ; ++iterPay )
+	{
+
+		double compAmount = 0.0;
+		double spreadAmount = 0.0;
+
+		if ( getCompoundingConv() != "NONE" ) //&& isFloatLeg() ) - check this
+		{
+		   CompScheduleList::const_iterator iterComp = displayCompSchedule().begin();
+
+
+		   for ( ; iterComp != displayCompSchedule().end() ; ++iterComp )
+			{
+
+			 if ( ( (*iterPay)->getCouponStartDate() <= (*iterComp)->getCompStartDate() ) &&
+						 ( (*iterPay)->getCouponEndDate() >= (*iterComp)->getCompEndDate() ) )
+			 {
+
+				 // check resets
+				 if ( isFloatLeg() )
+				 {
+					 ResetScheduleList::const_iterator iterReset = displayResetSchedule().begin();
+
+					 for ( ; iterReset != displayResetSchedule().end() ; ++iterReset )
+					 {
+
+
+						 if ( ( getCompFreq() == getResetFreq() ) && ( (*iterComp)->getCompStartDate() == (*iterReset)->getResetStartDate() ) )
+						 {
+							 if ( getFrontStubDate() != getStartDate() && (*iterPay)->getCouponEndDate() == getFrontStubDate() ) // there is a front stub
+							 {
+								 _stubResetsList.sort();
+
+								 StubResetsList::const_iterator iterStubReset = _stubResetsList.begin() ;
+								 String marketIndexA = "";
+								 String marketIndexB = "";
+								 Period stubTenorA;
+								 Period stubTenorB;
+
+								 for ( ; iterStubReset != _stubResetsList.end() ; ++iterStubReset )
+								 {
+									 if ( (*iterStubReset)->getStartDate() == (*iterReset)->getResetStartDate() && (*iterStubReset)->getStubType() == "FStubA" )
+									 {
+										 marketIndexA = (*iterStubReset)->getStubMarketIndex();
+										 stubTenorA = (*iterStubReset)->getStubTenor();
+									 }
+									 else if ( (*iterStubReset)->getStartDate() == (*iterReset)->getResetStartDate() && (*iterStubReset)->getStubType() == "FStubB" )
+									 {
+										 marketIndexB = (*iterStubReset)->getStubMarketIndex();
+										 stubTenorB = (*iterStubReset)->getStubTenor();
+									 }
+								  }
+
+								 periodRate = getPeriodRate(FixingRates::getFixingRate( (*iterReset)->getQuoteDate(),
+								 marketIndexA, marketIndexB, stubTenorA, stubTenorB, (*iterPay)->getCouponStartDate() ,
+								 (*iterPay)->getCouponEndDate(), getAccrualBusDay() ));
+							  }
+							  else if ( getBackStubDate() != getEndDate() && (*iterPay)->getCouponStartDate() == getBackStubDate() ) // there is a back stub
+							  {
+								  _stubResetsList.sort();
+
+								  StubResetsList::const_iterator iterStubReset = _stubResetsList.begin() ;
+								  String marketIndexA = "";
+								  String marketIndexB = "";
+								  Period stubTenorA;
+								  Period stubTenorB;
+
+								  for ( ; iterStubReset != _stubResetsList.end() ; ++iterStubReset )
+								  {
+									  if ( (*iterStubReset)->getStartDate() == (*iterReset)->getResetStartDate() && (*iterStubReset)->getStubType() == "BStubA" )
+									  {
+										  marketIndexA = (*iterStubReset)->getStubMarketIndex();
+										  stubTenorA = (*iterStubReset)->getStubTenor();
+									  }
+									  else if ( (*iterStubReset)->getStartDate() == (*iterReset)->getResetStartDate() && (*iterStubReset)->getStubType() == "BStubB" )
+									  {
+										  marketIndexB = (*iterStubReset)->getStubMarketIndex();
+										  stubTenorB = (*iterStubReset)->getStubTenor();
+									  }
+								   }
+
+								   periodRate = getPeriodRate(FixingRates::getFixingRate( (*iterReset)->getQuoteDate(), marketIndexA,
+								   marketIndexB , stubTenorA, stubTenorB, (*iterPay)->getCouponStartDate() ,
+								   (*iterPay)->getCouponEndDate(), getAccrualBusDay() ));
+
+							  }
+							  else
+							  {
+								  periodRate = getPeriodRate(FixingRates::getFixingRate((*iterReset)->getQuoteDate(), getMarketIndex()));
+							  }
+						 }
+						 else if ( ( getAccrualFreq() == getResetFreq() ) && ( (*iterPay)->getCouponStartDate() == (*iterReset)->getResetStartDate() ) )
+						 {
+
+							 if ( getFrontStubDate() != getStartDate() && (*iterPay)->getCouponEndDate() == getFrontStubDate() ) // there is a front stub
+							 {
+				 				_stubResetsList.sort();
+
+				 				StubResetsList::const_iterator iterStubReset = _stubResetsList.begin() ;
+				 				String marketIndexA = "";
+				 				String marketIndexB = "";
+				 				Period stubTenorA;
+				 				Period stubTenorB;
+
+				 				for ( ; iterStubReset != _stubResetsList.end() ; ++iterStubReset )
+				 				{
+				 					if ( (*iterStubReset)->getStartDate() == (*iterReset)->getResetStartDate() && (*iterStubReset)->getStubType() == "FStubA" )
+				 					{
+				 						marketIndexA = (*iterStubReset)->getStubMarketIndex();
+				 						stubTenorA = (*iterStubReset)->getStubTenor();
+				 					}
+				 					else if ( (*iterStubReset)->getStartDate() == (*iterReset)->getResetStartDate() && (*iterStubReset)->getStubType() == "FStubB" )
+				 					{
+				 						marketIndexB = (*iterStubReset)->getStubMarketIndex();
+				 						stubTenorB = (*iterStubReset)->getStubTenor();
+				 					 }
+				 				 }
+
+				 				 periodRate = getPeriodRate(FixingRates::getFixingRate( (*iterReset)->getQuoteDate(), marketIndexA,
+				 				 marketIndexB, stubTenorA, stubTenorB, (*iterPay)->getCouponStartDate() ,
+				 				 (*iterPay)->getCouponEndDate(), getAccrualBusDay() ));
+							  }
+							 else if ( getBackStubDate() != getEndDate() && (*iterPay)->getCouponStartDate() == getBackStubDate() ) // there is a back stub
+							 {
+				 				_stubResetsList.sort();
+					 			StubResetsList::const_iterator iterStubReset = _stubResetsList.begin() ;
+					 			String marketIndexA = "";
+					 			String marketIndexB = "";
+					 			Period stubTenorA;
+					 			Period stubTenorB;
+
+					 			for ( ; iterStubReset != _stubResetsList.end() ; ++iterStubReset )
+						 		{
+					 				if ( (*iterStubReset)->getStartDate() == (*iterReset)->getResetStartDate() && (*iterStubReset)->getStubType() == "BStubA" )
+					 				{
+					 					marketIndexA = (*iterStubReset)->getStubMarketIndex();
+					 					stubTenorA = (*iterStubReset)->getStubTenor();
+					 				}
+					 				else if ( ( *iterStubReset)->getStartDate() == (*iterReset)->getResetStartDate() && (*iterStubReset)->getStubType() == "BStubB" )
+					 				{
+					 					marketIndexB = (*iterStubReset)->getStubMarketIndex();
+					 					stubTenorB = (*iterStubReset)->getStubTenor();
+					 				}
+						 		 }
+
+					 			 periodRate = getPeriodRate(FixingRates::getFixingRate( (*iterReset)->getQuoteDate(), marketIndexA,
+				 				 marketIndexB , stubTenorA, stubTenorB, (*iterPay)->getCouponStartDate() ,
+				 				 (*iterPay)->getCouponEndDate() , getAccrualBusDay() ));
+							 }
+							 else
+							 {
+								 periodRate = getPeriodRate(FixingRates::getFixingRate((*iterReset)->getQuoteDate(), getMarketIndex() ));
+							 }
+						 }
+					 }
+				 } // float check finished
+				 else
+					 periodRate = getFixedQuote() / 100;
+
+
+				 	 logFile << " Market Quote is : " << periodRate <<  endl;
+
+
+		dcfNot = getNotional() * getDayCount()->getFraction((*iterComp)->getCompStartDate(),
+								(*iterComp)->getCompEndDate(), true,true,(int) getCompFreq() ) * periodRate;
+
+
+		if ( getAmortType() != "NONE" )
+		{
+
+			dcfNot = 0.0;
+			double spAmortAmount = 0.0;
+			double spreadAmortAmount = 0.0;
+
+			AmortScheduleList::const_iterator iterAmort = displayAmortSchedule().begin();
+
+		if ( (*iterComp)->getCompStartDate() <= getAmortEndDate() )
+		{
+
+			for ( ; iterAmort != displayAmortSchedule().end() ; ++iterAmort )
+			{
+
+				if (  ( (*iterComp)->getCompStartDate() >= (*iterAmort)->getStartDate()  &&
+				 		(*iterComp)->getCompStartDate() < (*iterAmort)->getEndDate()  &&
+						(*iterComp)->getCompEndDate() >= (*iterAmort)->getEndDate()  ) )
+				{
+
+					if ( amortStubDate > (*iterAmort)->getStartDate() )
+					{
+
+						dcfNot += ((*iterAmort)->getAmortNotional()) * getDayCount()->getFraction( amortStubDate,
+					     	         (*iterAmort)->getEndDate(), true,true,(int) getAmortFreq() ) * periodRate;
+
+						spAmortAmount =  (*iterAmort)->getAmortNotional() * getDayCount()->getFraction(amortStubDate,
+								(*iterAmort)->getEndDate(), true,true,(int) getAmortFreq() ) * getSpread()/10000 ;
+
+	    	 		if ( getCompoundingConv() == "ADJ/FLAT" && compAmount != 0.0 )
+	    	 		{
+
+	    	 			spAmortAmount = spAmortAmount + spreadAmount * periodRate * getDayCount()->getFraction(amortStubDate,
+	    	 					(*iterAmort)->getEndDate(), true,true, (int) getAmortFreq() );
+
+	    	 		}
+
+	    	 		if ( getCompoundingConv() == "ADJ/ADJ" && compAmount != 0.0 )
+	   	 			{
+
+	    	 			spAmortAmount = spAmortAmount + spreadAmount * (periodRate + getSpread()/10000) * getDayCount()->getFraction(amortStubDate,
+	    	 					(*iterAmort)->getEndDate(), true,true, (int) getAmortFreq() );
+
+		    	 	 }
+
+	    	 		spreadAmortAmount += spAmortAmount;
+
+						lastAmortNotional = (*iterAmort)->getAmortNotional();
+						logFile << "Notional 1 is : " << lastAmortNotional << endl;
+					}
+					else
+					{
+						dcfNot += ( (*iterAmort)->getAmortNotional())  * getDayCount()->getFraction((*iterAmort)->getStartDate(),
+					 		         (*iterAmort)->getEndDate(), true,true,0) * periodRate;
+
+						spAmortAmount =  (*iterAmort)->getAmortNotional() * getDayCount()->getFraction((*iterAmort)->getStartDate(),
+														(*iterAmort)->getEndDate(), true,true, (int) getAmortFreq() ) * getSpread()/10000 ;
+
+						if ( getCompoundingConv() == "ADJ/FLAT" && compAmount != 0.0 )
+						{
+
+							 spAmortAmount = spAmortAmount + spreadAmount * periodRate * getDayCount()->getFraction((*iterAmort)->getStartDate(),
+							    	 		(*iterAmort)->getEndDate(), true,true, (int) getAmortFreq() );
+
+						}
+
+						if ( getCompoundingConv() == "ADJ/ADJ" && compAmount != 0.0 )
+						{
+
+							  spAmortAmount = spAmortAmount + spreadAmount * (periodRate + getSpread()/10000) * getDayCount()->getFraction((*iterAmort)->getStartDate(),
+							    	 		(*iterAmort)->getEndDate(), true,true, (int) getAmortFreq() );
+
+						}
+
+						spreadAmortAmount += spAmortAmount;
+
+
+						lastAmortNotional = (*iterAmort)->getAmortNotional();
+						logFile << "Notional 11 is : " << lastAmortNotional << endl;
+					}
+
+				 	logFile << "Payment Amount 1: " << (*iterComp)->getCompStartDate() << " : " << (*iterComp)->getCompEndDate()
+			 		 << " : " << (*iterAmort)->getStartDate() << " : " << amortStubDate << " : " << (*iterAmort)->getEndDate()
+			 		 << " : " << dcfNot << endl;
+				 	logFile << "Payment Amount spread 1: " << spreadAmortAmount <<endl;
+
+					amortStubDate = (*iterAmort)->getEndDate();
+					logFile << "Notional 1 is : " << lastAmortNotional << endl;
+				 }
+				 else if ( (*iterComp)->getCompEndDate() > (*iterAmort)->getStartDate() &&
+				 		 amortStubDate <= (*iterAmort)->getStartDate() )
+				 {
+				 	if ( (*iterComp)->getCompEndDate() >= (*iterAmort)->getEndDate() )
+				 	{
+				 		if ( (*iterAmort)->getStartDate() == getAmortEndDate() )
+				 		{
+				 			dcfNot += ( (*iterAmort)->getAmortNotional() ) * getDayCount()->getFraction((*iterAmort)->getStartDate(),
+				 					(*iterComp)->getCompEndDate(), true,true, (int) getAmortFreq() ) * periodRate;
+
+				 			spAmortAmount =  (*iterAmort)->getAmortNotional() * getDayCount()->getFraction((*iterAmort)->getStartDate(),
+				 					(*iterComp)->getCompEndDate(), true,true, (int) getAmortFreq() ) * getSpread()/10000 ;
+
+				 			if ( getCompoundingConv() == "ADJ/FLAT" && compAmount != 0.0 )
+				 			{
+
+				 				spAmortAmount = spAmortAmount + spreadAmount * periodRate * getDayCount()->getFraction((*iterAmort)->getStartDate(),
+				 						(*iterComp)->getCompEndDate()  , true,true, (int) getAmortFreq() );
+
+				 			}
+
+				 			if ( getCompoundingConv() == "ADJ/ADJ" && compAmount != 0.0 )
+				 			{
+
+				 				 spAmortAmount = spAmortAmount + spreadAmount * (periodRate + getSpread()/10000) * getDayCount()->getFraction((*iterAmort)->getStartDate(),
+				 						(*iterComp)->getCompEndDate(), true,true, (int) getAmortFreq() );
+
+				 			}
+
+				 			spreadAmortAmount += spAmortAmount;
+
+				 			amortStubDate = (*iterComp)->getCompEndDate();
+					 		lastAmortNotional = (*iterAmort)->getAmortNotional();
+
+					 		logFile << "Payment Amount stub 1: " << (*iterComp)->getCompStartDate() << " : " << (*iterComp)->getCompEndDate()
+				 				<< " : " << (*iterAmort)->getStartDate() << " : " << (*iterComp)->getCompEndDate() << " : " << dcfNot << endl;
+					 		logFile << "Payment Amount stub spread 1: " << spreadAmortAmount <<endl;
+					 		logFile << "Notional 2 is : " << lastAmortNotional << endl;
+						}
+						else if ( amortStubDate >= (*iterAmort)->getStartDate() )
+						{
+							dcfNot += ( (*iterAmort)->getAmortNotional() ) * getDayCount()->getFraction((*iterAmort)->getStartDate(),
+									 (*iterAmort)->getEndDate(), true,true, (int) getAmortFreq() ) * periodRate;
+
+							spAmortAmount =  (*iterAmort)->getAmortNotional() * getDayCount()->getFraction((*iterAmort)->getStartDate(),
+									(*iterAmort)->getEndDate(), true,true, (int) getAmortFreq() ) * getSpread()/10000 ;
+
+							if ( getCompoundingConv() == "ADJ/FLAT" && compAmount != 0.0 )
+							{
+
+								spAmortAmount = spAmortAmount + spreadAmount * periodRate * getDayCount()->getFraction((*iterAmort)->getStartDate(),
+										(*iterAmort)->getEndDate() , true,true, (int) getAmortFreq() );
+
+							}
+
+							if ( getCompoundingConv() == "ADJ/ADJ" && compAmount != 0.0 )
+							{
+
+								spAmortAmount = spAmortAmount + spreadAmount * (periodRate + getSpread()/10000) * getDayCount()->getFraction((*iterAmort)->getStartDate(),
+										(*iterAmort)->getEndDate(), true,true, (int) getAmortFreq() );
+
+							}
+
+							spreadAmortAmount += spAmortAmount;
+
+							amortStubDate = (*iterAmort)->getEndDate();
+							lastAmortNotional = (*iterAmort)->getAmortNotional();
+
+							logFile << "Payment Amount stub 2: " << (*iterComp)->getCompStartDate() << " : " << (*iterComp)->getCompEndDate()
+								<< " : " << (*iterAmort)->getStartDate() << " : " << (*iterAmort)->getEndDate() << " : " <<  dcfNot << endl;
+							logFile << "Payment Amount stub spread 2: " << spreadAmortAmount <<endl;
+					 		logFile << "Notional 3 is : " << lastAmortNotional << endl;
+					 	}
+					  }
+					  else
+					  {
+					 		dcfNot += ( (*iterAmort)->getAmortNotional() ) * getDayCount()->getFraction((*iterAmort)->getStartDate(),
+					 			(*iterComp)->getCompEndDate(), true,true, (int) getAmortFreq() ) * periodRate;
+
+					 		spAmortAmount =  (*iterAmort)->getAmortNotional() * getDayCount()->getFraction((*iterAmort)->getStartDate(),
+					 				(*iterComp)->getCompEndDate(), true,true, (int) getAmortFreq() ) * getSpread()/10000 ;
+
+					 		if ( getCompoundingConv() == "ADJ/FLAT" && compAmount != 0.0 )
+					 		{
+
+					 				spAmortAmount = spAmortAmount + spreadAmount * periodRate * getDayCount()->getFraction((*iterAmort)->getStartDate(),
+					 						(*iterComp)->getCompEndDate(), true,true, (int) getAmortFreq() );
+
+					 		}
+
+					 		if ( getCompoundingConv() == "ADJ/ADJ" && compAmount != 0.0 )
+					 		{
+
+					 				spAmortAmount = spAmortAmount + spreadAmount * (periodRate + getSpread()/10000) * getDayCount()->getFraction((*iterAmort)->getStartDate(),
+					 						(*iterComp)->getCompEndDate(), true,true, (int) getAmortFreq() );
+
+					 		}
+
+					 		spreadAmortAmount += spAmortAmount;
+
+					 		amortStubDate = (*iterComp)->getCompEndDate();
+					 		lastAmortNotional = (*iterAmort)->getAmortNotional();
+
+						    logFile << "Payment Amount stub 3: " << (*iterComp)->getCompStartDate() << " : " << (*iterComp)->getCompEndDate()
+						 		 << " : " << (*iterAmort)->getStartDate() << " : " << (*iterAmort)->getEndDate() << " : " << dcfNot << endl;
+						    logFile << "Payment Amount stub spread 3: " << spreadAmortAmount <<endl;
+						 	logFile << "Notional 4 is : " << lastAmortNotional << endl;
+					   }
+				}
+			 } // amort event
+
+
+			if ( (*iterPay)->getCouponStartDate() <= (*iterComp)->getCompStartDate() &&
+					 (*iterPay)->getCouponEndDate() >= (*iterComp)->getCompEndDate() )
+			{
+				 logFile << "coupon before : " << compAmount << endl;
+
+
+				 if ( getCompoundingConv() == "FLAT/FLAT")
+				 {
+				 	   (*iterComp)->setAccrualInterest(dcfNot + (compAmount * getDayCount()->getFraction((*iterComp)->getCompStartDate(),
+				 	    	 			(*iterComp)->getCompEndDate(), true,true, (int) getCompFreq() ) * periodRate ) );
+
+				 	   logFile << "current coupon amount : " << dcfNot + (compAmount * getDayCount()->getFraction((*iterComp)->getCompStartDate(),
+				 	    	 					 			(*iterComp)->getCompEndDate(), true,true, (int) getCompFreq() ) * periodRate ) + spreadAmortAmount << endl;
+
+				 	   compAmount = compAmount + dcfNot + (compAmount * getDayCount()->getFraction((*iterComp)->getCompStartDate(),
+				 	    	 		    	 (*iterComp)->getCompEndDate(), true,true, (int) getCompFreq() ) * periodRate );
+
+				 }
+				 else if ( getCompoundingConv() == "ADJ/ADJ" )
+				 {
+				 	  (*iterComp)->setAccrualInterest(dcfNot + (compAmount * getDayCount()->getFraction((*iterComp)->getCompStartDate(),
+				 	    	 		    	 	(*iterComp)->getCompEndDate(), true,true, (int) getCompFreq() ) * periodRate ));
+
+				 	   logFile << "current coupon amount : " << dcfNot + (compAmount * getDayCount()->getFraction((*iterComp)->getCompStartDate(),
+				 	    	 		    	 	(*iterComp)->getCompEndDate(), true,true,0) * periodRate )  << endl;
+
+				 	    compAmount = compAmount + dcfNot + (compAmount * getDayCount()->getFraction((*iterComp)->getCompStartDate(),
+				 	    	 		    	 			 	(*iterComp)->getCompEndDate(), true,true, (int) getCompFreq() ) * periodRate );
+
+				 }
+				 else if ( getCompoundingConv() == "FLAT/ADJ" )
+				 {
+				 	  (*iterComp)->setAccrualInterest(dcfNot + (compAmount  * getDayCount()->getFraction((*iterComp)->getCompStartDate(),
+				 	    	   	 	(*iterComp)->getCompEndDate(), true,true, (int) getCompFreq() ) * ( periodRate + getSpread()/10000 ) ) + spreadAmortAmount);
+
+				 	   logFile << "current coupon amount : " << dcfNot + (compAmount * getDayCount()->getFraction((*iterComp)->getCompStartDate(),
+				 	    	 	    	 (*iterComp)->getCompEndDate(), true,true, (int) getCompFreq() ) * ( periodRate + getSpread()/10000 ) ) + spreadAmortAmount << endl;
+
+				 	   compAmount = compAmount + dcfNot + (compAmount * getDayCount()->getFraction((*iterComp)->getCompStartDate(),
+				 	    	   	 			 (*iterComp)->getCompEndDate(), true,true, (int) getCompFreq() ) * ( periodRate + getSpread()/10000));
+
+				 }
+				 else if ( getCompoundingConv() == "ADJ/FLAT" )
+				 {
+
+				 	   (*iterComp)->setAccrualInterest(dcfNot + (compAmount  * getDayCount()->getFraction((*iterComp)->getCompStartDate(),
+				 	    	     	 			(*iterComp)->getCompEndDate(), true,true, (int) getCompFreq() ) * periodRate) + spreadAmortAmount);
+
+				 	    logFile << "current coupon amount : " << dcfNot + ( compAmount  * getDayCount()->getFraction((*iterComp)->getCompStartDate(),
+				 	    	 		    	 	(*iterComp)->getCompEndDate(), true,true, (int) getCompFreq() ) * periodRate ) + spreadAmortAmount  << endl;
+
+				 	    compAmount = compAmount + dcfNot + ( compAmount  * getDayCount()->getFraction((*iterComp)->getCompStartDate(),
+				 	    	     	 			 (*iterComp)->getCompEndDate(), true,true, (int) getCompFreq() ) * periodRate ) ;
+
+				 }
+
+				 spreadAmount += spreadAmortAmount;
+
+				 logFile << "total SPREAD Amount : " << spreadAmount  << endl;
+
+				 if ( getCompoundingConv() != "FLAT/FLAT"
+				 	    	&& getCompoundingConv() != "ADJ/FLAT" && getCompoundingConv() != "FLAT/ADJ" )
+				 	   logFile << "total coupon Amount 1: " << compAmount  << endl;
+				 else
+				 	   logFile << "total coupon Amount 2: " << compAmount + spreadAmount << endl;
+
+				 /*
+				 (*iterComp)->setAccrualInterest(dcfNot + (compAmount * getDayCount()->getFraction((*iterComp)->getCompStartDate(),
+			     (*iterComp)->getCompEndDate(), true,true,0) * periodRate) );
+
+				 logFile << "current coupon amount : " << dcfNot + (compAmount * getDayCount()->getFraction((*iterComp)->getCompStartDate(),
+								 			(*iterComp)->getCompEndDate(), true,true,0) * periodRate) << endl;
+
+				 compAmount = compAmount + dcfNot + (compAmount * getDayCount()->getFraction((*iterComp)->getCompStartDate(),
+							(*iterComp)->getCompEndDate(), true,true,0) * periodRate);
+
+				 logFile << "total coupon Amount : " << compAmount << endl;
+				 */
+
+			 }
+
+
+			 	 logFile << "Payment Amount 2 : " << (*iterComp)->getCompStartDate() << " : " << (*iterComp)->getCompEndDate() << " : "
+					 << (*iterComp)->getAccrualInterest() << endl;
+
+		}
+		else
+		{
+			logFile << "Notional final is : " << lastAmortNotional << endl;
+			dcfNot = lastAmortNotional * getDayCount()->getFraction((*iterComp)->getCompStartDate(),
+					(*iterComp)->getCompEndDate(), true,true, (int) getCompFreq() ) * periodRate;
+
+			spAmortAmount =  lastAmortNotional * getDayCount()->getFraction((*iterComp)->getCompStartDate(),
+					(*iterComp)->getCompEndDate(), true,true, (int) getCompFreq() ) * getSpread()/10000 ;
+
+
+			if ( getCompoundingConv() == "ADJ/FLAT" && compAmount != 0.0 )
+			{
+
+				spAmortAmount = spAmortAmount + spreadAmount * periodRate * getDayCount()->getFraction((*iterComp)->getCompStartDate(),
+						(*iterComp)->getCompEndDate(), true,true, (int) getCompFreq() );
+
+			}
+
+			if ( getCompoundingConv() == "ADJ/ADJ" && compAmount != 0.0 )
+			{
+
+				spAmortAmount = spAmortAmount + spreadAmount * (periodRate + getSpread()/10000) * getDayCount()->getFraction((*iterComp)->getCompStartDate(),
+						(*iterComp)->getCompEndDate(), true,true, (int) getCompFreq() );
+
+			}
+
+			spreadAmortAmount += spAmortAmount;
+
+
+			if ( (*iterPay)->getCouponStartDate() <= (*iterComp)->getCompStartDate() &&
+					 (*iterPay)->getCouponEndDate() >= (*iterComp)->getCompEndDate() )
+			{
+				 logFile << "coupon before : " << compAmount << endl;
+
+				 if ( getCompoundingConv() == "FLAT/FLAT")
+				{
+					(*iterComp)->setAccrualInterest(dcfNot + (compAmount * getDayCount()->getFraction((*iterComp)->getCompStartDate(),
+							 	    	 	(*iterComp)->getCompEndDate(), true,true, (int) getCompFreq() ) * periodRate ) );
+
+					logFile << "current coupon amount : " << dcfNot + (compAmount * getDayCount()->getFraction((*iterComp)->getCompStartDate(),
+							 	    	 				(*iterComp)->getCompEndDate(), true,true, (int) getCompFreq() ) * periodRate ) + spreadAmortAmount << endl;
+
+					compAmount = compAmount + dcfNot + (compAmount * getDayCount()->getFraction((*iterComp)->getCompStartDate(),
+							 	    	 		    	 (*iterComp)->getCompEndDate(), true,true, (int) getCompFreq() ) * periodRate );
+
+				}
+				else if ( getCompoundingConv() == "ADJ/ADJ" )
+				{
+					(*iterComp)->setAccrualInterest(dcfNot + (compAmount * getDayCount()->getFraction((*iterComp)->getCompStartDate(),
+							 	    	 		   (*iterComp)->getCompEndDate(), true,true, (int) getCompFreq() ) * periodRate ));
+
+					logFile << "current coupon amount : " << dcfNot + (compAmount * getDayCount()->getFraction((*iterComp)->getCompStartDate(),
+							 	    	 		    	 	(*iterComp)->getCompEndDate(), true,true, (int) getCompFreq() ) * periodRate )  << endl;
+
+					compAmount = compAmount + dcfNot + (compAmount * getDayCount()->getFraction((*iterComp)->getCompStartDate(),
+							 	    	 		    	 			 	(*iterComp)->getCompEndDate(), true,true, (int) getCompFreq() ) * periodRate );
+
+				}
+				else if ( getCompoundingConv() == "FLAT/ADJ" )
+				{
+					(*iterComp)->setAccrualInterest(dcfNot + (compAmount  * getDayCount()->getFraction((*iterComp)->getCompStartDate(),
+							 	    	(*iterComp)->getCompEndDate(), true,true, (int) getCompFreq() ) * ( periodRate + getSpread()/10000 ) ) + spreadAmortAmount);
+
+					logFile << "current coupon amount : " << dcfNot + (compAmount * getDayCount()->getFraction((*iterComp)->getCompStartDate(),
+							 	    	 (*iterComp)->getCompEndDate(), true,true, (int) getCompFreq() ) * ( periodRate + getSpread()/10000 ) ) + spreadAmortAmount << endl;
+
+					compAmount = compAmount + dcfNot + (compAmount * getDayCount()->getFraction((*iterComp)->getCompStartDate(),
+							 	    	   	  (*iterComp)->getCompEndDate(), true,true, (int) getCompFreq() ) * ( periodRate + getSpread()/10000));
+
+				}
+				else if ( getCompoundingConv() == "ADJ/FLAT" )
+				{
+
+					(*iterComp)->setAccrualInterest(dcfNot + (compAmount  * getDayCount()->getFraction((*iterComp)->getCompStartDate(),
+							 	    	     	 (*iterComp)->getCompEndDate(), true,true, (int) getCompFreq() ) * periodRate) + spreadAmortAmount);
+
+					logFile << "current coupon amount : " << dcfNot + ( compAmount  * getDayCount()->getFraction((*iterComp)->getCompStartDate(),
+							 	    	 		  (*iterComp)->getCompEndDate(), true,true, (int) getCompFreq() ) * periodRate ) + spreadAmortAmount  << endl;
+
+					compAmount = compAmount + dcfNot + ( compAmount  * getDayCount()->getFraction((*iterComp)->getCompStartDate(),
+							 	    	     	 (*iterComp)->getCompEndDate(), true,true, (int) getCompFreq() ) * periodRate ) ;
+
+				}
+
+				spreadAmount += spreadAmortAmount;
+
+				logFile << "total SPREAD Amount : " << spreadAmount  << endl;
+
+				if ( getCompoundingConv() != "FLAT/FLAT"
+							 	&& getCompoundingConv() != "ADJ/FLAT" && getCompoundingConv() != "FLAT/ADJ" )
+					logFile << "total coupon Amount 1: " << compAmount  << endl;
+				else
+					logFile << "total coupon Amount 2: " << compAmount + spreadAmount << endl;
+
+
+				 /*
+				 (*iterComp)->setAccrualInterest(dcfNot + (compAmount * getDayCount()->getFraction((*iterComp)->getCompStartDate(),
+			 			(*iterComp)->getCompEndDate(), true,true,0) * periodRate) );
+
+				 logFile << "current coupon amount : " << dcfNot + (compAmount * getDayCount()->getFraction((*iterComp)->getCompStartDate(),
+								 			(*iterComp)->getCompEndDate(), true,true,0) * periodRate) << endl;
+
+				 compAmount = compAmount + dcfNot + (compAmount * getDayCount()->getFraction((*iterComp)->getCompStartDate(),
+			 			(*iterComp)->getCompEndDate(), true,true,0) * periodRate);
+
+				 logFile << "total coupon Amount : " << compAmount << endl;
+				 */
+
+			  }
+
+
+			logFile << "Payment Amount outside amort : " << (*iterComp)->getCompStartDate() << " : " << (*iterComp)->getCompEndDate()
+						<< " : " << lastAmortNotional << ": " << (*iterComp)->getAccrualInterest() << endl;
+
+
+		 }
+	} // AMORT FINISHED
+	else
+	{
+
+	    if ( (*iterPay)->getCouponStartDate() <= (*iterComp)->getCompStartDate() &&
+	    			(*iterPay)->getCouponEndDate() >= (*iterComp)->getCompEndDate() )
+	    {
+	     		logFile << "coupon before : period rate " << compAmount << " : " << periodRate << endl;
+    	 		logFile << "Spread amount " << " : " << getNotional() * getDayCount()->getFraction((*iterComp)->getCompStartDate(),
+    	 					 			(*iterComp)->getCompEndDate(), true,true, (int) getCompFreq() ) * getSpread()/10000 << endl;
+
+    	 		double spAmount = getNotional() * getDayCount()->getFraction((*iterComp)->getCompStartDate(),
+				 			(*iterComp)->getCompEndDate(), true,true, (int) getCompFreq() ) * getSpread()/10000 ;
+
+    	 		if ( getCompoundingConv() == "ADJ/FLAT" && compAmount != 0.0 )
+    	 		{
+
+    	 			spAmount = spAmount + spreadAmount * periodRate * getDayCount()->getFraction((*iterComp)->getCompStartDate(),
+				 			(*iterComp)->getCompEndDate(), true,true, (int) getCompFreq() );
+
+    	 		}
+
+    	 		if ( getCompoundingConv() == "ADJ/ADJ" && compAmount != 0.0 )
+   	 			{
+
+    	 			spAmount = spAmount + spreadAmount * (periodRate + getSpread()/10000) * getDayCount()->getFraction((*iterComp)->getCompStartDate(),
+	    	 				 (*iterComp)->getCompEndDate(), true,true, (int) getCompFreq() );
+
+	    	 	 }
+
+
+	    	 	if ( getCompoundingConv() == "FLAT/FLAT")
+	    	 	{
+	    	 		(*iterComp)->setAccrualInterest(dcfNot + (compAmount * getDayCount()->getFraction((*iterComp)->getCompStartDate(),
+	    	 					 	(*iterComp)->getCompEndDate(), true,true, (int) getCompFreq() ) * periodRate ) );
+
+	    	 		logFile << "current coupon amount : " << dcfNot + (compAmount * getDayCount()->getFraction((*iterComp)->getCompStartDate(),
+	    	 					 			(*iterComp)->getCompEndDate(), true,true, (int) getCompFreq() ) * periodRate ) + spAmount << endl;
+
+	    	 		compAmount = compAmount + dcfNot + (compAmount * getDayCount()->getFraction((*iterComp)->getCompStartDate(),
+	    	 		    	 			 	(*iterComp)->getCompEndDate(), true,true, (int) getCompFreq() ) * periodRate );
+
+	    	 	}
+	    	 	else if ( getCompoundingConv() == "ADJ/ADJ" )
+	    	 	{
+	    	 		(*iterComp)->setAccrualInterest(dcfNot + (compAmount * getDayCount()->getFraction((*iterComp)->getCompStartDate(),
+	    	 		    	 					 	(*iterComp)->getCompEndDate(), true,true, (int) getCompFreq() ) * periodRate ));
+
+	    	 		logFile << "current coupon amount : " << dcfNot + (compAmount * getDayCount()->getFraction((*iterComp)->getCompStartDate(),
+	    	 		    	 				(*iterComp)->getCompEndDate(), true,true, (int) getCompFreq() ) * periodRate )  << endl;
+
+	    	 		compAmount = compAmount + dcfNot + (compAmount * getDayCount()->getFraction((*iterComp)->getCompStartDate(),
+	    	 		    	 			 	(*iterComp)->getCompEndDate(), true,true, (int) getCompFreq() ) * periodRate );
+
+	    	 	}
+	    	 	else if ( getCompoundingConv() == "FLAT/ADJ" )
+	    	 	{
+	    	 		(*iterComp)->setAccrualInterest(dcfNot + (compAmount  * getDayCount()->getFraction((*iterComp)->getCompStartDate(),
+	    	   	 					 	(*iterComp)->getCompEndDate(), true,true, (int) getCompFreq() ) * ( periodRate + getSpread()/10000 ) ) + spAmount);
+
+	    	 		logFile << "current coupon amount : " << dcfNot + (compAmount * getDayCount()->getFraction((*iterComp)->getCompStartDate(),
+	    	 	    	 				(*iterComp)->getCompEndDate(), true,true, (int) getCompFreq() ) * ( periodRate + getSpread()/10000 ) ) + spAmount << endl;
+
+	    	 		compAmount = compAmount + dcfNot + (compAmount * getDayCount()->getFraction((*iterComp)->getCompStartDate(),
+	    	   	 			 			(*iterComp)->getCompEndDate(), true,true, (int) getCompFreq() ) * ( periodRate + getSpread()/10000));
+
+	    	 	}
+	    	 	else if ( getCompoundingConv() == "ADJ/FLAT" )
+	    	 	{
+
+	    	 		(*iterComp)->setAccrualInterest(dcfNot + (compAmount  * getDayCount()->getFraction((*iterComp)->getCompStartDate(),
+	    	     	 					 	(*iterComp)->getCompEndDate(), true,true, (int) getCompFreq() ) * periodRate) + spAmount);
+
+	    	 		logFile << "current coupon amount : " << dcfNot + ( compAmount  * getDayCount()->getFraction((*iterComp)->getCompStartDate(),
+	    	 		    	 				(*iterComp)->getCompEndDate(), true,true, (int) getCompFreq() ) * periodRate ) + spAmount  << endl;
+
+	    	 		compAmount = compAmount + dcfNot + ( compAmount  * getDayCount()->getFraction((*iterComp)->getCompStartDate(),
+	    	     	 			 			(*iterComp)->getCompEndDate(), true,true, (int) getCompFreq() ) * periodRate ) ;
+
+	    	 	}
+
+	    	 	spreadAmount += spAmount;
+
+      	 	    logFile << "total SPREAD Amount : " << spreadAmount  << endl;
+
+	    	 	if ( getCompoundingConv() != "FLAT/FLAT"
+	    	 			&& getCompoundingConv() != "ADJ/FLAT" && getCompoundingConv() != "FLAT/ADJ" )
+	    	 	 	logFile << "total coupon Amount 1: " << compAmount  << endl;
+	    	 	else
+	    	 	    logFile << "total coupon Amount 2: " << compAmount + spreadAmount << endl;
+
+	    	}
+
+
+		logFile << "Payment Amount not amortized : " << (*iterComp)->getCompStartDate() << " : " << (*iterComp)->getCompEndDate() << " : "
+				<< (*iterComp)->getAccrualInterest() << endl;\
+
+		}
+			 }
+			}
+		} // COMPOUND FINISHED
+		else
+		{
+
+			// check resets
+			if ( isFloatLeg() )
+			{
+				 ResetScheduleList::const_iterator iterReset = displayResetSchedule().begin();
+				 int resetCnt = 0;
+				 double tmpPeriodRate = 0.0;
+
+				 for ( ; iterReset != displayResetSchedule().end() ; ++iterReset )
+				 {
+				 	if ( ( (*iterPay)->getCouponStartDate() <= (*iterReset)->getResetStartDate() &&
+				 			(*iterPay)->getCouponEndDate() > (*iterReset)->getResetStartDate() &&
+				 			getResetAveraging() != "NONE" )	|| ( (*iterPay)->getCouponStartDate() == (*iterReset)->getResetStartDate()
+				 					&& getResetAveraging() == "NONE" ) )
+				 	{
+
+				 		if ( getFrontStubDate() != getStartDate() && (*iterPay)->getCouponEndDate() == getFrontStubDate() ) // there is a front stub
+				 		{
+				 			_stubResetsList.sort();
+
+				 			StubResetsList::const_iterator iterStubReset = _stubResetsList.begin() ;
+				 			String marketIndexA = "";
+				 			String marketIndexB = "";
+				 			Period stubTenorA;
+				 			Period stubTenorB;
+
+				 			for ( ; iterStubReset != _stubResetsList.end() ; ++iterStubReset )
+				 			{
+				 				if ( (*iterStubReset)->getStartDate() == (*iterReset)->getResetStartDate() && (*iterStubReset)->getStubType() == "FStubA" )
+				 				{
+				 					marketIndexA = (*iterStubReset)->getStubMarketIndex();
+				 					stubTenorA = (*iterStubReset)->getStubTenor();
+				 				}
+				 				else if ( (*iterStubReset)->getStartDate() == (*iterReset)->getResetStartDate() && (*iterStubReset)->getStubType() == "FStubB" )
+				 				{
+				 					marketIndexB = (*iterStubReset)->getStubMarketIndex();
+				 					stubTenorB = (*iterStubReset)->getStubTenor();
+				 				}
+				 			}
+
+				 			   periodRate = getPeriodRate(FixingRates::getFixingRate((*iterReset)->getQuoteDate(), marketIndexA,
+				 					   marketIndexB, stubTenorA, stubTenorB, (*iterPay)->getCouponStartDate(),
+				 					   (*iterPay)->getCouponEndDate() , getAccrualBusDay()));
+
+
+				 			  resetCnt++;
+				 			  if ( getResetAveraging() == "WEIGHTED_CAL" )
+				 			  {
+				 				  tmpPeriodRate += periodRate * ( (*iterPay)->getCouponEndDate().serialNumber() - (*iterPay)->getCouponStartDate().serialNumber() );
+				 				  logFile << "tmpPeriod Rate front is : " << tmpPeriodRate << endl;
+				 			  }
+				 			  else if ( getResetAveraging() == "UNWEIGHTED" )
+				 			  {
+				 				 tmpPeriodRate += periodRate;
+				 				  logFile << "tmpPeriod Rate front is : " << tmpPeriodRate << endl;
+				 			  }
+
+				 		}
+				 		else if ( getBackStubDate() != getEndDate() && (*iterPay)->getCouponStartDate() == getBackStubDate() ) // there is a back stub
+				 		{
+				 				_stubResetsList.sort();
+
+				 				StubResetsList::const_iterator iterStubReset = _stubResetsList.begin() ;
+				 				String marketIndexA = "";
+				 				String marketIndexB = "";
+				 				Period stubTenorA;
+				 				Period stubTenorB;
+
+
+				 			for ( ; iterStubReset != _stubResetsList.end() ; ++iterStubReset )
+				 			{
+				 				if ( (*iterStubReset)->getStartDate() == (*iterReset)->getResetStartDate() && (*iterStubReset)->getStubType() == "BStubA" )
+				 				{
+				 					marketIndexA = (*iterStubReset)->getStubMarketIndex();
+				 					stubTenorA = (*iterStubReset)->getStubTenor();
+
+				 				}
+				 				else if ( (*iterStubReset)->getStartDate() == (*iterReset)->getResetStartDate() && (*iterStubReset)->getStubType() == "BStubB" )
+				 				{
+				 					marketIndexB = (*iterStubReset)->getStubMarketIndex();
+				 					stubTenorB = (*iterStubReset)->getStubTenor();
+				 				}
+				 			}
+
+				 				periodRate = getPeriodRate(FixingRates::getFixingRate( (*iterReset)->getQuoteDate(), marketIndexA,
+				 						marketIndexB , stubTenorA, stubTenorB, (*iterPay)->getCouponStartDate(),
+				 						(*iterPay)->getCouponEndDate(), getAccrualBusDay() ));
+
+				 				resetCnt++;
+
+				 				if ( getResetAveraging() == "WEIGHTED_CAL" )
+				 				{
+				 				  tmpPeriodRate += periodRate * ( (*iterPay)->getCouponEndDate().serialNumber() - (*iterPay)->getCouponStartDate().serialNumber() );
+				 				  logFile << "tmpPeriod Rate front is : " << tmpPeriodRate << endl;
+				 				}
+				 				else if ( getResetAveraging() == "UNWEIGHTED" )
+				 				{
+				 				  tmpPeriodRate += periodRate;
+				 				  logFile << "tmpPeriod Rate front is : " << tmpPeriodRate << endl;
+				 				}
+
+				 		}
+				 		else
+				 		{
+				 				periodRate = getPeriodRate(FixingRates::getFixingRate((*iterReset)->getQuoteDate(), getMarketIndex()));
+				 				resetCnt++;
+
+				 				if ( getResetAveraging() == "WEIGHTED_CAL" )
+				 				{
+				 					tmpPeriodRate += periodRate * ( (*(++iterReset))->getResetStartDate().serialNumber() - (*(--iterReset))->getResetStartDate().serialNumber()) ;
+				 					logFile << "tmpPeriod Rate back is : " << tmpPeriodRate << endl;
+				 				}
+				 				else if ( getResetAveraging() == "UNWEIGHTED" )
+				 				{
+				 				    tmpPeriodRate += periodRate;
+				 					logFile << "tmpPeriod Rate back is : " << tmpPeriodRate << endl;
+				 				}
+				 		}
+
+			    	}
+				  }
+
+				 if ( getResetAveraging() == "WEIGHTED_CAL" )
+					 periodRate = tmpPeriodRate/( (*iterPay)->getCouponEndDate().serialNumber() - (*iterPay)->getCouponStartDate().serialNumber() );
+				 else if ( getResetAveraging() == "UNWEIGHTED" )
+					 periodRate = tmpPeriodRate / resetCnt;
+
+				 logFile << "ultimate period rate is : " << periodRate << endl;
+			}
+			else
+				periodRate = getFixedQuote() / 100;
+
+
+			dcfNot = getNotional() * getDayCount()->getFraction((*iterPay)->getCouponStartDate(),
+				 							 		(*iterPay)->getCouponEndDate(), true,true, (int) getAccrualFreq() );
+
+
+		if ( getAmortType() != "NONE" )
+		{
+
+			dcfNot = 0.0;
+			AmortScheduleList::const_iterator iterAmort = displayAmortSchedule().begin();
+
+			if ( (*iterPay)->getCouponStartDate() <= getAmortEndDate() )
+			{
+				 for ( ; iterAmort != displayAmortSchedule().end() ; ++iterAmort )
+				 {
+					// logFile << "Amort Dates: " << (*iterAmort)->getStartDate() << " : " << (*iterAmort)->getEndDate() << endl;
+
+				 if (  ( (*iterPay)->getCouponStartDate() >= (*iterAmort)->getStartDate()  &&
+				 		 (*iterPay)->getCouponStartDate() < (*iterAmort)->getEndDate()  &&
+				 		(*iterPay)->getCouponEndDate() >= (*iterAmort)->getEndDate()  ) )
+				 	{
+				 		if ( amortStubDate > (*iterAmort)->getStartDate() )
+				 		{
+				 			dcfNot += (*iterAmort)->getAmortNotional() * getDayCount()->getFraction( amortStubDate,
+				 							 		 		         (*iterAmort)->getEndDate(), true,true, (int) getAmortFreq() ) * periodRate;
+
+				 			lastAmortNotional = (*iterAmort)->getAmortNotional();
+				 			logFile << "Notional 1-1 is : " << lastAmortNotional << endl;
+				 		}
+				 		else
+				 		{
+				 			dcfNot += (*iterAmort)->getAmortNotional() * getDayCount()->getFraction((*iterAmort)->getStartDate(),
+				 							 		(*iterAmort)->getEndDate(), true,true, (int) getAmortFreq() ) * periodRate;
+
+				 			lastAmortNotional = (*iterAmort)->getAmortNotional();
+				 			logFile << "Notional 11 is : " << lastAmortNotional << endl;
+				 		}
+
+
+				 		logFile << "Payment Amount 1: " << (*iterPay)->getCouponStartDate() << " : " << (*iterPay)->getCouponEndDate()
+				 				 << " : " << (*iterAmort)->getStartDate() << " : " << amortStubDate << " : " << (*iterAmort)->getEndDate() << " : " <<  dcfNot << endl;
+				 		amortStubDate = (*iterAmort)->getEndDate();
+				 		logFile << "Notional 1 is : " << lastAmortNotional << endl;
+				 		logFile << "Period rate 1 is : " << periodRate << endl;
+				 	}
+				 	else if ( (*iterPay)->getCouponEndDate() > (*iterAmort)->getStartDate() &&
+				 			 amortStubDate <= (*iterAmort)->getStartDate() )
+				 	{
+				 		if ( (*iterPay)->getCouponEndDate() >= (*iterAmort)->getEndDate() )
+				 		{
+				 			if ( (*iterAmort)->getStartDate() == getAmortEndDate() )
+				 			{
+				 				dcfNot += (*iterAmort)->getAmortNotional() * getDayCount()->getFraction((*iterAmort)->getStartDate(),
+				 						(*iterPay)->getCouponEndDate(), true,true,  (int) getAmortFreq() ) * periodRate;
+
+				 				amortStubDate = (*iterPay)->getCouponEndDate();
+				 				lastAmortNotional = (*iterAmort)->getAmortNotional();
+
+				 				logFile << "Payment Amount stub 1: " << (*iterPay)->getCouponStartDate() << " : " << (*iterPay)->getCouponEndDate()
+				 					<< " : " << (*iterAmort)->getStartDate() << " : " << (*iterPay)->getCouponEndDate() << " : " <<  dcfNot << endl;
+				 				logFile << "Period rate is 0: " << periodRate << endl;
+				 				logFile << "Notional 2 is : " << lastAmortNotional << endl;
+
+				 			}
+				 			else
+				 			{
+				 				dcfNot += (*iterAmort)->getAmortNotional() * getDayCount()->getFraction((*iterAmort)->getStartDate(),
+				 						 (*iterAmort)->getEndDate(), true,true,  (int) getAmortFreq() ) * periodRate;
+
+				 				amortStubDate = (*iterAmort)->getEndDate();
+				 				lastAmortNotional = (*iterAmort)->getAmortNotional();
+
+				 				logFile << "Payment Amount stub 2: " << (*iterPay)->getCouponStartDate() << " : " << (*iterPay)->getCouponEndDate()
+				 				<< " : " << (*iterAmort)->getStartDate() << " : " << (*iterAmort)->getEndDate() << " : " <<  dcfNot << endl;
+				 				logFile << "Period rate is : " << periodRate << endl;
+				 				logFile << "Notional 3 is : " << lastAmortNotional << endl;
+				 			}
+
+
+				 		}
+				 		else
+				 		{
+				 			dcfNot += (*iterAmort)->getAmortNotional() * getDayCount()->getFraction((*iterAmort)->getStartDate(),
+				 						(*iterPay)->getCouponEndDate(), true,true,  (int) getAmortFreq() ) * periodRate;
+
+				 			amortStubDate = (*iterPay)->getCouponEndDate();
+				 			lastAmortNotional = (*iterAmort)->getAmortNotional();
+
+				 			 logFile << "Payment Amount stub 3: " << (*iterPay)->getCouponStartDate() << " : " << (*iterPay)->getCouponEndDate()
+				 					 << " : " << (*iterAmort)->getStartDate() << " : " << (*iterAmort)->getEndDate() << " : " <<  dcfNot << endl;
+				 			logFile << "Period rate is 2 : " << periodRate << endl;
+				 			logFile << "Notional 4 is : " << lastAmortNotional << endl;
+				 		}
+				 	}
+				 }
+
+				 (*iterPay)->setAmount(dcfNot);
+				 logFile << "Payment Amount 2 : " << (*iterPay)->getCouponStartDate() << " : " << (*iterPay)->getCouponEndDate() << " : " << (*iterPay)->getAmount() << endl;
+
+			}
+			else
+			{
+				logFile << "Notional final is : " << lastAmortNotional << endl;
+				dcfNot = lastAmortNotional * getDayCount()->getFraction((*iterPay)->getCouponStartDate(),
+						(*iterPay)->getCouponEndDate(), true,true, (int) getAccrualFreq() );
+
+				(*iterPay)->setAmount(dcfNot * periodRate );
+				logFile << "Payment Amount outside amort : " << (*iterPay)->getCouponStartDate() << " : " << (*iterPay)->getCouponEndDate()
+						<< " : " << lastAmortNotional << ": " << (*iterPay)->getAmount() << endl;
+			}
+		}
+		else
+		{
+				(*iterPay)->setAmount(dcfNot * periodRate );
+				logFile << "Payment Amount not amort : " << (*iterPay)->getCouponStartDate() << " : "
+						<< (*iterPay)->getCouponEndDate() << " : " << (*iterPay)->getAmount() << endl;
+
+		}
+	  }
+
+	}
+
+	 return true;
+}

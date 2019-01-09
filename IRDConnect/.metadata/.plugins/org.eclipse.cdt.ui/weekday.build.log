@@ -1,0 +1,9 @@
+
+**** Build of configuration Debug for project weekday ****
+
+make all 
+Building file: ../weekDay.cpp
+Invoking: GCC C++ Compiler
+g++ -I/home/vishist/IRDConnect/include -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"weekDay.d" -MT"weekDay.d" -o"weekDay.o" "../weekDay.cpp"
+/bin/sh: g++: command not found
+make: *** [weekDay.o] Error 127

@@ -1,0 +1,9 @@
+
+**** Build of configuration Debug for project tradeticket ****
+
+make all 
+Building file: ../SwapTicket.cpp
+Invoking: GCC C++ Compiler
+g++ -I/home/vishist/IRDConnect/include -I/home/vishist/boost/boost_1_46_1 -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"SwapTicket.d" -MT"SwapTicket.d" -o"SwapTicket.o" "../SwapTicket.cpp"
+/bin/sh: g++: command not found
+make: *** [SwapTicket.o] Error 127

@@ -1,0 +1,275 @@
+what,kind,bundleId,bundleVersion,description,time
+activated,editor,org.eclipse.cdt.ui,5.2.0.201006141710,"org.eclipse.cdt.ui.editor.CEditor",1285442830068
+activated,view,org.eclipse.ui.ide,3.6.0.I20100601-0800,"org.eclipse.ui.views.ProblemView",1285442830195
+activated,editor,org.eclipse.cdt.ui,5.2.0.201006141710,"org.eclipse.cdt.ui.editor.CEditor",1285442832356
+activated,view,org.eclipse.ui.navigator.resources,3.4.200.I20100601-0800,"org.eclipse.ui.navigator.ProjectExplorer",1285442896474
+deactivated,workbench,org.eclipse.ui.workbench,3.6.0.I20100603-1100,"",1285442900279
+started,bundle,org.eclipse.cdt.debug.core,7.0.0.201006141710,"org.eclipse.cdt.debug.core",1285442919136
+started,bundle,org.eclipse.cdt.launch,6.1.0.201006141710,"org.eclipse.cdt.launch",1285442919152
+executed,command,org.eclipse.ltk.ui.refactoring,3.5.0.v20100526-0800,"org.eclipse.ltk.ui.refactoring.commands.renameResource",1285442921371
+executed,command,org.eclipse.ui,3.6.0.I20100603-1100,"org.eclipse.ui.edit.rename",1285442921374
+activated,workbench,org.eclipse.ui.workbench,3.6.0.I20100603-1100,"",1285442921788
+deactivated,workbench,org.eclipse.ui.workbench,3.6.0.I20100603-1100,"",1285442925411
+activated,view,org.eclipse.search,3.6.0.v20100520-0800,"org.eclipse.search.ui.views.SearchView",1285442936729
+activated,workbench,org.eclipse.ui.workbench,3.6.0.I20100603-1100,"",1285442939100
+deactivated,workbench,org.eclipse.ui.workbench,3.6.0.I20100603-1100,"",1285442940170
+error,log,,,"Error while parsing /home/vishist/IRDConnect/schedule/roundingConv.cpp.",1285442953867
+error,log,,,"Error while parsing /home/vishist/IRDConnect/schedule/string.cpp.",1285442954163
+error,log,,,"Error while parsing /home/vishist/IRDConnect/schedule/assetSwaps.h.",1285442954253
+activated,workbench,org.eclipse.ui.workbench,3.6.0.I20100603-1100,"",1285442954327
+error,log,,,"Error while parsing /home/vishist/IRDConnect/schedule/externalSystemTrades.h.",1285442954356
+error,log,,,"Error while parsing /home/vishist/IRDConnect/schedule/fXResets.h.",1285442954431
+error,log,,,"Error while parsing /home/vishist/IRDConnect/schedule/manualPayments.h.",1285442954537
+error,log,,,"Error while parsing /home/vishist/IRDConnect/schedule/optionSchedule.h.",1285442954615
+error,log,,,"Error while parsing /home/vishist/IRDConnect/schedule/paySchedule.h.",1285442954677
+error,log,,,"Error while parsing /home/vishist/IRDConnect/schedule/stubResets.h.",1285442954767
+error,log,,,"Error while parsing /home/vishist/IRDConnect/schedule/swapLegs.h.",1285442955024
+error,log,,,"Error while parsing /home/vishist/IRDConnect/schedule/swapOption.h.",1285442955116
+error,log,,,"Error while parsing /home/vishist/IRDConnect/schedule/tradeModificationReasons.h.",1285442955217
+error,log,,,"Error while parsing /home/vishist/IRDConnect/schedule/tradeTicket.h.",1285442956103
+activated,editor,org.eclipse.cdt.ui,5.2.0.201006141710,"org.eclipse.cdt.ui.editor.CEditor",1285442957147
+executed,command,org.eclipse.ui,3.6.0.I20100603-1100,"org.eclipse.ui.file.saveAll",1285442979454
+error,log,,,"Error while parsing /home/vishist/IRDConnect/schedule/stubResets.h.",1285442979584
+error,log,,,"Error while parsing /home/vishist/IRDConnect/schedule/swapLegs.h.",1285442979816
+error,log,,,"Error while parsing /home/vishist/IRDConnect/schedule/swapOption.h.",1285442979984
+error,log,,,"Error while parsing /home/vishist/IRDConnect/schedule/tradeModificationReasons.h.",1285442980082
+executed,command,org.eclipse.ui.ide,3.6.0.I20100601-0800,"org.eclipse.ui.project.buildAll",1285442980181
+error,log,,,"Error while parsing /home/vishist/IRDConnect/schedule/tradeTicket.h.",1285442980756
+deactivated,workbench,org.eclipse.ui.workbench,3.6.0.I20100603-1100,"",1285442981545
+error,log,,,"Error while parsing /home/vishist/IRDConnect/schedule/swapLegs.h.",1285442984734
+error,log,,,"Error while parsing /home/vishist/IRDConnect/schedule/swapOption.h.",1285442984916
+error,log,,,"Error while parsing /home/vishist/IRDConnect/schedule/tradeModificationReasons.h.",1285442985099
+error,log,,,"Error while parsing /home/vishist/IRDConnect/schedule/tradeTicket.h.",1285442986309
+error,log,,,"Error while parsing /home/vishist/IRDConnect/schedule/tradeTicket.h.",1285443006076
+activated,workbench,org.eclipse.ui.workbench,3.6.0.I20100603-1100,"",1285443008230
+activated,view,org.eclipse.ui.ide,3.6.0.I20100601-0800,"org.eclipse.ui.views.ProblemView",1285443015321
+activated,editor,org.eclipse.cdt.ui,5.2.0.201006141710,"org.eclipse.cdt.ui.editor.CEditor",1285443016625
+activated,view,org.eclipse.ui.ide,3.6.0.I20100601-0800,"org.eclipse.ui.views.ProblemView",1285443016756
+activated,editor,org.eclipse.cdt.ui,5.2.0.201006141710,"org.eclipse.cdt.ui.editor.CEditor",1285443022122
+activated,view,org.eclipse.ui.ide,3.6.0.I20100601-0800,"org.eclipse.ui.views.ProblemView",1285443022250
+activated,editor,org.eclipse.cdt.ui,5.2.0.201006141710,"org.eclipse.cdt.ui.editor.CEditor",1285443024508
+activated,view,org.eclipse.ui.ide,3.6.0.I20100601-0800,"org.eclipse.ui.views.ProblemView",1285443024753
+activated,view,org.eclipse.ui.navigator.resources,3.4.200.I20100601-0800,"org.eclipse.ui.navigator.ProjectExplorer",1285443092425
+deactivated,workbench,org.eclipse.ui.workbench,3.6.0.I20100603-1100,"",1285443095277
+executed,command,org.eclipse.ltk.ui.refactoring,3.5.0.v20100526-0800,"org.eclipse.ltk.ui.refactoring.commands.renameResource",1285443108752
+executed,command,org.eclipse.ui,3.6.0.I20100603-1100,"org.eclipse.ui.edit.rename",1285443108754
+activated,workbench,org.eclipse.ui.workbench,3.6.0.I20100603-1100,"",1285443108930
+deactivated,workbench,org.eclipse.ui.workbench,3.6.0.I20100603-1100,"",1285443113690
+activated,view,org.eclipse.search,3.6.0.v20100520-0800,"org.eclipse.search.ui.views.SearchView",1285443123365
+activated,workbench,org.eclipse.ui.workbench,3.6.0.I20100603-1100,"",1285443125687
+deactivated,workbench,org.eclipse.ui.workbench,3.6.0.I20100603-1100,"",1285443126639
+error,log,,,"Error while parsing /home/vishist/IRDConnect/schedule/roundingConv.cpp.",1285443149832
+error,log,,,"Error while parsing /home/vishist/IRDConnect/schedule/string.cpp.",1285443150090
+error,log,,,"Error while parsing /home/vishist/IRDConnect/schedule/assetSwaps.h.",1285443150347
+error,log,,,"Error while parsing /home/vishist/IRDConnect/schedule/externalSystemTrades.h.",1285443150419
+error,log,,,"Error while parsing /home/vishist/IRDConnect/schedule/fXResets.h.",1285443150492
+error,log,,,"Error while parsing /home/vishist/IRDConnect/schedule/manualPayments.h.",1285443150691
+error,log,,,"Error while parsing /home/vishist/IRDConnect/schedule/optionSchedule.h.",1285443150751
+error,log,,,"Error while parsing /home/vishist/IRDConnect/schedule/paySchedule.h.",1285443150832
+error,log,,,"Error while parsing /home/vishist/IRDConnect/schedule/stubResets.h.",1285443150921
+error,log,,,"Error while parsing /home/vishist/IRDConnect/schedule/swapLegs.h.",1285443151094
+error,log,,,"Error while parsing /home/vishist/IRDConnect/schedule/swapOption.h.",1285443151207
+error,log,,,"Error while parsing /home/vishist/IRDConnect/schedule/tradeModificationReasons.h.",1285443151270
+activated,workbench,org.eclipse.ui.workbench,3.6.0.I20100603-1100,"",1285443151386
+error,log,,,"Error while parsing /home/vishist/IRDConnect/schedule/tradeTicket.h.",1285443151688
+executed,command,org.eclipse.ui.ide,3.6.0.I20100601-0800,"org.eclipse.ui.project.buildAll",1285443152694
+deactivated,workbench,org.eclipse.ui.workbench,3.6.0.I20100603-1100,"",1285443153927
+error,log,,,"Error while parsing /home/vishist/IRDConnect/schedule/stubResets.h.",1285443157400
+error,log,,,"Error while parsing /home/vishist/IRDConnect/schedule/swapLegs.h.",1285443157900
+error,log,,,"Error while parsing /home/vishist/IRDConnect/schedule/swapOption.h.",1285443158143
+error,log,,,"Error while parsing /home/vishist/IRDConnect/schedule/tradeModificationReasons.h.",1285443158341
+error,log,,,"Error while parsing /home/vishist/IRDConnect/schedule/tradeTicket.h.",1285443159185
+error,log,,,"Error while parsing /home/vishist/IRDConnect/schedule/tradeModificationReasons.h.",1285443178009
+error,log,,,"Error while parsing /home/vishist/IRDConnect/schedule/tradeTicket.h.",1285443178740
+activated,workbench,org.eclipse.ui.workbench,3.6.0.I20100603-1100,"",1285443180661
+activated,editor,org.eclipse.cdt.ui,5.2.0.201006141710,"org.eclipse.cdt.ui.editor.CEditor",1285443188839
+activated,view,org.eclipse.ui.ide,3.6.0.I20100601-0800,"org.eclipse.ui.views.ProblemView",1285443264187
+activated,editor,org.eclipse.cdt.ui,5.2.0.201006141710,"org.eclipse.cdt.ui.editor.CEditor",1285443264418
+activated,view,org.eclipse.ui.ide,3.6.0.I20100601-0800,"org.eclipse.ui.views.ProblemView",1285443264602
+activated,editor,org.eclipse.cdt.ui,5.2.0.201006141710,"org.eclipse.cdt.ui.editor.CEditor",1285443264921
+activated,editor,org.eclipse.cdt.ui,5.2.0.201006141710,"org.eclipse.cdt.ui.editor.CEditor",1285443284540
+activated,view,org.eclipse.ui.ide,3.6.0.I20100601-0800,"org.eclipse.ui.views.ProblemView",1285443311672
+activated,editor,org.eclipse.cdt.ui,5.2.0.201006141710,"org.eclipse.cdt.ui.editor.CEditor",1285443311883
+activated,view,org.eclipse.ui.ide,3.6.0.I20100601-0800,"org.eclipse.ui.views.ProblemView",1285443312046
+activated,editor,org.eclipse.cdt.ui,5.2.0.201006141710,"org.eclipse.cdt.ui.editor.CEditor",1285443360362
+activated,view,org.eclipse.ui.ide,3.6.0.I20100601-0800,"org.eclipse.ui.views.ProblemView",1285443360479
+activated,editor,org.eclipse.cdt.ui,5.2.0.201006141710,"org.eclipse.cdt.ui.editor.CEditor",1285443365928
+activated,editor,org.eclipse.cdt.ui,5.2.0.201006141710,"org.eclipse.cdt.ui.editor.CEditor",1285443384879
+activated,editor,org.eclipse.cdt.ui,5.2.0.201006141710,"org.eclipse.cdt.ui.editor.CEditor",1285443393061
+activated,view,org.eclipse.ui.ide,3.6.0.I20100601-0800,"org.eclipse.ui.views.ProblemView",1285443424416
+activated,editor,org.eclipse.cdt.ui,5.2.0.201006141710,"org.eclipse.cdt.ui.editor.CEditor",1285443424618
+activated,view,org.eclipse.ui.ide,3.6.0.I20100601-0800,"org.eclipse.ui.views.ProblemView",1285443424755
+activated,editor,org.eclipse.cdt.ui,5.2.0.201006141710,"org.eclipse.cdt.ui.editor.CEditor",1285443426540
+executed,command,org.eclipse.ui,3.6.0.I20100603-1100,"org.eclipse.ui.file.saveAll",1285443438252
+error,log,,,"Error while parsing /home/vishist/IRDConnect/schedule/roundingConv.cpp.",1285443438509
+executed,command,org.eclipse.ui.ide,3.6.0.I20100601-0800,"org.eclipse.ui.project.buildAll",1285443438901
+deactivated,workbench,org.eclipse.ui.workbench,3.6.0.I20100603-1100,"",1285443440447
+error,log,,,"Error while parsing /home/vishist/IRDConnect/schedule/roundingConv.cpp.",1285443443817
+activated,workbench,org.eclipse.ui.workbench,3.6.0.I20100603-1100,"",1285443449244
+activated,editor,org.eclipse.cdt.ui,5.2.0.201006141710,"org.eclipse.cdt.ui.editor.CEditor",1285443459601
+activated,editor,org.eclipse.cdt.ui,5.2.0.201006141710,"org.eclipse.cdt.ui.editor.CEditor",1285443460360
+executed,command,org.eclipse.ui,3.6.0.I20100603-1100,"org.eclipse.ui.edit.findReplace",1285443474328
+deactivated,workbench,org.eclipse.ui.workbench,3.6.0.I20100603-1100,"",1285443474473
+activated,workbench,org.eclipse.ui.workbench,3.6.0.I20100603-1100,"",1285443508697
+activated,editor,org.eclipse.cdt.ui,5.2.0.201006141710,"org.eclipse.cdt.ui.editor.CEditor",1285443510235
+executed,command,org.eclipse.ui,3.6.0.I20100603-1100,"org.eclipse.ui.edit.findReplace",1285443512798
+deactivated,workbench,org.eclipse.ui.workbench,3.6.0.I20100603-1100,"",1285443512902
+activated,workbench,org.eclipse.ui.workbench,3.6.0.I20100603-1100,"",1285443532343
+activated,editor,org.eclipse.cdt.ui,5.2.0.201006141710,"org.eclipse.cdt.ui.editor.CEditor",1285443586940
+activated,view,org.eclipse.ui.ide,3.6.0.I20100601-0800,"org.eclipse.ui.views.ProblemView",1285443610986
+activated,editor,org.eclipse.cdt.ui,5.2.0.201006141710,"org.eclipse.cdt.ui.editor.CEditor",1285443611124
+activated,view,org.eclipse.ui.ide,3.6.0.I20100601-0800,"org.eclipse.ui.views.ProblemView",1285443611247
+activated,editor,org.eclipse.cdt.ui,5.2.0.201006141710,"org.eclipse.cdt.ui.editor.CEditor",1285443612559
+activated,view,org.eclipse.ui.ide,3.6.0.I20100601-0800,"org.eclipse.ui.views.ProblemView",1285443618387
+activated,editor,org.eclipse.cdt.ui,5.2.0.201006141710,"org.eclipse.cdt.ui.editor.CEditor",1285443618524
+activated,view,org.eclipse.ui.ide,3.6.0.I20100601-0800,"org.eclipse.ui.views.ProblemView",1285443618642
+activated,editor,org.eclipse.cdt.ui,5.2.0.201006141710,"org.eclipse.cdt.ui.editor.CEditor",1285443620208
+activated,editor,org.eclipse.cdt.ui,5.2.0.201006141710,"org.eclipse.cdt.ui.editor.CEditor",1285443625136
+error,log,,,"Error while parsing /home/vishist/IRDConnect/schedule/roundingConv.cpp.",1285443633316
+executed,command,org.eclipse.ui,3.6.0.I20100603-1100,"org.eclipse.ui.file.saveAll",1285443633374
+error,log,,,"Error while parsing /home/vishist/IRDConnect/schedule/roundingConv.cpp.",1285443633568
+executed,command,org.eclipse.ui.ide,3.6.0.I20100601-0800,"org.eclipse.ui.project.buildAll",1285443634255
+deactivated,workbench,org.eclipse.ui.workbench,3.6.0.I20100603-1100,"",1285443635486
+error,log,,,"Error while parsing /home/vishist/IRDConnect/schedule/roundingConv.cpp.",1285443638905
+activated,workbench,org.eclipse.ui.workbench,3.6.0.I20100603-1100,"",1285443644800
+started,bundle,org.eclipse.debug.ui,3.6.0.v20100601-1530,"org.eclipse.debug.ui",1285443651271
+started,bundle,org.eclipse.cdt.debug.ui,7.0.0.201006141710,"org.eclipse.cdt.debug.ui",1285443651381
+executed,command,org.eclipse.debug.ui,3.6.0.v20100601-1530,"org.eclipse.debug.ui.commands.RunLast",1285443653276
+error,log,,,"Error while parsing /home/vishist/IRDConnect/schedule/roundingConv.cpp.",1285443656787
+error,log,,,"Error logged from Debug Core: ",1285443656899
+started,bundle,org.eclipse.cdt.debug.mi.ui,6.1.0.201006141710,"org.eclipse.cdt.debug.mi.ui",1285443657258
+started,bundle,org.eclipse.cdt.dsf,2.1.0.201006141710,"org.eclipse.cdt.dsf",1285443657394
+started,bundle,org.eclipse.cdt.dsf.gdb,3.0.0.201006141710,"org.eclipse.cdt.dsf.gdb",1285443657419
+started,bundle,org.eclipse.cdt.dsf.gdb.ui,2.1.0.201006141710,"org.eclipse.cdt.dsf.gdb.ui",1285443657433
+started,bundle,org.eclipse.cdt.debug.mi.core,7.0.0.201006141710,"org.eclipse.cdt.debug.mi.core",1285443657495
+deactivated,workbench,org.eclipse.ui.workbench,3.6.0.I20100603-1100,"",1285443698098
+closed,workbench,org.eclipse.ui.workbench,3.6.0.I20100603-1100,"",1285443701664
+stopped,bundle,org.eclipse.cdt.debug.mi.ui,6.1.0.201006141710,"org.eclipse.cdt.debug.mi.ui",1285443704267
+stopped,bundle,org.eclipse.cdt.debug.mi.core,7.0.0.201006141710,"org.eclipse.cdt.debug.mi.core",1285443704268
+stopped,bundle,org.eclipse.cdt.debug.ui.memory.memorybrowser,1.2.0.201006141710,"org.eclipse.cdt.debug.ui.memory.memorybrowser",1285443704309
+stopped,bundle,org.eclipse.cdt.debug.ui.memory.search,1.2.0.201006141710,"org.eclipse.cdt.debug.ui.memory.search",1285443704336
+stopped,bundle,org.eclipse.cdt.dsf.gdb.ui,2.1.0.201006141710,"org.eclipse.cdt.dsf.gdb.ui",1285443704336
+stopped,bundle,org.eclipse.cdt.dsf.ui,2.1.0.201006141710,"org.eclipse.cdt.dsf.ui",1285443704374
+stopped,bundle,org.eclipse.cdt.gdb.ui,7.0.0.201006141710,"org.eclipse.cdt.gdb.ui",1285443704394
+stopped,bundle,org.eclipse.cdt.dsf.gdb,3.0.0.201006141710,"org.eclipse.cdt.dsf.gdb",1285443704395
+stopped,bundle,org.eclipse.cdt.launch,6.1.0.201006141710,"org.eclipse.cdt.launch",1285443704395
+stopped,bundle,org.eclipse.cdt.debug.ui,7.0.0.201006141710,"org.eclipse.cdt.debug.ui",1285443704395
+stopped,bundle,org.eclipse.cdt.debug.ui.memory.traditional,1.2.0.201006141710,"org.eclipse.cdt.debug.ui.memory.traditional",1285443704418
+stopped,bundle,org.eclipse.cdt.dsf,2.1.0.201006141710,"org.eclipse.cdt.dsf",1285443704419
+stopped,bundle,org.eclipse.cdt.debug.core,7.0.0.201006141710,"org.eclipse.cdt.debug.core",1285443704419
+stopped,bundle,org.eclipse.cdt.managedbuilder.ui,7.0.0.201006141710,"org.eclipse.cdt.managedbuilder.ui",1285443704451
+stopped,bundle,org.eclipse.cdt.make.ui,7.0.0.201006141710,"org.eclipse.cdt.make.ui",1285443704452
+stopped,bundle,org.eclipse.cdt.managedbuilder.gnu.ui,7.0.0.201006141710,"org.eclipse.cdt.managedbuilder.gnu.ui",1285443704452
+stopped,bundle,org.eclipse.cdt.managedbuilder.core,7.0.0.201006141710,"org.eclipse.cdt.managedbuilder.core",1285443704453
+stopped,bundle,org.eclipse.cdt.make.core,7.0.0.201006141710,"org.eclipse.cdt.make.core",1285443704454
+stopped,bundle,org.eclipse.cdt.mylyn.ui,1.1.2.v20100608-0100-e3x,"org.eclipse.cdt.mylyn.ui",1285443704459
+stopped,bundle,org.eclipse.cdt.ui,5.2.0.201006141710,"org.eclipse.cdt.ui",1285443704459
+stopped,bundle,org.eclipse.cdt.core,5.2.0.201006141710,"org.eclipse.cdt.core",1285443704459
+stopped,bundle,org.eclipse.equinox.p2.ui.sdk,1.0.100.v20100513,"org.eclipse.equinox.p2.ui.sdk",1285443704483
+stopped,bundle,org.eclipse.search,3.6.0.v20100520-0800,"org.eclipse.search",1285443704483
+stopped,bundle,org.eclipse.mylyn.team.ui,3.4.0.v20100608-0100-e3x,"org.eclipse.mylyn.team.ui",1285443704483
+stopped,bundle,org.eclipse.ui.navigator.resources,3.4.200.I20100601-0800,"org.eclipse.ui.navigator.resources",1285443704484
+stopped,bundle,org.eclipse.ltk.ui.refactoring,3.5.0.v20100526-0800,"org.eclipse.ltk.ui.refactoring",1285443704484
+stopped,bundle,org.eclipse.mylyn.bugzilla.ui,3.4.0.v20100608-0100-e3x,"org.eclipse.mylyn.bugzilla.ui",1285443704484
+stopped,bundle,org.eclipse.mylyn.ide.ui,3.4.0.v20100608-0100-e3x,"org.eclipse.mylyn.ide.ui",1285443704501
+stopped,bundle,org.eclipse.mylyn.resources.ui,3.4.0.v20100608-0100-e3x,"org.eclipse.mylyn.resources.ui",1285443704518
+activated,perspective,org.eclipse.cdt.ui,,"org.eclipse.cdt.ui.CPerspective",1285480986982
+started,bundle,org.eclipse.osgi,3.6.0.v20100517,"org.eclipse.osgi",1285480986984
+started,bundle,org.eclipse.equinox.simpleconfigurator,1.0.200.v20100503,"org.eclipse.equinox.simpleconfigurator",1285480986986
+started,bundle,com.ibm.icu,4.2.1.v20100412,"com.ibm.icu",1285480987033
+started,bundle,org.eclipse.cdt.core,5.2.0.201006141710,"org.eclipse.cdt.core",1285480987033
+started,bundle,org.eclipse.cdt.make.core,7.0.0.201006141710,"org.eclipse.cdt.make.core",1285480987063
+started,bundle,org.eclipse.cdt.make.ui,7.0.0.201006141710,"org.eclipse.cdt.make.ui",1285480987086
+started,bundle,org.eclipse.cdt.managedbuilder.core,7.0.0.201006141710,"org.eclipse.cdt.managedbuilder.core",1285480987127
+started,bundle,org.eclipse.cdt.ui,5.2.0.201006141710,"org.eclipse.cdt.ui",1285480987127
+started,bundle,org.eclipse.compare.core,3.5.100.I20100526-0800,"org.eclipse.compare.core",1285480987139
+started,bundle,org.eclipse.core.contenttype,3.4.100.v20100505-1235,"org.eclipse.core.contenttype",1285480987154
+started,bundle,org.eclipse.core.databinding.observable,1.3.0.I20100601-0800,"org.eclipse.core.databinding.observable",1285480987184
+started,bundle,org.eclipse.core.expressions,3.4.200.v20100505,"org.eclipse.core.expressions",1285480987196
+started,bundle,org.eclipse.core.filebuffers,3.5.100.v20100520-0800,"org.eclipse.core.filebuffers",1285480987209
+started,bundle,org.eclipse.core.filesystem,1.3.0.v20100526-0737,"org.eclipse.core.filesystem",1285480987212
+started,bundle,org.eclipse.core.jobs,3.5.0.v20100515,"org.eclipse.core.jobs",1285480987240
+started,bundle,org.eclipse.core.net,1.2.100.I20100511-0800,"org.eclipse.core.net",1285480987241
+started,bundle,org.eclipse.core.resources,3.6.0.v20100526-0737,"org.eclipse.core.resources",1285480987263
+started,bundle,org.eclipse.core.runtime,3.6.0.v20100505,"org.eclipse.core.runtime",1285480987267
+started,bundle,org.eclipse.core.runtime.compatibility,3.2.100.v20100505,"org.eclipse.core.runtime.compatibility",1285480987287
+started,bundle,org.eclipse.core.runtime.compatibility.auth,3.2.200.v20100517,"org.eclipse.core.runtime.compatibility.auth",1285480987303
+started,bundle,org.eclipse.core.variables,3.2.400.v20100505,"org.eclipse.core.variables",1285480987306
+started,bundle,org.eclipse.debug.core,3.6.0.v20100519,"org.eclipse.debug.core",1285480987326
+started,bundle,org.eclipse.epp.usagedata.gathering,1.3.0.R201005261100,"org.eclipse.epp.usagedata.gathering",1285480987332
+started,bundle,org.eclipse.epp.usagedata.recording,1.3.0.R201005261100,"org.eclipse.epp.usagedata.recording",1285480987373
+started,bundle,org.eclipse.equinox.app,1.3.0.v20100512,"org.eclipse.equinox.app",1285480987388
+started,bundle,org.eclipse.equinox.common,3.6.0.v20100503,"org.eclipse.equinox.common",1285480987407
+started,bundle,org.eclipse.equinox.ds,1.2.0.v20100507,"org.eclipse.equinox.ds",1285480987444
+started,bundle,org.eclipse.equinox.event,1.2.0.v20100503,"org.eclipse.equinox.event",1285480987445
+started,bundle,org.eclipse.equinox.p2.core,2.0.0.v20100510,"org.eclipse.equinox.p2.core",1285480987498
+started,bundle,org.eclipse.equinox.p2.directorywatcher,1.0.200.v20100601,"org.eclipse.equinox.p2.directorywatcher",1285480987499
+started,bundle,org.eclipse.equinox.p2.engine,2.0.0.v20100606,"org.eclipse.equinox.p2.engine",1285480987576
+started,bundle,org.eclipse.equinox.p2.metadata,2.0.0.v20100601,"org.eclipse.equinox.p2.metadata",1285480987702
+started,bundle,org.eclipse.equinox.p2.metadata.repository,1.1.0.v20100513,"org.eclipse.equinox.p2.metadata.repository",1285480987781
+started,bundle,org.eclipse.equinox.p2.operations,2.0.0.v20100510,"org.eclipse.equinox.p2.operations",1285480987787
+started,bundle,org.eclipse.equinox.p2.reconciler.dropins,1.1.0.v20100525,"org.eclipse.equinox.p2.reconciler.dropins",1285480988752
+started,bundle,org.eclipse.equinox.p2.repository,2.0.0.v20100519,"org.eclipse.equinox.p2.repository",1285480988840
+started,bundle,org.eclipse.equinox.p2.ui.sdk.scheduler,1.0.0.v20100507-1815,"org.eclipse.equinox.p2.ui.sdk.scheduler",1285480988847
+started,bundle,org.eclipse.equinox.p2.updatechecker,1.1.100.v20100503a,"org.eclipse.equinox.p2.updatechecker",1285480988853
+started,bundle,org.eclipse.equinox.preferences,3.3.0.v20100503,"org.eclipse.equinox.preferences",1285480988929
+started,bundle,org.eclipse.equinox.registry,3.5.0.v20100503,"org.eclipse.equinox.registry",1285480988961
+started,bundle,org.eclipse.equinox.security,1.0.200.v20100503,"org.eclipse.equinox.security",1285480988985
+started,bundle,org.eclipse.equinox.util,1.0.200.v20100503,"org.eclipse.equinox.util",1285480989038
+started,bundle,org.eclipse.help,3.5.0.v20100524,"org.eclipse.help",1285480989075
+started,bundle,org.eclipse.jface,3.6.0.I20100601-0800,"org.eclipse.jface",1285480989104
+started,bundle,org.eclipse.jsch.core,1.1.200.I20100505-1245,"org.eclipse.jsch.core",1285480989110
+started,bundle,org.eclipse.ltk.core.refactoring,3.5.100.v20100526-0800,"org.eclipse.ltk.core.refactoring",1285480989146
+started,bundle,org.eclipse.ltk.ui.refactoring,3.5.0.v20100526-0800,"org.eclipse.ltk.ui.refactoring",1285480989198
+started,bundle,org.eclipse.mylyn.commons.net,3.4.0.v20100608-0100-e3x,"org.eclipse.mylyn.commons.net",1285480989212
+started,bundle,org.eclipse.mylyn.monitor.ui,3.4.0.v20100608-0100-e3x,"org.eclipse.mylyn.monitor.ui",1285480989213
+started,bundle,org.eclipse.search,3.6.0.v20100520-0800,"org.eclipse.search",1285480989337
+started,bundle,org.eclipse.team.core,3.5.100.I20100527-0800,"org.eclipse.team.core",1285480989428
+started,bundle,org.eclipse.team.cvs.core,3.3.300.I20100526-0800,"org.eclipse.team.cvs.core",1285480989479
+started,bundle,org.eclipse.team.cvs.ui,3.3.300.I20100526-0800,"org.eclipse.team.cvs.ui",1285480989542
+started,bundle,org.eclipse.team.ui,3.5.100.I20100527-0800,"org.eclipse.team.ui",1285480989729
+started,bundle,org.eclipse.ui,3.6.0.I20100603-1100,"org.eclipse.ui",1285480989894
+started,bundle,org.eclipse.ui.console,3.5.0.v20100526,"org.eclipse.ui.console",1285480990090
+started,bundle,org.eclipse.ui.editors,3.6.0.v20100520-0800,"org.eclipse.ui.editors",1285480990091
+started,bundle,org.eclipse.ui.forms,3.5.0.v20100427,"org.eclipse.ui.forms",1285480990239
+started,bundle,org.eclipse.ui.ide,3.6.0.I20100601-0800,"org.eclipse.ui.ide",1285480990395
+started,bundle,org.eclipse.ui.navigator,3.5.0.I20100601-0800,"org.eclipse.ui.navigator",1285480990451
+started,bundle,org.eclipse.ui.navigator.resources,3.4.200.I20100601-0800,"org.eclipse.ui.navigator.resources",1285480990504
+started,bundle,org.eclipse.ui.net,1.2.100.I20100505-1245,"org.eclipse.ui.net",1285480990504
+started,bundle,org.eclipse.ui.views,3.5.0.I20100527-0800,"org.eclipse.ui.views",1285480990548
+started,bundle,org.eclipse.ui.workbench,3.6.0.I20100603-1100,"org.eclipse.ui.workbench",1285480990563
+started,bundle,org.eclipse.ui.workbench.texteditor,3.6.0.v20100520-0800,"org.eclipse.ui.workbench.texteditor",1285480990579
+os,sysinfo,,,"linux",1285480990595
+arch,sysinfo,,,"x86",1285480990595
+ws,sysinfo,,,"gtk",1285480990595
+locale,sysinfo,,,"en_IN",1285480990595
+processors,sysinfo,,,"1",1285480990595
+java.runtime.name,sysinfo,,,"Java(TM) SE Runtime Environment",1285480990595
+java.runtime.version,sysinfo,,,"1.6.0_21-b06",1285480990595
+java.specification.name,sysinfo,,,"Java Platform API Specification",1285480990595
+java.specification.vendor,sysinfo,,,"Sun Microsystems Inc.",1285480990595
+java.specification.version,sysinfo,,,"1.6",1285480990595
+java.vendor,sysinfo,,,"Sun Microsystems Inc.",1285480990596
+java.version,sysinfo,,,"1.6.0_21",1285480990596
+java.vm.info,sysinfo,,,"mixed mode, sharing",1285480990596
+java.vm.name,sysinfo,,,"Java HotSpot(TM) Client VM",1285480990596
+java.vm.specification.name,sysinfo,,,"Java Virtual Machine Specification",1285480990596
+java.vm.specification.vendor,sysinfo,,,"Sun Microsystems Inc.",1285480990596
+java.vm.specification.version,sysinfo,,,"1.0",1285480990596
+java.vm.vendor,sysinfo,,,"Sun Microsystems Inc.",1285480990596
+java.vm.version,sysinfo,,,"17.0-b16",1285480990596
+started,bundle,org.eclipse.mylyn.bugzilla.core,3.4.0.v20100608-0100-e3x,"org.eclipse.mylyn.bugzilla.core",1285480990985
+started,bundle,org.eclipse.mylyn.bugzilla.ui,3.4.0.v20100608-0100-e3x,"org.eclipse.mylyn.bugzilla.ui",1285480991304
+started,bundle,org.eclipse.mylyn.context.core,3.4.0.v20100608-0100-e3x,"org.eclipse.mylyn.context.core",1285480991593
+started,bundle,org.eclipse.mylyn.context.ui,3.4.0.v20100608-0100-e3x,"org.eclipse.mylyn.context.ui",1285480991735
+started,bundle,org.eclipse.mylyn.tasks.ui,3.4.0.v20100608-0100-e3x,"org.eclipse.mylyn.tasks.ui",1285480992038
+started,bundle,org.eclipse.mylyn.team.ui,3.4.0.v20100608-0100-e3x,"org.eclipse.mylyn.team.ui",1285480992143
+started,bundle,org.eclipse.update.scheduler,3.2.300.v20100512,"org.eclipse.update.scheduler",1285480992234
+started,bundle,org.eclipse.update.configurator,3.3.100.v20100512,"org.eclipse.update.configurator",1285480993043
+started,bundle,org.eclipse.update.core,3.2.400.v20100512,"org.eclipse.update.core",1285480993106
+activated,view,org.eclipse.search,3.6.0.v20100520-0800,"org.eclipse.search.ui.views.SearchView",1285481000454
+activated,editor,org.eclipse.cdt.ui,5.2.0.201006141710,"org.eclipse.cdt.ui.editor.CEditor",1285481000983
+activated,view,org.eclipse.ui.navigator.resources,3.4.200.I20100601-0800,"org.eclipse.ui.navigator.ProjectExplorer",1285481007269
+executed,command,org.eclipse.ui.ide,3.6.0.I20100601-0800,"org.eclipse.ui.project.buildAll",1285482396667
+deactivated,workbench,org.eclipse.ui.workbench,3.6.0.I20100603-1100,"",1285482399299
+started,bundle,org.eclipse.cdt.managedbuilder.gnu.ui,7.0.0.201006141710,"org.eclipse.cdt.managedbuilder.gnu.ui",1285482406603

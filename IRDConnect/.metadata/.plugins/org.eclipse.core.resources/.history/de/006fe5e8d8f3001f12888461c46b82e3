@@ -1,0 +1,46 @@
+/*
+ * resetSchedule.cpp
+ *
+ *  Created on: 06-Oct-2010
+ *      Author: vishist
+ */
+
+
+
+#include<iostream>
+
+#include "resetSchedule.h"
+
+using namespace IRDConnect;
+
+ResetSchedule::ResetSchedule()
+{
+	// do nothing for now
+}
+
+ResetSchedule::ResetSchedule(
+Date resetStartDate,
+Date  quoteDate,
+double rate,
+String rateType,
+String rateIndexType
+)
+{
+_resetStartDate = resetStartDate;
+_quoteDate = quoteDate;
+_rate = rate;
+_rateType = rateType;
+_rateIndexType = rateIndexType;
+}
+
+
+
+
+
+ResetSchedule::~ResetSchedule()
+{
+	// do nothing for now
+}
+
+
+

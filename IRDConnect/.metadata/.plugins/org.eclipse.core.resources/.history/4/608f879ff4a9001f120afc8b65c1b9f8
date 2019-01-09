@@ -1,0 +1,72 @@
+################################################################################
+# Automatically-generated file. Do not edit!
+################################################################################
+
+# Add inputs and outputs from these tool invocations to the build variables 
+CPP_SRCS += \
+../HelloWorld.cpp \
+../IRDString.cpp \
+../assetSwaps.cpp \
+../calendar.cpp \
+../date.cpp \
+../externalSystemTrades.cpp \
+../fXResets.cpp \
+../list.cpp \
+../manualPayments.cpp \
+../nameable.cpp \
+../optionSchedule.cpp \
+../paySchedule.cpp \
+../stubResets.cpp \
+../swapLegs.cpp \
+../swapOption.cpp \
+../tradeModificationReasons.cpp \
+../tradeticket.cpp 
+
+OBJS += \
+./HelloWorld.o \
+./IRDString.o \
+./assetSwaps.o \
+./calendar.o \
+./date.o \
+./externalSystemTrades.o \
+./fXResets.o \
+./list.o \
+./manualPayments.o \
+./nameable.o \
+./optionSchedule.o \
+./paySchedule.o \
+./stubResets.o \
+./swapLegs.o \
+./swapOption.o \
+./tradeModificationReasons.o \
+./tradeticket.o 
+
+CPP_DEPS += \
+./HelloWorld.d \
+./IRDString.d \
+./assetSwaps.d \
+./calendar.d \
+./date.d \
+./externalSystemTrades.d \
+./fXResets.d \
+./list.d \
+./manualPayments.d \
+./nameable.d \
+./optionSchedule.d \
+./paySchedule.d \
+./stubResets.d \
+./swapLegs.d \
+./swapOption.d \
+./tradeModificationReasons.d \
+./tradeticket.d 
+
+
+# Each subdirectory must supply rules for building sources it contributes
+%.o: ../%.cpp
+	@echo 'Building file: $<'
+	@echo 'Invoking: GCC C++ Compiler'
+	g++ -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -o"$@" "$<"
+	@echo 'Finished building: $<'
+	@echo ' '
+
+

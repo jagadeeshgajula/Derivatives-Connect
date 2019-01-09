@@ -1,0 +1,36 @@
+#include "IRDTenor.h"
+#include <iostream>
+
+
+using namespace std;
+
+
+
+Date operator + ( const Date & date, const Tenor & tenor )
+{
+        const IRDPeriod *IRDPeriod = tenor.getIRDPeriod();
+        if ( IRDPeriod )
+                return IRDPeriod -> add( date, tenor.getAmount(), tenor.getCalendar() );
+
+        return date;
+}
+
+Date operator - ( const Date & date, const Tenor & tenor )
+{
+    return ::operator+( date, -tenor );
+}
+
+Date & operator += ( Date & date, const Tenor & tenor )
+{
+        return date = date + tenor;
+}
+
+Date & operator -= ( Date & date, const Tenor & tenor )
+{
+        return date = date - tenor;
+}
+
+//----------------------------------------------------------------------
+
+
+// End-Of-File ---------------------------------------------------------

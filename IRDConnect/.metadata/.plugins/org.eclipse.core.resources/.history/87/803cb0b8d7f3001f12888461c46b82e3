@@ -1,0 +1,50 @@
+/*
+ * stubResets.cpp
+ *
+ *  Created on: 17-Aug-2010
+ *      Author: vishist
+ */
+
+#include <iostream>
+#include "stubResets.h"
+
+using namespace std;
+
+using namespace IRDConnect;
+
+StubResets::StubResets (
+
+String backStubMarketIndexA,
+String backStubMarketIndexB,
+double backStubRateA,
+String backStubRateAType,
+double backStubRateB,
+String backStubRateBType,
+String frontStubMarketIndexA,
+String frontStubMarketIndexB,
+double frontStubRateA,
+String frontStubRateAType,
+double frontStubRateB,
+String frontStubRateBType)
+
+{
+_backStubMarketIndexA 	= backStubMarketIndexA;
+_backStubMarketIndexB 	= backStubMarketIndexB;
+_backStubRateA 		  	= backStubRateA;
+_backStubRateAType    	= backStubRateAType;
+_backStubRateB        	= backStubRateB;
+_backStubRateBType    	= backStubRateBType;
+_frontStubMarketIndexA	= frontStubMarketIndexA;
+_frontStubMarketIndexB	= frontStubMarketIndexB;
+_frontStubRateA			= frontStubRateA;
+_frontStubRateAType		= frontStubRateAType;
+_frontStubRateB			= frontStubRateB;
+_frontStubRateBType		= frontStubRateBType;
+}
+
+StubResets::~StubResets()
+{
+
+	// do nothing
+
+}

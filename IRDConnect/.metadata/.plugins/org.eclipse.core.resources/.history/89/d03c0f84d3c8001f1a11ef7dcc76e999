@@ -1,0 +1,316 @@
+/*
+ * roundingConv.cpp
+ *
+ *  Created on: 25-Sep-2010
+ *      Author: vishist
+ */
+
+#include <assert.h>
+#include <math.h>
+#include <float.h>
+#include "roundingConv.h"
+#include "string.h"
+
+namespace IRDConnect {
+
+
+
+static int maxPower10 = 15;
+
+static double power10[] = {
+	1.0,                // 0
+	10.0,               // 1
+	100.0,              // 2
+	1000.0,             // 3
+	10000.0,            // 4
+	100000.0,           // 5
+	1000000.0,          // 6
+	10000000.0,         // 7
+	100000000.0,        // 8
+	1000000000.0,       // 9
+	10000000000.0,      // 10
+	100000000000.0,     // 11
+	1000000000000.0,    // 12
+	10000000000000.0,   // 13
+	100000000000000.0,  // 14
+	1000000000000000.0  // 15
+};
+
+static double power1tenth[] = {
+	1.0,                // 0
+	0.1,               // 1
+	0.01,              // 2
+	0.001,             // 3
+	0.0001,            // 4
+	0.00001,           // 5
+	0.000001,          // 6
+	0.0000001,         // 7
+	0.00000001,        // 8
+	0.000000001,       // 9
+	0.0000000001,      // 10
+	0.00000000001,     // 11
+	0.000000000001,    // 12
+	0.0000000000001,   // 13
+	0.00000000000001,  // 14
+	0.000000000000001  // 15
+};
+
+//----------------------------------------------------------------------
+
+RoundingConv::RoundingConv(const String		& name ) :
+
+{
+	name_ = name;
+
+}
+
+RoundingConv::~RoundingConv()
+{
+}
+
+
+class RoundingConvNearest : public RoundingConv {
+public:
+
+	RoundingConvNearest();
+	virtual ~RoundingConvNearest();
+
+	virtual double round( double v, unsigned int nd ) const;
+
+private:
+
+	//
+	// No Copying ...
+	//
+
+	RoundingConvNearest( const RoundingConvNearest & );
+	void operator = ( const RoundingConvNearest & );
+};
+
+RoundingConvNearest::RoundingConvNearest() :
+RoundingConv( String( "NEAR" ) )
+{
+}
+
+RoundingConvNearest::~RoundingConvNearest()
+{
+}
+
+double
+RoundingConvNearest::round( double v, unsigned int nd ) const
+{
+	if (!RoundingConv::getRoundingFlag()) return v;
+
+	// In a lot of cases, the same number is passed in for many times.
+	static double oldV = 0.0;
+	static unsigned int oldNd = 0.0;
+	static double oldResult = 0.0;
+
+	if (v == oldV && nd == oldNd)
+		return oldResult;
+
+	oldV = v;
+	oldNd = nd;
+
+	if (fabs(v) < DBL_MIN)
+		return( oldResult = v );
+
+	int negative = (v < 0.0);
+	if (negative)
+		v = -v;
+
+	double factor, revFactor;
+	if (nd <= maxPower10)
+	{
+		factor = power10[nd];
+		revFactor = power1tenth[nd];
+	}
+	else
+	{
+		factor = pow(10, nd);
+		revFactor = 1.0/factor;
+	}
+
+	double doubleFloor = floor ( (v * factor) + 0.5 );
+
+	if (negative)
+		return( oldResult = (-doubleFloor) * revFactor );
+	else
+		return( oldResult = doubleFloor * revFactor );
+}
+
+
+
+class RoundingConvSciNotaNearest : public RoundingConv {
+public:
+
+	RoundingConvSciNotaNearest();
+	virtual ~RoundingConvSciNotaNearest();
+
+	virtual double round( double v, unsigned int nd ) const;
+
+private:
+
+	//
+	// No Copying ...
+	//
+
+	RoundingConvSciNotaNearest( const RoundingConvSciNotaNearest & );
+	void operator = ( const RoundingConvSciNotaNearest & );
+};
+
+RoundingConvSciNotaNearest::RoundingConvSciNotaNearest() :
+RoundingConv( String( "NEAR" ) )
+{
+}
+
+RoundingConvSciNotaNearest::~RoundingConvSciNotaNearest()
+{
+}
+
+double
+RoundingConvSciNotaNearest::round( double v, unsigned int nd ) const
+{
+	if (!RoundingConv::getRoundingFlag()) return v;
+
+
+	static double oldV = 0.0;
+	static unsigned int oldNd = 0.0;
+	static double oldResult = 0.0;
+
+	if (v == oldV && nd == oldNd)
+		return oldResult;
+
+	oldV = v;
+	oldNd = nd;
+
+	if (fabs(v) < DBL_MIN)
+		return( oldResult = v );
+
+	int negative = (v < 0.0);
+	if (negative)
+		v = -v;
+
+	////////////////////////////////////////////////////////////////////
+	// Change to scientific notaton
+	////////////////////////////////////////////////////////////////////
+	double factor10, revFactor10;
+	int exponent = floor( log10(v) );
+
+	if (exponent > 0 && exponent <= maxPower10)
+	{
+		factor10 = power1tenth[exponent];
+		revFactor10 = power10[exponent];
+	}
+	else if (exponent < 0 && -exponent <= maxPower10)
+	{
+		factor10 = power10[-exponent];
+		revFactor10 = power1tenth[-exponent];
+	}
+	else
+	{
+		factor10 = pow(10, -exponent);
+		revFactor10 = 1.0 / factor10;
+	}
+
+	v *= factor10;
+
+	////////////////////////////////////////////////////////////////////
+	// Rounding
+	////////////////////////////////////////////////////////////////////
+	double factor, revFactor;
+	if (nd <= maxPower10)
+	{
+		factor = power10[nd];
+		revFactor = power1tenth[nd];
+	}
+	else
+	{
+		factor = pow(10, nd);
+		revFactor = 1.0/factor;
+	}
+
+	double doubleFloor = floor ( (v * factor) + 0.5 );
+
+	if (negative)
+		return( oldResult = (-doubleFloor) * revFactor * revFactor10 );
+	else
+		return( oldResult = doubleFloor * revFactor * revFactor10 );
+}
+
+//----------------------------------------------------------------------
+
+//
+// 'RoundingConvDown' implements the "throw away all digits after the
+// n'th decimal" rounding convention.
+//
+
+class RoundingConvDown : public RoundingConv {
+public:
+
+	RoundingConvDown();
+	virtual ~RoundingConvDown();
+
+	virtual double round( double v, unsigned int nd ) const;
+
+private:
+
+	//
+	// No Copying ...
+	//
+
+	RoundingConvDown( const RoundingConvDown & );
+	void operator = ( const RoundingConvDown & );
+};
+
+RoundingConvDown::RoundingConvDown() :
+RoundingConv( String( "DOWN" ) )
+{
+}
+
+RoundingConvDown::~RoundingConvDown()
+{
+}
+
+double
+RoundingConvDown::round( double v, unsigned int nd ) const
+{
+	if (!RoundingConv::getRoundingFlag()) return v;
+
+	// In a lot of cases, the same number is passed in for many times.
+	static double oldV = 0.0;
+	static unsigned int oldNd = 0.0;
+	static double oldResult = 0.0;
+
+	if (v == oldV && nd == oldNd)
+		return oldResult;
+
+	oldV = v;
+	oldNd = nd;
+
+	int negative = (v < 0.0);
+	if (negative)
+		v = -v;
+
+	double factor, revFactor;
+	if (nd <= maxPower10)
+	{
+		factor = power10[nd];
+		revFactor = power1tenth[nd];
+	}
+	else
+	{
+		factor = pow(10, nd);
+		revFactor = 1.0/factor;
+	}
+
+	double doubleFloor = floor ( v * factor );
+
+	if (negative)
+		return( oldResult = (-doubleFloor) * revFactor );
+	else
+		return( oldResult = doubleFloor * revFactor );
+}
+
+}
+

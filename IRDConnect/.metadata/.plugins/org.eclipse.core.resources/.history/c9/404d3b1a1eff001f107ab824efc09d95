@@ -1,0 +1,968 @@
+
+/*
+ * swapLegs.cpp
+ *
+ *  Created on: 17-Aug-2010
+ *      Author: vishist
+ */
+#include <string>
+#include "swapLeg.h"
+#include "paySchedule.h"
+#include "resetSchedule.h"
+#include "compSchedule.h"
+#include "rollDayConv.h"
+#include "calendarUtil.h"
+#include "marchingConv.h"
+#include "fixingRates.h"
+#include "stubResets.h"
+#include <set>
+#include <list>
+#include <boost/lexical_cast.hpp>
+
+
+
+using namespace std;
+using namespace boost;
+using namespace IRDConnect;
+using namespace IRDdetail;
+
+SwapLeg::SwapLeg()
+{
+	// do nothing...
+}
+
+SwapLeg::~SwapLeg()
+{
+	// do nothing...
+}
+
+SwapLeg::SwapLeg(
+const BusDayConv * 			accrualBusDay,
+std::set < std::string > 	accrualCalendars,
+Frequency 					accrualFreq,
+const DateMarcher * 		accrualMarching,
+int 						accrualRollDay,
+DayOfWeek 					accrualRollWeek,
+double 						amortAmount,
+const BusDayConv * 			amortBusDay,
+Date 						amortEndDate,
+Frequency 					amortFreq,
+double 						amortPercent,
+Date 						amortStartDate,
+String 						amortType,
+String 						averagingMethod,
+Date 						backStubDate,
+double 						backStubManualRate,
+Frequency 					compFreq,
+String 						compoundingConv,
+const Currency * 			currency,
+DayCountConv * 				dayCount,
+String 						discountCurve,
+Date 						endDate,
+String 						endDateRollFlag,
+String 						endOfMonthIndicator,
+double 						fixedQuote,
+Date 						frontStubDate,
+double 						frontStubManualRate,
+double 						gearFactor,
+std::set < std::string > 	initialQuoteCalendars,
+Date 						initialQuoteDate,
+int 						initialQuoteLag,
+int 						legNo,
+String 						legType,
+String 						marketIndex,
+double 						notional,
+String 						notionalExchange,
+const BusDayConv * 			payBusDay,
+std::set < std::string > 	payCalendars,
+Frequency 					payFreq,
+const DateMarcher * 		payMarching,
+String 						paymentConvention,
+const Currency * 			paymentConversionCurrency,
+String 						paymentConversionIndex,
+int 						paymentConversionLag,
+int 						payRollDay,
+DayOfWeek 					payRollWeek,
+String 						position,
+std::set < std::string > 	quoteCalendars,
+int 						quoteLag,
+int 						rateCutOff,
+String 						resetConvention,
+Frequency 					resetFreq,
+String 						resetType,
+int 						scheduleCustomFlag,
+double 						spread,
+Date 						startDate,
+String 						startDateRollFlag
+)
+{
+_accrualBusDay 			= accrualBusDay;
+_accrualCalendars 		= accrualCalendars;
+_accrualFreq			= accrualFreq;
+_accrualMarching		= accrualMarching;
+_accrualRollDay			= accrualRollDay;
+_accrualRollWeek		= accrualRollWeek;
+_amortAmount			= amortAmount;
+_amortBusDay 			= amortBusDay;
+_amortEndDate 			= amortEndDate;
+_amortFreq				= amortFreq;
+_amortPercent			= amortPercent;
+_amortStartDate 		= amortStartDate;
+_amortType				= amortType;
+_averagingMethod		= averagingMethod;
+_backStubDate			= backStubDate;
+_backStubManualRate		= backStubManualRate;
+_compFreq				= compFreq;
+_compoundingConv		= compoundingConv;
+_currency				= currency;
+_dayCount				= dayCount;
+_discountCurve			= discountCurve;
+_endDate				= endDate;
+_endDateRollFlag		= endDateRollFlag;
+_endOfMonthIndicator	= endOfMonthIndicator;
+_fixedQuote				= fixedQuote;
+_frontStubDate			= frontStubDate;
+_frontStubManualRate	= frontStubManualRate;
+_gearFactor				= gearFactor;
+_initialQuoteCalendars	= initialQuoteCalendars;
+_initialQuoteDate		= initialQuoteDate;
+_initialQuoteLag		= initialQuoteLag;
+_legNo					= legNo;
+_legType				= legType;
+_marketIndex			= marketIndex;
+_notional				= notional;
+_notionalExchange		= notionalExchange;
+_payBusDay				= payBusDay;
+_payCalendars			= payCalendars;
+_payFreq				= payFreq;
+_payMarching			= payMarching;
+_paymentConvention		= paymentConvention;
+_paymentConversionCurrency	=	paymentConversionCurrency;
+_paymentConversionIndex	= paymentConversionIndex;
+_paymentConversionLag	= paymentConversionLag;
+_payRollDay				= payRollDay;
+_payRollWeek			= payRollWeek;
+_position				= position;
+_quoteCalendars			= quoteCalendars;
+_quoteLag				= quoteLag;
+_rateCutOff				= rateCutOff;
+_resetConvention		= resetConvention;
+_resetFreq				= resetFreq;
+_resetType				= resetType;
+_scheduleCustomFlag		= scheduleCustomFlag;
+_spread					= spread;
+_startDate				= startDate;
+_startDateRollFlag		= startDateRollFlag;
+ }
+
+
+/* generate payment schedule here */
+
+bool SwapLeg::genPaySchedule()
+{
+
+		BusOrCalConv busOrCalConv(CAL);
+
+		if ( getAccrualBusDay() != BusDayConv::find("NONE") )
+		{
+			busOrCalConv = BusOrCalConv(BUS);
+		}
+
+	RollDayConv  rollDayConv(getAccrualRollWeek(),
+		getAccrualRollDay(), busOrCalConv);
+
+	Date frontStubDate = getFrontStubDate();
+	Date backStubDate = getBackStubDate();
+
+	Date startDate = getStartDate();
+	Date endDate   = getEndDate();
+
+	if ( getStartDateRollFlag() == "Yes" )
+	{
+		startDate = getAccrualBusDay()->adjustToBusDay(startDate,*CalendarUtil::getCalendar(getAccrualCalendars()));
+				 cout << "\nstub routine : Start Date is : " << startDate << endl;
+	}
+
+	if ( getEndDateRollFlag() == "Yes" )
+	{
+		endDate = getAccrualBusDay()->adjustToBusDay(endDate,*CalendarUtil::getCalendar(getAccrualCalendars()));
+		cout << "\nstub routine : End Date is : " << endDate << endl;
+	}
+
+
+	if ( frontStubDate == getStartDate() )
+	{
+			// there is no front stub
+			frontStubDate = startDate;  // set to rolled date to calculate schedule
+	}
+
+
+	if ( backStubDate == getEndDate() )
+	{
+		// there is no back stub
+		backStubDate = endDate;  // set to rolled date to calculate schedule
+	}
+
+
+
+if ( ! isPSGenerated() )
+{
+	cout << "GENERATE PAY SCHEDULE " << endl;
+
+	DateMarcher::EventStream  eventStreamPay;
+
+	if ( getAccrualMarching()->eventStream (
+	frontStubDate,
+	backStubDate,
+	getAccrualFreq(),
+	*CalendarUtil::getCalendar(getAccrualCalendars()),
+	getAccrualBusDay(),
+	eventStreamPay,
+	0,  //evenFinalPeriod,
+	&rollDayConv  ) )
+	{
+
+
+		if ( startDate != eventStreamPay.getESMinDate() )
+		{
+			cout << "\nFront Stub Date is : ";
+			cout << eventStreamPay.getESMinDate() << endl;
+			setFrontStubDate(eventStreamPay.getESMinDate());
+		 }
+
+		if ( endDate != eventStreamPay.getESMaxDate() )
+		{
+			cout << "\nBack Stub Date is : ";
+			cout << eventStreamPay.getESMaxDate() << endl;
+			setBackStubDate(eventStreamPay.getESMaxDate());
+
+		}
+
+
+		 eventStreamPay.getEventList().sort(); // for backward dates come in reverse order, so need to order ascending order.
+
+		 std::list<Date>::const_iterator iterEvent = eventStreamPay.getEventList().begin () ;
+
+			int noOfEvents = eventStreamPay.getEventList().size();
+			cout << "No of Elements are front :" << noOfEvents;
+			int cnt = 0;
+
+		    for ( ; iterEvent != eventStreamPay.getEventList().end () ; ++iterEvent )
+		      {
+		        shared_ptr <PaySchedule> paySchedule( new PaySchedule());
+
+		        cnt++;
+
+		        if ( cnt != noOfEvents )
+		        {
+
+		        	paySchedule->setCouponStartDate(*iterEvent);
+		        	paySchedule->setCouponEndDate(*(++iterEvent));
+		        	paySchedule->setPaymentDate(getPayBusDay()->adjustToBusDay(paySchedule->getCouponEndDate(), *CalendarUtil::getCalendar(getPayCalendars())) );
+		        	paySchedule->setPaymentType("Coupon");
+		        	paySchedule->setNotional(getNotional());
+		        	 --iterEvent;
+		        	 _payScheduleList.push_back(paySchedule);
+		        }
+
+		       }
+
+
+		         PayScheduleList::const_iterator iterPay = displayPaySchedule().begin() ;
+
+		         		         for ( ; iterPay != displayPaySchedule().end() ; ++iterPay )
+		         		         {
+
+		         		        	 //cout << " \n PaySchedule list " << endl;
+		         		        	 cout <<"\nStart Date : ";
+		         		        	 cout << (*iterPay)->getCouponStartDate();
+		         		        	 cout << "\nEnd Date : ";
+		         		        	 cout << (*iterPay)->getCouponEndDate();
+		         		        	 cout << " \nDcf : ";
+		         		        	double dcf = getDayCount()->getFraction((*iterPay)->getCouponStartDate(),
+		         		        			(*iterPay)->getCouponEndDate(), true,true,0);
+		         		        	cout << dcf;
+		         		        	cout << "\nPayment Date is : ";
+		         		        	cout << (*iterPay)->getPaymentDate();
+		         		        	cout << "\nPayment Type : ";
+		         		       		cout << (*iterPay)->getPaymentType() << endl;
+		         		       		cout << "Notional Used : ";
+		         		       		cout << (*iterPay)->getNotional() << endl;
+		         		        	cout << "CashFlow for the coupon : ";
+		         		        	double couponCashFlow = getNotional() * dcf * getFixedQuote()/100;
+		         		        	cout << couponCashFlow << endl;
+
+		         		         }
+
+	}
+
+
+ 	if ( isFloatLeg() && getCompoundingConv() != "NONE" )  // compounding is for float leg only ???
+	{
+		 PayScheduleList::const_iterator iterPay = displayPaySchedule().begin() ;
+		 DateMarcher::EventStream  eventStreamComp;
+
+		 for ( ; iterPay != displayPaySchedule().end() ; ++iterPay )
+		 {
+
+			 const DateMarcher * compMarching = DateMarcher::find("_forward"); // always forward
+			 eventStreamComp.getEventList().clear();
+
+			 if ( compMarching->eventStream (
+			 	(*iterPay)->getCouponStartDate(),
+			 	(*iterPay)->getCouponEndDate(),
+			 	getCompFreq(),
+			 	*CalendarUtil::getCalendar(getAccrualCalendars()),
+			 	getAccrualBusDay(),
+			 	eventStreamComp,
+			 	0,  //evenFinalPeriod,
+			 	&rollDayConv  ) )
+			 	{
+
+
+				 eventStreamComp.getEventList().sort(); // for backward dates come in reverse order, so need to order ascending order.
+
+				 std::list<Date>::const_iterator iterEvent = eventStreamComp.getEventList().begin () ;
+
+				 	int noOfEvents = eventStreamComp.getEventList().size();
+				 	cout << "No of Elements are front :" << noOfEvents - 1 << endl;;
+				 	int cnt = 0;
+
+				 	for ( ; iterEvent != eventStreamComp.getEventList().end () ; ++iterEvent )
+				 	{
+				 		shared_ptr <CompSchedule> compSchedule( new CompSchedule());
+				 		cnt++;
+
+				 		if ( cnt != noOfEvents )
+				 		{
+				 			compSchedule->setCompStartDate(*iterEvent);
+				 			compSchedule->setCompEndDate(*(++iterEvent));
+				 			compSchedule->setNotional(getNotional());
+				 			--iterEvent;
+				 			_compScheduleList.push_back(compSchedule);
+				 			cout << "Comp start:end dates	:" << compSchedule->getCompStartDate() << ":" << compSchedule->getCompEndDate() << endl;
+				 		}
+				 	}
+
+			 	}
+		 }
+
+	}
+
+ 	// Amort Schedule : it could start and end on diff dates
+
+ 	if ( getAmortType() != "NONE" )  // compounding is for float leg only ???
+	{
+		 cout << "GENERATE comp SCHEDULE " << endl;
+		 PayScheduleList::const_iterator iterPay = displayPaySchedule().begin();
+
+
+		 DateMarcher::EventStream  eventStreamAmort;
+
+		 double amortNotionalTmp = getNotional(); // initialize to leg notional for now
+
+	 	 for ( ; iterPay != displayPaySchedule().end() ; ++iterPay )
+		 {
+
+		 			 const DateMarcher * amortMarching = DateMarcher::find("_forward"); // always forward
+		 			 eventStreamAmort.getEventList().clear();
+
+		 			 if ( amortMarching->eventStream (
+		 			 	(*iterPay)->getCouponStartDate(),
+		 			 	(*iterPay)->getCouponEndDate(),
+		 			 	getAmortFreq(),
+		 			 	*CalendarUtil::getCalendar(getAccrualCalendars()),
+		 			 	getAmortBusDay(),
+		 			 	eventStreamAmort,
+		 			 	0,  //evenFinalPeriod,
+		 			 	&rollDayConv  ) )
+		 			 	{
+
+		 				 eventStreamAmort.getEventList().sort(); // for backward, dates come in reverse order, so need to order ascending order.
+
+		 				 std::list<Date>::const_iterator iterEvent = eventStreamAmort.getEventList().begin () ;
+
+		 				 	int noOfEvents = eventStreamAmort.getEventList().size();
+		 				 	cout << "No of Elements are front or back - amort :" << noOfEvents - 1 << endl;;
+		 				 	int cnt = 0;
+
+		 				 for ( ; iterEvent != eventStreamAmort.getEventList().end () ; ++iterEvent )
+		 				 {
+		 				 		shared_ptr <AmortSchedule> amortSchedule( new AmortSchedule());
+		 				 		cnt++;
+
+		 				 if ( cnt != noOfEvents )
+		 				 {
+
+		 					 amortSchedule->setStartDate(*iterEvent);
+		 					 amortSchedule->setEndDate(*(++iterEvent));
+
+		 			 		 --iterEvent;
+
+		 					 amortSchedule->setAmortNotional(amortNotionalTmp);
+		 					 _amortScheduleList.push_back(amortSchedule);
+
+		 				 	if ( amortSchedule->getStartDate() >= getAmortStartDate()  )
+		 				 	{
+
+		 				  		if ( amortSchedule->getEndDate() <= getAmortEndDate() )
+		 				 		{
+		 				 			if ( getAmortType() == "PERCENT" )
+		 				 			{
+		 				 				amortNotionalTmp =  amortNotionalTmp - (amortNotionalTmp * getAmortPercent()/100);
+		 				 			}
+
+		 				 			if ( getAmortType() == "AMOUNT" )
+		 				 			{
+		 				 				amortNotionalTmp = amortNotionalTmp - getAmortAmount();
+		 				 			}
+		 				 		}
+		 				 	}
+
+		 				 	cout << "AMORT start:end dates	:" << amortSchedule->getStartDate() << ":" << amortSchedule->getEndDate() << ":" << amortSchedule->getAmortNotional() << endl;
+
+		 				 }
+		 			}
+
+		 		}
+		 	}
+	}
+
+
+ 	if ( ! genLegCashFlows() )
+ 	{
+ 		cerr << "failed in generating cashflows " << endl;
+ 		return false;
+ 	}
+
+	 setIsPSGenerated(true); // ps generated now
+}
+
+	if ( isFloatLeg())
+		if ( genResetSchedule() )
+			cout << "\nReset Schedule generated ..." << endl;
+
+	return true;
+}
+
+
+bool SwapLeg::genResetSchedule()
+{
+
+if ( ! isRSGenerated() )
+{
+	DateMarcher::EventStream  eventStreamReset;
+
+		BusOrCalConv busOrCalConv(CAL);
+
+		if ( getAccrualBusDay() != BusDayConv::find("NONE") )
+			{
+			 busOrCalConv = BusOrCalConv(BUS);
+			}
+
+		RollDayConv  rollDayConv(getAccrualRollWeek(),
+			getAccrualRollDay(), busOrCalConv);
+
+		Date frontStubDate = getFrontStubDate();
+			Date backStubDate = getBackStubDate();
+
+			Date startDate = getStartDate();
+			Date endDate   = getEndDate();
+
+			if ( getStartDateRollFlag() == "Yes" )
+			{
+				startDate = getAccrualBusDay()->adjustToBusDay(startDate,*CalendarUtil::getCalendar(getAccrualCalendars()));
+						 cout << "\nstub routine : Start Date is : " << startDate << endl;
+			}
+
+			if ( getEndDateRollFlag() == "Yes" )
+			{
+				endDate = getAccrualBusDay()->adjustToBusDay(endDate,*CalendarUtil::getCalendar(getAccrualCalendars()));
+				cout << "\nstub routine : End Date is : " << endDate << endl;
+			}
+
+
+
+			if ( frontStubDate == getStartDate() )
+			{
+					// there is no front stub
+					frontStubDate = startDate;  // set to rolled date to calculate schedule
+			}
+
+
+			if ( backStubDate == getEndDate() )
+			{
+				// there is no back stub
+				backStubDate = endDate;  // set to rolled date to calculate schedule
+			}
+
+
+
+		if ( getAccrualMarching()->eventStream (frontStubDate,backStubDate,	getResetFreq(),
+				*CalendarUtil::getCalendar(getAccrualCalendars()),	getAccrualBusDay(),		eventStreamReset,		0, 		&rollDayConv  ) )
+		{
+
+			eventStreamReset.getEventList().sort(); // for backward dates will come in reverse order, so need to sort in ascending order.
+			std::list<Date>::const_iterator iterEventReset = eventStreamReset.getEventList().begin () ;
+
+				int noOfEvents = eventStreamReset.getEventList().size();
+				cout << "No of Elements are front :" << noOfEvents;
+
+				int lagSign = getQuoteLag() > 0 ? 1 : -1;
+				cout << "lag sign is : " << lagSign << endl;
+				const BusDayConv * resetBusDay = lagSign > 0 ? BusDayConv::find("FOL") : BusDayConv::find("PRE") ;
+				int lag = getQuoteLag() * lagSign;
+				cout << "lag is : " << lag << endl;
+
+			     for ( ; iterEventReset != eventStreamReset.getEventList().end () ; ++iterEventReset )
+			     {
+			        shared_ptr <ResetSchedule> resetSchedule( new ResetSchedule());
+
+     	        	resetSchedule->setResetStartDate(*iterEventReset);
+
+	        		Date quoteDate = resetSchedule->getResetStartDate();
+	        		int cntReset = lag;
+
+					while ( cntReset > 0 )
+					{
+						Period period(lagSign * 1,Days);
+						quoteDate = quoteDate + period;
+						quoteDate = resetBusDay->adjustToBusDay(quoteDate,*CalendarUtil::getCalendar(getQuoteCalendars()) );
+						cntReset--;
+
+					}
+
+					resetSchedule->setQuoteDate( quoteDate );
+					resetSchedule->setRate(getPeriodRate(FixingRates::getFixingRate(quoteDate, getMarketIndex())));
+					_resetScheduleList.push_back(resetSchedule);
+
+				  }
+
+			     // take care of front and back stubs now
+
+			     if ( getFrontStubDate() != getStartDate() )
+			     {
+			    	shared_ptr <ResetSchedule> resetScheduleStub( new ResetSchedule());
+
+			        resetScheduleStub->setResetStartDate(startDate);
+
+			     	Date quoteDate = resetScheduleStub->getResetStartDate();
+			     	int cntReset = lag;
+
+			     	while ( cntReset > 0 )
+			     	{
+			     		Period period(lagSign * 1,Days);
+			     		quoteDate = quoteDate + period;
+			     		quoteDate = resetBusDay->adjustToBusDay(quoteDate,*CalendarUtil::getCalendar(getQuoteCalendars()) );
+			     		cntReset--;
+
+			     	}
+
+			     		resetScheduleStub->setQuoteDate( quoteDate );
+			     		resetScheduleStub->setRate(getPeriodRate(FixingRates::getFixingRate(quoteDate, getMarketIndex())));
+			     		_resetScheduleList.push_front(resetScheduleStub);
+
+			     }
+
+		         ResetScheduleList::const_iterator iterReset = displayResetSchedule().begin() ;
+
+		         for ( ; iterReset != displayResetSchedule().end() ; ++iterReset )
+   		         {
+				   	cout <<"\n Reset Start Date : Quote Date : Period Rate  - ";
+				   	cout << (*iterReset)->getResetStartDate() << " : " << (*iterReset)->getQuoteDate() << " : " << (*iterReset)->getRate() << endl;
+
+   		         }
+
+			}
+
+	setIsRSGenerated(true); // resets generated now
+}
+	return true;
+
+}
+
+bool SwapLeg::genCompSchedule()
+{
+
+return  true;
+
+}
+
+bool SwapLeg::genAmortSchedule()
+{
+return  true;
+
+}
+
+double SwapLeg::getPeriodRate( double rate)  // gets period rate including spread and gear factor
+{
+	return rate * getGearFactor() + getSpread()/1000;
+}
+
+
+bool SwapLeg::generateStubs()
+{
+		Date startDate = getStartDate();
+		Date endDate = getEndDate();
+		Date fDate = getStartDate();
+		Date bDate = getEndDate();
+
+
+		if ( getStartDateRollFlag() == "Yes" )
+		{
+			startDate = getAccrualBusDay()->adjustToBusDay(startDate,*CalendarUtil::getCalendar(getAccrualCalendars()));
+			 cout << "\nstub routine : Start Date is : " << startDate << endl;
+		}
+
+		if ( getEndDateRollFlag() == "Yes" )
+		{
+			endDate = getAccrualBusDay()->adjustToBusDay(endDate,*CalendarUtil::getCalendar(getAccrualCalendars()));
+			 cout << "\nstub routine : End Date is : " << endDate << endl;
+		}
+
+
+		if (! isPSGenerated() ) // generate payment schedule if not generated already
+		if ( ! genPaySchedule() )
+			return false; // issues in generating payment schedule
+
+
+		if ( isFloatLeg() )
+		{
+
+			shared_ptr <StubResets> fsResetsA( new StubResets());
+			shared_ptr <StubResets> fsResetsB( new StubResets());
+			shared_ptr <StubResets> bsResetsA( new StubResets());
+			shared_ptr <StubResets> bsResetsB( new StubResets());
+
+			string fsTenorA("");
+			string fsTenorB("");
+			string bsTenorA("");
+			string bsTenorB("");
+
+		if ( getFrontStubDate() != fDate )
+		{
+			int daysDiff = getFrontStubDate().serialNumber() - startDate.serialNumber();
+
+			if ( daysDiff > 0 && daysDiff <= 2 )
+			{
+				fsTenorA = "2B";
+				fsTenorB = "2B";
+				cout << "Stubf Tenors are : 2D:2D" << endl;
+			}
+
+			if ( daysDiff <= 7 && daysDiff > 2 )
+			{
+				fsTenorA = "2B";
+				fsTenorB = "1W";
+				cout << "Stubf Tenors are : 2D:1W " << endl;
+			}
+
+			if ( daysDiff <= 14 && daysDiff > 7)
+			{
+				fsTenorA = "1W";
+				fsTenorB = "2W";
+				cout << "Stubf Tenors are : 1W:2W" << endl;
+			}
+
+			if ( daysDiff <= startDate.monthLength(startDate.month(),Date::isLeap(startDate.year())) && daysDiff > 14 )
+			{
+				fsTenorA = "2W";
+				fsTenorB = "1M";
+				cout << "Stubf Tenors are : 2W:1M" << endl;
+			}
+
+			if ( daysDiff > startDate.monthLength(startDate.month(),Date::isLeap(startDate.year()) ) )
+			{
+				int month = 0;
+				Date tmpDate = startDate;
+
+				while ( tmpDate < getFrontStubDate()  )
+				{
+					tmpDate += Period(1,Months);
+					month++;
+				}
+
+			fsTenorA = boost::lexical_cast<string>( month -1);
+			fsTenorB = boost::lexical_cast<string>( month);
+
+			fsTenorA += "M";
+			fsTenorB += "M";
+
+			cout << "Stubf Tenors are : " << month -1 << "::" << month << endl;
+
+			}
+
+			ResetScheduleList::const_iterator iterReset = displayResetSchedule().begin() ;
+
+			for ( ; iterReset != displayResetSchedule().end() ; ++iterReset )
+			{
+				if ( getBackStubDate() == (*iterReset)->getResetStartDate() )
+				{
+					fsResetsA->setStartDate((*iterReset)->getResetStartDate());
+					fsResetsA->setQuoteDate((*iterReset)->getQuoteDate());
+					fsResetsA->setStubRateType("P"); // projected first time even if it is in the past.
+					fsResetsA->setStubMarketIndex(FixingRates::getFixingQuote(getMarketIndex(),fsTenorA));
+					fsResetsA->setStubType("FStubA");
+					fsResetsA->setManualStub(false);
+
+					fsResetsB->setStartDate((*iterReset)->getResetStartDate());
+					fsResetsB->setQuoteDate((*iterReset)->getQuoteDate());
+					fsResetsB->setStubRateType("P"); // projected first time even if it is in the past
+					fsResetsB->setStubMarketIndex(FixingRates::getFixingQuote(getMarketIndex(),fsTenorB));
+					fsResetsB->setStubType("FStubB");
+					fsResetsB->setManualStub(false);
+				}
+
+			}
+
+		}
+
+		if ( getBackStubDate() != bDate )
+		{
+			int daysDiff = endDate.serialNumber() - getBackStubDate().serialNumber();
+
+			if ( daysDiff > 0 && daysDiff <= 2 )
+			{
+				bsTenorA = "2B";
+				bsTenorB = "2B";
+				cout << "Stubb Tenors are : 2D:2D" << endl;
+			}
+
+
+			if ( daysDiff <= 7 && daysDiff > 2 )
+			{
+				bsTenorA = "2D";
+				bsTenorB = "1W";
+				cout << "Stubb Tenors are : 2D:1W" << endl;
+			}
+
+			if ( daysDiff <= 14 && daysDiff > 7)
+			{
+				bsTenorA = "1W";
+				bsTenorB = "2W";
+				cout << "Stubb Tenors are : 1W:2W" << endl;
+			}
+
+			if ( daysDiff <= endDate.monthLength(endDate.month(),Date::isLeap(endDate.year())) && daysDiff > 14 )
+			{
+				bsTenorA = "2W";
+				bsTenorB = "1M";
+				cout << "Stubb Tenors are : 2W:1M" << endl;
+			}
+
+			if ( daysDiff > endDate.monthLength(endDate.month(),Date::isLeap(endDate.year()) ) )
+			{
+				int month = 0;
+				Date tmpDate = endDate;
+
+				while ( tmpDate > getBackStubDate()  )
+				{
+					tmpDate = tmpDate - Period(1,Months);
+					month++;
+				}
+
+			//stubResets->setBSMarketIndexA(FixingRates::getFixingQuote(getMarketIndex(),Period(month-1,Months)));
+			//stubResets->setBSMarketIndexB(FixingRates::getFixingQuote(getMarketIndex(),Period(month,Months)));
+			//cout << "Stubb Tenors are : " << month -1 << "::" << month << endl;
+			bsTenorA = boost::lexical_cast<string>( month -1);
+			bsTenorB = boost::lexical_cast<string>( month);
+
+			bsTenorA += "M";
+			bsTenorB += "M";
+			cout << "Stubb Tenors are : " << month -1 << "::" << month << endl;
+
+			}
+
+			ResetScheduleList::const_iterator iterReset = displayResetSchedule().begin() ;
+
+			for ( ; iterReset != displayResetSchedule().end() ; ++iterReset )
+			{
+				if ( getBackStubDate() == (*iterReset)->getResetStartDate() )
+				{
+						bsResetsA->setStartDate((*iterReset)->getResetStartDate());
+						bsResetsA->setQuoteDate((*iterReset)->getQuoteDate());
+						bsResetsA->setStubRateType("P"); // projected first time even if it is in the past.
+						bsResetsA->setStubMarketIndex(FixingRates::getFixingQuote(getMarketIndex(),bsTenorA));
+						bsResetsA->setStubType("BStubA");
+						bsResetsA->setManualStub(false);
+
+						bsResetsB->setStartDate((*iterReset)->getResetStartDate());
+						bsResetsB->setQuoteDate((*iterReset)->getQuoteDate());
+						bsResetsB->setStubRateType("P"); // projected first time even if it is in the past
+						bsResetsB->setStubMarketIndex(FixingRates::getFixingQuote(getMarketIndex(),bsTenorB));
+						bsResetsB->setStubType("BStubB");
+						bsResetsB->setManualStub(false);
+				}
+
+			}
+
+		}
+
+
+
+		if ( ! fsResetsA )
+		{
+			_stubResetsList.push_back(fsResetsA);
+		}
+
+		if ( ! fsResetsB )
+		{
+			_stubResetsList.push_back(fsResetsB);
+		}
+
+		if ( ! bsResetsA )
+		{
+			_stubResetsList.push_back(bsResetsA);
+		}
+
+		if ( ! bsResetsB )
+		{
+			_stubResetsList.push_back(bsResetsB);
+		}
+
+	}
+
+
+		return true;
+
+}
+
+bool SwapLeg::genLegCashFlows()
+{
+	// check whether it is compounding deal - so interest accrued needs to be calculated
+
+	if ( _compScheduleList.size() > 1)
+	{
+		cout << "comp schedule to calculate interest accrued " << endl;
+
+	}
+
+	/*
+	PayScheduleList::const_iterator iterPay = displayPaySchedule().begin();
+
+	 for ( ; iterPay != displayPaySchedule().end() ; ++iterPay )
+	{
+
+		 if ( isFloatLeg() )
+		 {
+			 if ( getCompoudingConv() != "NONE" )
+			 {
+				 CompScheduleList::const_iterator iterComp = displayCompSchedule().begin();
+
+				 double compAmount = 0.0;
+				 bool setCoupon = false;
+
+				 for ( ; iterComp != displayCompSchedule().end() ; ++iterComp )
+					{
+
+					 if ( (*iterPay)->getCouponStartDate() <= (*iterComp)->getCompStartDate() &&
+							 (*iterPay)->getCouponEndDate() > (*iterComp)->getCompEndDate() )
+					 {
+						 double dcfComp =  getDayCount()->getFraction((*iterComp)->getCompStartDate(),
+				 		         (*iterPay)->getCompEndDate(), true,true,0);
+
+						 double periodRate = getFixedQuote()/100;
+						 double compNotional = getNotional();
+
+						 // check resets
+
+						 if ( isFloatLeg() )
+						 {
+						    ResetScheduleList::const_iterator iterReset = displayResetSchedule().begin();
+
+						    for ( ; iterReset != displayResetSchedule().end() ; ++iterReset )
+						    {
+						    	if ( (*iterComp)->getCompStartDate() == (*iterReset)->getResetStartDate() )
+						    	{
+						    		periodRate = getPeriodRate(FixingRates::getFixingRate((*iterReset)->getQuoteDate(), getMarketIndex()));
+						    	}
+						    }
+						 }
+
+						 if ( getAmortType() != "NONE" )
+						 {
+
+							 AmortScheduleList::const_iterator iterAmort = displayAmortSchedule().begin();
+
+							 for ( ; iterAmort != displayAmortSchedule().end() ; ++iterAmort )
+							 {
+							   	if ( (*iterComp)->getCompStartDate() >= (*iterAmort)->getStartDate() &&
+							   			(*iterComp)->getCompEndDate() <= (*iterAmort)->getEndDate() )
+							   	{
+							   		compNotional = (*iterAmort)->getAmortNotional();
+							   	}
+							 }
+
+
+						 }
+
+						 compAmount += (compNotional * dcfComp * periodRate );
+					 }
+
+					 if ( (*iterPay)->getCouponEndDate() == (*iterComp)->getCompEndDate() )
+						 setCoupon = true;  // now set it to paySchedule
+					}
+
+				 	 if ( setCoupon )
+				 		 (*iterPay)->setAmount(compAmount); // set the compound amount now.
+			 }
+		 }
+
+		 double dcfNot = 0.0;
+
+		 if ( getAmortType() != "NONE" )
+		 {
+
+			 AmortScheduleList::const_iterator iterAmort = displayAmortSchedule().begin();
+
+			 for ( ; iterAmort != displayAmortSchedule().end() ; ++iterAmort )
+			 {
+				 if ( (*iterPay)->getCouponStartDate() == (*iterAmort)->getStartDate() &&
+					(*iterPay)->getCouponEndDate() == (*iterAmort)->getEndDate() )
+				 {
+					 dcfNot = (*iterAmort)->getAmortNotional() * getDayCount()->getFraction((*iterAmort)->getStartDate(),
+	 		 		         (*iterAmort)->getEndDate(), true,true,0);
+
+
+				 }
+				 else if ( (*iterPay)->getCouponStartDate() <= (*iterAmort)->getStartDate() &&
+						  (*iterPay)->getCouponEndDate() > (*iterAmort)->getEndDate()
+						  &&  (*iterPay)->getCouponStartDate() < (*iterAmort)->getEndDate() )
+				 {
+					 dcfNot += (*iterAmort)->getAmortNotional() * getDayCount()->getFraction((*iterAmort)->getStartDate(),
+					 		 		         (*iterAmort)->getEndDate(), true,true,0);
+
+				 }
+				 else if ( )
+			 }
+
+		 }
+		 else
+		 {
+
+		  dcfNot = getNotional() * getDayCount()->getFraction((*iterPay)->getCouponStartDate(),
+		 		         (*iterPay)->getCouponEndDate(), true,true,0);
+
+		 }
+
+		 double periodRate = getFixedQuote()/100;
+
+
+		 if ( isFloatLeg() )
+		{
+			ResetScheduleList::const_iterator iterReset = displayResetSchedule().begin();
+
+			for ( ; iterReset != displayResetSchedule().end() ; ++iterReset )
+			{
+				if ( (*iterPay)->getCompStartDate() == (*iterReset)->getResetStartDate() )
+				{
+					periodRate = getPeriodRate(FixingRates::getFixingRate((*iterReset)->getQuoteDate(), getMarketIndex()));
+				}
+			}
+		}
+
+
+	}
+*/
+	 return true;
+}

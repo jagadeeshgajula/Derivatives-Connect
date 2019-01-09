@@ -1,0 +1,51 @@
+#include <cstdlib>
+#include <iostream>
+#include "rightToTerminate.h"
+
+
+using namespace std;
+
+using namespace IRDConnect;
+
+RightToTerminate::RightToTerminate (
+String earlyTerminationProvision,
+String eventAgent,	
+String exercise,	
+Date commencementDate,
+Date expirationDate,	
+String exerciseBusinessCenters,	
+String exerciseBusinessDayConvention,
+String exerciseFrequency,
+String minNoticeCutOff,
+String maxNoticeCutOff,
+int minNoticeDays,	
+String noticeDayConvention,	
+String noticeBusDayConvention,
+String noticeBusinessCenters
+)
+{
+
+_earlyTerminationProvision     = earlyTerminationProvision;
+_eventAgent                    = eventAgent;
+_exercise                      = exercise;
+_commencementDate              = commencementDate; 
+_expirationDate                = expirationDate;
+_exerciseBusinessCenters       = exerciseBusinessCenters;
+_exerciseBusinessDayConvention = exerciseBusinessDayConvention;
+_exerciseFrequency             = exerciseFrequency;  
+_minNoticeCutOff               = minNoticeCutOff;
+_maxNoticeCutOff               = maxNoticeCutOff;
+_minNoticeDays                 = minNoticeDays;
+_noticeDayConvention           = noticeDayConvention;
+_noticeBusDayConvention        = noticeBusDayConvention;
+_noticeBusinessCenters         = noticeBusinessCenters;
+
+}
+
+RightToTerminate::~RightToTerminate()
+{
+	// do nothing
+}
+          
+           
+

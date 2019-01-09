@@ -1,0 +1,34 @@
+#include "IRDTenor.h"
+#include <iostream>
+#include "date.h"
+
+
+using namespace std;
+
+/*
+
+Date operator + ( Date &date, IRDTenor & tenor )
+{
+
+        return date + tenor;
+}
+
+Date operator - ( Date & date, IRDTenor & tenor )
+{
+    return ::operator+( date, -tenor );
+}
+
+Date operator += ( Date & date, IRDTenor & tenor )
+{
+        return date = date + tenor;
+}
+
+Date operator -= ( Date & date, IRDTenor & tenor )
+{
+        return date = date - tenor;
+}
+*/
+//----------------------------------------------------------------------
+
+
+// End-Of-File ---------------------------------------------------------

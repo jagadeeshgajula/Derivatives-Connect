@@ -1,0 +1,126 @@
+/*
+ * curveCache.cpp
+ *
+ *  Created on: 13-Aug-2011
+ *      Author: vishist
+ */
+
+#include "curveCache.h"
+#include "buildCurveFromMarketRates.h"
+#include "curveDef.h"
+// #include "boost/lexical_cast.hpp"
+
+namespace IRDConnect {
+
+  bool operator < (const curveKey &k1, const curveKey &k2 ) {
+    return (k1.date_ < k2.date_ || ( k1.date_ == k2.date_ && k1.curveName_ < k2.curveName_ )) ;
+  }
+
+  bool operator < (const curveScenKey &k1, const curveScenKey &k2 ) {
+    return ( ( k1.date_ < k2.date_ ) || 
+             ( k1.date_ == k2.date_ && k1.curveName_ < k2.curveName_ ) || 
+             ( k1.date_ == k2.date_ && k1.curveName_ == k2.curveName_ && k1.bumpTenor_ < k2.bumpTenor_ ) || 
+             ( k1.date_ == k2.date_ && k1.curveName_ == k2.curveName_ && k1.bumpTenor_ == k2.bumpTenor_ && 
+               k1.bumpSize_ < k2.bumpSize_ ) ) ; 
+  }
+
+  CurveCache::CurveCache( ) {
+    const std::string curveDef_filename = "/home/vishist/indir/curveDefs.txt" ;
+    ifstream curvedef_ofs (curveDef_filename.c_str());
+    std::string buf ;
+    while ( std::getline (curvedef_ofs, buf )) {
+      std::stringstream str ( buf ) ;
+      std::string curveName , fileName ;
+      std::getline( str ,curveName , '|') ;
+      std::getline( str ,fileName , '|') ;
+      curveDefMap_[curveName] = boost::shared_ptr<CurveDef>  ( new CurveDef ( fileName));
+    }
+    loadRates ("/home/vishist/indir/curveRates/gbprates.txt" ) ;
+  }
+
+  boost::shared_ptr<Curve> CurveCache::find ( const Date & date, const std::string & curveName ) {
+    std::map<curveKey, boost::shared_ptr<Curve> >::const_iterator it ;
+    it=curveMap_.find( curveKey(date, curveName) ) ;
+    if ( it == curveMap_.end() ) {
+      return loadCurve ( Date(9,2,2011),curveName);
+    }
+    return (*it).second ;
+  }
+
+  boost::shared_ptr<Curve> CurveCache::find ( const Date & date, const std::string & curveName, 
+                                              const std::string & bumpTenor, double bumpSize ) {
+    std::map<curveScenKey, boost::shared_ptr<Curve> >::const_iterator it ;
+    it=curveScenMap_.find( curveScenKey(date, curveName, bumpTenor, bumpSize) ) ;
+    if ( it == curveScenMap_.end() ) {
+      return loadBumpCurve ( Date(9,2,2011),curveName,bumpTenor,bumpSize);
+    }
+    return (*it).second ;
+  }
+
+  void CurveCache::loadRates ( const std::string & rates_filename) {
+    ifstream rates_ofs (rates_filename.c_str());
+    std::string buf;
+    while ( std::getline (rates_ofs, buf ) ) {
+      std::string id,rate_str ;
+      std::stringstream str ( buf ) ;
+      std::getline(str, id,':' ) ;
+      std::getline(str,rate_str,':'); 
+      ratesMap_[id]=boost::lexical_cast<double>(rate_str) ;
+    }
+  }
+  boost::shared_ptr<Curve> CurveCache::loadCurve ( const Date & curveDate, const std::string & curveName ) {
+    CurveBuilder * cbuilder = 0 ;
+    std::map<std::string, boost::shared_ptr<CurveDef> >::const_iterator it = curveDefMap_.find( curveName ) ;
+    if ( it == curveDefMap_.end() )
+      throw ( std::string ( "Curve Def for '" + curveName + "' does not exist ")) ;
+
+    cbuilder = new BuildCurveFromMarketRates (curveDate, future, it->second, ratesMap_) ;
+    try {
+      boost::shared_ptr<Curve> curvePtr(cbuilder->build() ) ;
+      curveMap_.insert(make_pair(curveKey(curveDate, curveName ),curvePtr)); 
+      return curvePtr ;
+    }
+    catch ( std::string & s ) {
+      cout << s << endl ;
+    }
+    delete cbuilder ;
+    return boost::shared_ptr<Curve> () ;
+  }
+
+
+  boost::shared_ptr<Curve> CurveCache::loadBumpCurve ( const Date & curveDate, const std::string & curveName,
+                                                       const std::string & bumpTenor, double bumpSize ) {
+    CurveBuilder * cbuilder = 0 ;
+    std::map<std::string, boost::shared_ptr<CurveDef> >::const_iterator it = curveDefMap_.find( curveName ) ;
+    if ( it == curveDefMap_.end() )
+      throw ( std::string ( "Curve Def for '" + curveName + "' does not exist ")) ;
+
+
+    
+    if ( bumpTenor == "Theta") {
+    	cbuilder = new BuildCurveFromMarketRates (curveDate + bumpSize, future, it->second, ratesMap_) ;
+    }
+    else {
+		std::map<std::string,double> ratesMap = ratesMap_ ;
+
+
+		std::map<std::string,double>::iterator itr = ratesMap.find(bumpTenor);
+		if ( itr == ratesMap.end() )
+		  throw ( std::string ("Invalid Bump Tenor " + bumpTenor ));
+		ratesMap[bumpTenor] += bumpSize ;
+
+		cbuilder = new BuildCurveFromMarketRates (curveDate, future, it->second, ratesMap) ;
+    }
+    try {
+      boost::shared_ptr<Curve> curvePtr(cbuilder->build() ) ;
+      curveScenMap_.insert(make_pair(curveScenKey(curveDate, curveName, bumpTenor, bumpSize ),curvePtr)); 
+      return curvePtr ;
+    }
+    catch ( std::string & s ) {
+      cout << s << endl ;
+    }
+    delete cbuilder ;
+    return boost::shared_ptr<Curve> () ;
+  }
+
+}

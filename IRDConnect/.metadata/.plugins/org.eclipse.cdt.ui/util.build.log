@@ -1,0 +1,9 @@
+
+**** Build of configuration Debug for project util ****
+
+make all 
+Building file: ../irdXML.cpp
+Invoking: GCC C++ Compiler
+g++ -I/home/vishist/IRDConnect/include -I/home/vishist/boost/boost_1_46_1 -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"irdXML.d" -MT"irdXML.d" -o"irdXML.o" "../irdXML.cpp"
+/bin/sh: g++: command not found
+make: *** [irdXML.o] Error 127

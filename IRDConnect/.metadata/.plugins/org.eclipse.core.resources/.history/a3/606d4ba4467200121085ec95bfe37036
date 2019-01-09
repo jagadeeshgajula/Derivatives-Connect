@@ -1,0 +1,308 @@
+#include "curveDef.h" 
+#include <fstream>
+#include "moneymkt.h"
+#include "mmfuture.h"
+#include "swap.h"
+#include <algorithm>
+#include <boost/tokenizer.hpp>
+#include <boost/lexical_cast.hpp>
+#include "calendarUtil.h"
+#include <boost/foreach.hpp>
+
+  namespace {
+    boost::shared_ptr<Moneymkt> buildCashTenor (const std::string & buf, const BusDayConv * bdc,
+						const DayCountConv * dcc,const Calendar * cal, const Currency *ccy)
+    {
+      typedef boost::shared_ptr<Moneymkt> MoneymktPtr ;
+      boost::char_separator<char> sep(":");
+      typedef boost::tokenizer<boost::char_separator<char> > tokenizer;
+      tokenizer tok(buf,sep);
+      int k =0;
+      std::string id ;
+      Integer pLength;
+      TimeUnit tu ;
+      double rate ;
+      Frequency freq ;
+      int lag;
+
+      for(tokenizer::iterator beg=tok.begin(); beg!=tok.end();++beg,++k){
+
+	switch ( k ) {
+	case 0:
+	  id = *beg ; break ;
+	case 1:
+	  lag = boost::lexical_cast<int>(*beg) ; break ;
+	case 2:
+	  pLength = boost::lexical_cast<Integer>(*beg); break ;
+	case 3:
+	  tu = (TimeUnit) boost::lexical_cast<int>(*beg); break ;
+	case 4:
+	  rate = boost::lexical_cast<double>(*beg); break ;
+	case 5:
+	  freq = (Frequency) boost::lexical_cast<int>(*beg); break ;
+	default :
+	  cout << "SKIP UNUSED Field # "  << k  << " " << *beg << endl ;
+	}
+      }
+      rate = 0 ;
+      return MoneymktPtr (new Moneymkt (id,ccy,lag,Period(pLength,tu), rate,bdc,dcc,cal,freq));
+    }
+
+    Date dateFromString ( std::string dateStr )
+    {
+      boost::char_separator<char> sep("-");
+      typedef boost::tokenizer<boost::char_separator<char> > tokenizer;
+      tokenizer tok(dateStr,sep);
+      tokenizer::iterator beg=tok.begin();
+      Day day = boost::lexical_cast<int> (*beg) ;
+      beg++ ;
+      int month = boost::lexical_cast<int> (*beg) ;
+      beg++ ;
+      Year year = boost::lexical_cast<int> (*beg) ;
+
+      return Date ( day,(Month) (month ) , year );
+    }
+  }
+
+namespace IRDConnect { 
+CurveDef::CurveDef ( const Date & date ,  const std::string & cashFileName,
+						       const std::string & futFileName,
+						       const std::string & swapFileName ) : 
+  curveDate_ ( date ) 
+  {
+	Date cDate = date; // just  need a copy to get curve def -
+
+	std::string curveDefPath = "/home/vishist/indir/curveDefs/" ;
+				curveDefPath += cDate.string("Ymd");
+				curveDefPath += "/";
+				curveDefPath += "eur.xml";
+
+    load(curveDefPath);
+    //loadCashTenors ( cashFileName ) ;
+    //loadFutureTenors ( futFileName ) ;
+    //loadSwapTenors ( swapFileName ) ;  
+  } 
+
+  CurveDef::CurveDef ( const std::string & filename )
+  {
+    load ( filename );
+  }
+  void CurveDef::loadCash ( boost::property_tree::ptree & pt )
+  {
+    using boost::property_tree::ptree;
+
+    const BusDayConv * bdc = BusDayConv::find  ( pt.get<std::string>("busDayConv") ) ;
+    const DayCountConv * dcc = DayCountConv::find ( pt.get<std::string>("dayCountConv") ) ;
+    const Calendar * cal = CalendarUtil::getCalendar ( pt.get<std::string>("calendar") ) ;
+    const Currency * ccy = Currency::find (pt.get<std::string>("currency")) ;
+
+    typedef boost::shared_ptr<Moneymkt> MoneymktPtr ;
+ 
+    BOOST_FOREACH(ptree::value_type &v, pt.get_child("tenors"))
+    {
+      ptree pt1 = v.second ;
+      std::string id = pt1.get<std::string>("name");
+      int lag =  pt1.get<int>("lag");
+      Integer pLength =  pt1.get<Integer>("amount");
+      TimeUnit tu = (TimeUnit) pt1.get<int>("timeUnit");
+      Frequency freq = (Frequency) pt1.get<int>("compFreq") ;
+      cashTenors_.push_back(MoneymktPtr (new Moneymkt (id,ccy,lag,Period(pLength,tu), 0.0,bdc,dcc,cal,freq)));
+    }
+  }
+  void CurveDef::loadFut ( boost::property_tree::ptree & pt )
+  {
+    using boost::property_tree::ptree;
+
+    const BusDayConv * bdc = BusDayConv::find  ( pt.get<std::string>("busDayConv") ) ;
+    const DayCountConv * dcc = DayCountConv::find ( pt.get<std::string>("dayCountConv") ) ;
+    const Calendar * cal = CalendarUtil::getCalendar ( pt.get<std::string>("calendar") ) ;
+    const Currency * ccy = Currency::find (pt.get<std::string>("currency")) ;
+
+    typedef boost::shared_ptr<MMFuture> MMFuturePtr ;
+    Date expiryDate ;
+    Date endDate;
+    BOOST_FOREACH(ptree::value_type &v, pt.get_child("tenors"))
+    {
+      ptree pt1 = v.second ;
+      std::string id = pt1.get<std::string>("name");
+      expiryDate = dateFromString( pt1.get<std::string>("expiryDate") );
+      endDate =  dateFromString(pt1.get<std::string>("endDate") );
+      futureTenors_.push_back( MMFuturePtr (new MMFuture ( id, ccy , expiryDate,expiryDate,expiryDate,endDate,cal,dcc,bdc,0)));
+    }
+  }
+
+  void CurveDef::loadSwap ( boost::property_tree::ptree & pt )
+  {
+    using boost::property_tree::ptree;
+
+    const BusDayConv * bdc = BusDayConv::find  ( pt.get<std::string>("busDayConv") ) ;
+    const DayCountConv * dcc = DayCountConv::find ( pt.get<std::string>("dayCountConv") ) ;
+    const DayCountConv * instrDcc = DayCountConv::find ( pt.get<std::string>("underlierDayCountConv") ) ;
+    const Calendar * cal = CalendarUtil::getCalendar ( pt.get<std::string>("calendar") ) ;
+    const Currency * ccy = Currency::find (pt.get<std::string>("currency")) ;
+
+    typedef boost::shared_ptr<Moneymkt> MoneymktPtr ;
+    typedef boost::shared_ptr<Swap> SwapPtr ;    
+     
+    std::string id = pt.get<std::string>("underlierTenor.name");
+    int lag =  pt.get<int>("underlierTenor.lag");
+    Integer pLength =  pt.get<Integer>("underlierTenor.amount");
+    TimeUnit tu = (TimeUnit) pt.get<int>("underlierTenor.timeUnit");
+    Frequency freq = (Frequency) pt.get<int>("underlierTenor.compFreq") ;
+   
+    MoneymktPtr underlier(new Moneymkt (id,ccy,lag,Period(pLength,tu), 0.0,bdc,instrDcc,cal,freq));
+    
+    BOOST_FOREACH(ptree::value_type &v, pt.get_child("tenors"))
+    {
+      ptree pt1 = v.second ;
+      std::string id = pt1.get<std::string>("name");
+      Integer pLength =  pt1.get<Integer>("amount");
+      TimeUnit tu = (TimeUnit) pt1.get<int>("timeUnit");
+      swapTenors_.push_back ( SwapPtr ( new Swap ( id, ccy , curveDate_ , Period(pLength,tu) , "_forward",dcc,bdc,cal,0.0,underlier, 0)));
+
+    }
+  }
+
+
+  void CurveDef::load ( const std::string & fileName)
+  {
+    using boost::property_tree::ptree;
+    ptree pt;
+
+    read_xml(fileName, pt);
+    
+    curveDate_ = dateFromString( pt.get<std::string>("curveDefn.curveDate") );
+    loadCash ( pt.get_child("curveDefn.cash"));
+    loadFut ( pt.get_child("curveDefn.future"));
+    loadSwap ( pt.get_child("curveDefn.swap"));
+ 
+ 
+    
+  }
+  void CurveDef::loadCashTenors ( const std::string & cashFileName) 
+  {
+    typedef boost::shared_ptr<Moneymkt> MoneymktPtr ;
+    //	int lag = 2 ;
+
+    ifstream cashIn (cashFileName.c_str());
+    std::string buf;
+
+    std::getline (cashIn, buf ) ;
+    const BusDayConv * bdc = BusDayConv::find  ( buf ) ;
+    std::getline (cashIn, buf ) ;
+    const DayCountConv * dcc = DayCountConv::find ( buf ) ;
+    std::getline (cashIn, buf ) ;
+    const Calendar * cal = CalendarUtil::getCalendar ( buf ) ;
+    std::getline (cashIn, buf ) ;
+    const Currency * ccy = Currency::find (buf) ;
+
+    while ( std::getline (cashIn, buf ) )
+      {
+	cashTenors_.push_back ( buildCashTenor (buf,bdc,dcc,cal,ccy));
+      }
+  }
+ 
+void CurveDef::loadFutureTenors ( const std::string & futFileName )
+  {
+    ifstream futIn (futFileName.c_str());
+    std::string buf;
+
+    std::getline (futIn, buf ) ;
+    const BusDayConv * bdc = BusDayConv::find  ( buf ) ;
+    std::getline (futIn, buf ) ;
+    const DayCountConv * dcc = DayCountConv::find ( buf ) ;
+    std::getline (futIn, buf ) ;
+    const Calendar * cal = CalendarUtil::getCalendar ( buf ) ;
+    std::getline (futIn, buf ) ;
+    const Currency * ccy = Currency::find (buf) ;
+
+    typedef boost::shared_ptr<MMFuture> MMFuturePtr ;
+
+    boost::char_separator<char> sep(":");
+    typedef boost::tokenizer<boost::char_separator<char> > tokenizer;
+    tokenizer tok(buf,sep);
+    Date expiryDate ;
+    Date endDate;
+
+    while ( std::getline (futIn, buf ) ) {
+      tokenizer tok(buf,sep);
+      int k =0;
+      std::string id ;
+      double rate ;
+
+      for(tokenizer::iterator beg=tok.begin(); beg!=tok.end();++beg,++k){
+	switch ( k ) {
+	case 0:
+	  id = *beg ; break ;
+	case 1:
+	  expiryDate = dateFromString(*beg); break ;
+
+	case 2:
+	  endDate = dateFromString(*beg); break ;
+	case 3:
+	  rate = boost::lexical_cast<double>(*beg); break ;
+	default :
+	  cout << "SKIP UNUSED Field # "  << k  << " " << *beg << endl ;
+	}
+      }
+      rate =0 ;
+      futureTenors_.push_back ( MMFuturePtr (new MMFuture ( id, ccy , expiryDate,expiryDate,expiryDate,endDate,cal,dcc,bdc,rate)));
+
+    }
+  }
+
+void CurveDef::loadSwapTenors ( const std::string & swapFileName )
+  {
+    typedef boost::shared_ptr<Moneymkt> MoneymktPtr ;
+    int lag = 0 ;
+
+    ifstream swapIn (swapFileName.c_str());
+    std::string buf;
+
+    std::getline (swapIn, buf ) ;
+    const BusDayConv * bdc = BusDayConv::find  ( buf ) ;
+    std::getline (swapIn, buf ) ;
+    const DayCountConv * dcc = DayCountConv::find ( buf ) ;
+    std::getline (swapIn, buf ) ;
+    const DayCountConv * instrDcc = DayCountConv::find ( buf ) ;
+    std::getline (swapIn, buf ) ;
+    const Calendar * cal = CalendarUtil::getCalendar ( buf ) ;
+    std::getline (swapIn, buf ) ;
+    const Currency * ccy = Currency::find (buf) ;
+
+    typedef boost::shared_ptr<Swap> SwapPtr ;
+
+    boost::char_separator<char> sep(":");
+    typedef boost::tokenizer<boost::char_separator<char> > tokenizer;
+    tokenizer tok(buf,sep);
+    std::getline (swapIn, buf );
+    MoneymktPtr underlier = buildCashTenor (buf,bdc,instrDcc,cal,ccy) ;
+
+    while ( std::getline (swapIn, buf ) ) {
+      tokenizer tok(buf,sep);
+      int k =0;
+      std::string id ;
+      Integer pLength;
+      TimeUnit tu ;
+      double rate ;
+
+      for(tokenizer::iterator beg=tok.begin(); beg!=tok.end();++beg,++k){
+	switch ( k ) {
+	case 0:
+	  id = *beg ; break ;
+	case 1:
+	  pLength = boost::lexical_cast<Integer>(*beg); break ;
+	case 2:
+	  tu = (TimeUnit) boost::lexical_cast<int>(*beg); break ;
+	case 3:
+	  rate = boost::lexical_cast<double>(*beg); break ;
+	default :
+	  cout << "SKIP UNUSED Field # "  << k  << " " << *beg << endl ;
+	}
+      }
+      rate = 0.0 ;
+      swapTenors_.push_back ( SwapPtr ( new Swap ( id, ccy , curveDate_ , Period(pLength,tu) , "_forward",dcc,bdc,cal,rate,underlier, lag)));
+    }
+  }
+
+}

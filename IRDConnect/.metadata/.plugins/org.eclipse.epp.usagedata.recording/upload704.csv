@@ -1,0 +1,251 @@
+what,kind,bundleId,bundleVersion,description,time
+activated,perspective,org.eclipse.debug.ui,3.6.0.v20100601-1530,"org.eclipse.debug.ui.DebugPerspective",1296889762185
+started,bundle,org.eclipse.help.base,3.5.0.v201006080911,"org.eclipse.help.base",1296889762201
+started,bundle,org.eclipse.help.ui,3.5.0.v20100517,"org.eclipse.help.ui",1296889762219
+started,bundle,org.eclipse.ui.cheatsheets,3.4.0.v20100427,"org.eclipse.ui.cheatsheets",1296889762340
+started,bundle,org.eclipse.ui.intro,3.4.0.v20100427,"org.eclipse.ui.intro",1296889762357
+opened,view,org.eclipse.help.ui,3.5.0.v20100517,"org.eclipse.help.ui.HelpView",1296889763544
+opened,view,org.eclipse.debug.ui,3.6.0.v20100601-1530,"org.eclipse.debug.ui.DebugView",1296889763733
+activated,workbench,org.eclipse.ui.workbench,3.6.0.I20100603-1100,"",1296889763775
+opened,view,org.eclipse.debug.ui,3.6.0.v20100601-1530,"org.eclipse.debug.ui.VariableView",1296889764346
+opened,view,org.eclipse.debug.ui,3.6.0.v20100601-1530,"org.eclipse.debug.ui.RegisterView",1296889764385
+opened,view,org.eclipse.debug.ui,3.6.0.v20100601-1530,"org.eclipse.debug.ui.ModuleView",1296889764413
+opened,view,org.eclipse.debug.ui,3.6.0.v20100601-1530,"org.eclipse.debug.ui.ExpressionView",1296889764459
+opened,view,org.eclipse.debug.ui,3.6.0.v20100601-1530,"org.eclipse.debug.ui.BreakpointView",1296889764514
+activated,view,org.eclipse.debug.ui,3.6.0.v20100601-1530,"org.eclipse.debug.ui.DebugView",1296889764657
+error,log,,,"null argument:",1296889764666
+error,log,,,"null argument:",1296889764667
+error,log,,,"null argument:",1296889764668
+error,log,,,"null argument:",1296889764669
+opened,editor,org.eclipse.cdt.ui,5.2.0.201006141710,"org.eclipse.cdt.ui.editor.CEditor",1296889764980
+activated,perspective,org.eclipse.cdt.ui,5.2.0.201006141710,"org.eclipse.cdt.ui.CPerspective",1296889788247
+activated,editor,org.eclipse.cdt.ui,5.2.0.201006141710,"org.eclipse.cdt.ui.editor.CEditor",1296889788281
+executed,command,org.eclipse.ui,3.6.0.I20100603-1100,"org.eclipse.ui.perspectives.showPerspective",1296889788380
+executed,command,,,"org.eclipse.cdt.ui.CPerspective",1296889788381
+activated,editor,org.eclipse.cdt.ui,5.2.0.201006141710,"org.eclipse.cdt.ui.editor.CEditor",1296889795682
+closed,editor,org.eclipse.cdt.ui,5.2.0.201006141710,"org.eclipse.cdt.ui.editor.CEditor",1296889795687
+started,bundle,org.eclipse.cdt.mylyn.ui,1.1.2.v20100608-0100-e3x,"org.eclipse.cdt.mylyn.ui",1296889795714
+executed,command,,,"AUTOGEN:::org.eclipse.cdt.debug.ui.CEditor.BreakpointRulerActions/org.eclipse.cdt.debug.ui.CEditor.RulerTobbleBreakpointAction",1296889800449
+error,log,,,"Breakpoint already removed",1296889806817
+executed,command,,,"AUTOGEN:::org.eclipse.cdt.debug.ui.CEditor.BreakpointRulerActions/org.eclipse.cdt.debug.ui.CEditor.RulerTobbleBreakpointAction",1296889806820
+executed,command,,,"AUTOGEN:::org.eclipse.cdt.debug.ui.CEditor.BreakpointRulerActions/org.eclipse.cdt.debug.ui.CEditor.RulerTobbleBreakpointAction",1296889808469
+error,log,,,"Breakpoint already removed",1296889809449
+executed,command,,,"AUTOGEN:::org.eclipse.cdt.debug.ui.CEditor.BreakpointRulerActions/org.eclipse.cdt.debug.ui.CEditor.RulerTobbleBreakpointAction",1296889809451
+error,log,,,"Problems occurred when invoking code from plug-in: ""org.eclipse.cdt.core"".",1296889826733
+error,log,,,"Error in CDT Core during AST creation",1296889826734
+error,log,,,"Problems occurred when invoking code from plug-in: ""org.eclipse.cdt.core"".",1296889828235
+error,log,,,"Error in CDT Core during AST creation",1296889828236
+error,log,,,"Problems occurred when invoking code from plug-in: ""org.eclipse.cdt.core"".",1296889830125
+error,log,,,"Error in CDT Core during AST creation",1296889830125
+executed,command,,,"AUTOGEN:::org.eclipse.cdt.debug.ui.CEditor.BreakpointRulerActions/org.eclipse.cdt.debug.ui.CEditor.RulerTobbleBreakpointAction",1296889830706
+executed,command,,,"AUTOGEN:::org.eclipse.ui.texteditor.ruler.actions/org.eclipse.cdt.internal.ui.text.correction.CSelectRulerAction",1296889832249
+executed,command,org.eclipse.ui,3.6.0.I20100603-1100,"org.eclipse.ui.file.saveAll",1296889839667
+error,log,,,"Error while parsing /genSchedule/schedule.cpp.",1296889839759
+started,bundle,org.qkdt.core,0.1.0.201002222243NGT,"org.qkdt.core",1296889840075
+started,bundle,org.eclipse.dltk.python.core,1.0.0.v20090613-1432,"org.eclipse.dltk.python.core",1296889840088
+started,bundle,org.eclipse.dltk.tcl.core,1.0.0.v20090613-1432,"org.eclipse.dltk.tcl.core",1296889840128
+started,bundle,org.eclipse.dltk.ruby.core,1.0.0.v20090613-1432,"org.eclipse.dltk.ruby.core",1296889840154
+started,bundle,org.eclipse.dltk.javascript.core,1.0.0.v20090617-1157,"org.eclipse.dltk.javascript.core",1296889840162
+error,log,,,"Error while parsing /genSchedule/schedule.cpp.",1296889842132
+error,log,,,"Error while parsing /genSchedule/schedule.cpp.",1296889843236
+error,log,,,"Error logged from Debug Core: ",1296889851073
+activated,view,org.eclipse.ui.navigator.resources,3.4.200.I20100601-0800,"org.eclipse.ui.navigator.ProjectExplorer",1296889881395
+opened,editor,org.eclipse.cdt.ui,5.2.0.201006141710,"org.eclipse.cdt.ui.editor.CEditor",1296889885417
+activated,editor,org.eclipse.cdt.ui,5.2.0.201006141710,"org.eclipse.cdt.ui.editor.CEditor",1296889885525
+activated,view,org.eclipse.ui.navigator.resources,3.4.200.I20100601-0800,"org.eclipse.ui.navigator.ProjectExplorer",1296889885579
+activated,editor,org.eclipse.cdt.ui,5.2.0.201006141710,"org.eclipse.cdt.ui.editor.CEditor",1296889896264
+error,log,,,"Breakpoint already removed",1296889896473
+executed,command,,,"AUTOGEN:::org.eclipse.cdt.debug.ui.CEditor.BreakpointRulerActions/org.eclipse.cdt.debug.ui.CEditor.RulerTobbleBreakpointAction",1296889896484
+error,log,,,"Problems occurred when invoking code from plug-in: ""org.eclipse.cdt.core"".",1296889907446
+error,log,,,"Error in CDT Core during AST creation",1296889907447
+error,log,,,"Problems occurred when invoking code from plug-in: ""org.eclipse.cdt.core"".",1296889930653
+error,log,,,"Error in CDT Core during AST creation",1296889930653
+error,log,,,"Problems occurred when invoking code from plug-in: ""org.eclipse.cdt.core"".",1296889948591
+error,log,,,"Error in CDT Core during AST creation",1296889948592
+executed,command,org.eclipse.ui,3.6.0.I20100603-1100,"org.eclipse.ui.edit.findReplace",1296889949347
+deactivated,workbench,org.eclipse.ui.workbench,3.6.0.I20100603-1100,"",1296889949382
+error,log,,,"Problems occurred when invoking code from plug-in: ""org.eclipse.cdt.core"".",1296889975773
+error,log,,,"Error in CDT Core during AST creation",1296889975774
+activated,workbench,org.eclipse.ui.workbench,3.6.0.I20100603-1100,"",1296889981365
+executed,command,org.eclipse.ui,3.6.0.I20100603-1100,"org.eclipse.ui.file.saveAll",1296889984165
+error,log,,,"Error while parsing /tradeticket/swapLeg.cpp.",1296889984504
+activated,view,org.eclipse.ui.navigator.resources,3.4.200.I20100601-0800,"org.eclipse.ui.navigator.ProjectExplorer",1296889992628
+opened,editor,org.eclipse.cdt.ui,5.2.0.201006141710,"org.eclipse.cdt.ui.editor.CEditor",1296889998695
+activated,editor,org.eclipse.cdt.ui,5.2.0.201006141710,"org.eclipse.cdt.ui.editor.CEditor",1296889998817
+activated,view,org.eclipse.ui.navigator.resources,3.4.200.I20100601-0800,"org.eclipse.ui.navigator.ProjectExplorer",1296889998862
+error,log,,,"Problems occurred when invoking code from plug-in: ""org.eclipse.cdt.core"".",1296890002947
+error,log,,,"Error in CDT Core during AST creation",1296890002948
+error,log,,,"Problems occurred when invoking code from plug-in: ""org.eclipse.cdt.core"".",1296890002958
+error,log,,,"Error in CDT Core during AST creation",1296890002958
+activated,editor,org.eclipse.cdt.ui,5.2.0.201006141710,"org.eclipse.cdt.ui.editor.CEditor",1296890004915
+error,log,,,"Problems occurred when invoking code from plug-in: ""org.eclipse.cdt.core"".",1296890006506
+error,log,,,"Error in CDT Core during AST creation",1296890006507
+activated,view,org.eclipse.ui.navigator.resources,3.4.200.I20100601-0800,"org.eclipse.ui.navigator.ProjectExplorer",1296890010225
+executed,command,org.eclipse.ui.ide,3.6.0.I20100601-0800,"org.eclipse.ui.project.buildProject",1296890014673
+deactivated,workbench,org.eclipse.ui.workbench,3.6.0.I20100603-1100,"",1296890015478
+error,log,,,"Error while parsing /tradeticket/swapLeg.cpp.",1296890019846
+activated,workbench,org.eclipse.ui.workbench,3.6.0.I20100603-1100,"",1296890019894
+deactivated,workbench,org.eclipse.ui.workbench,3.6.0.I20100603-1100,"",1296890020578
+activated,workbench,org.eclipse.ui.workbench,3.6.0.I20100603-1100,"",1296890024386
+activated,editor,org.eclipse.cdt.ui,5.2.0.201006141710,"org.eclipse.cdt.ui.editor.CEditor",1296890024470
+error,log,,,"Problems occurred when invoking code from plug-in: ""org.eclipse.cdt.core"".",1296890025500
+error,log,,,"Error in CDT Core during AST creation",1296890025504
+activated,view,org.eclipse.ui.navigator.resources,3.4.200.I20100601-0800,"org.eclipse.ui.navigator.ProjectExplorer",1296890028576
+error,log,,,"Error while parsing /tradeticket/swapLeg.cpp.",1296890031179
+error,log,,,"Error logged from Debug Core: ",1296890038432
+deactivated,workbench,org.eclipse.ui.workbench,3.6.0.I20100603-1100,"",1296890073375
+activated,view,org.eclipse.debug.ui,3.6.0.v20100601-1530,"org.eclipse.debug.ui.DebugView",1296890075291
+activated,workbench,org.eclipse.ui.workbench,3.6.0.I20100603-1100,"",1296890075315
+activated,view,org.eclipse.ui.navigator.resources,3.4.200.I20100601-0800,"org.eclipse.ui.navigator.ProjectExplorer",1296890083371
+activated,editor,org.eclipse.cdt.ui,5.2.0.201006141710,"org.eclipse.cdt.ui.editor.CEditor",1296890083471
+executed,command,,,"AUTOGEN:::org.eclipse.cdt.debug.ui.CEditor.BreakpointRulerActions/org.eclipse.cdt.debug.ui.CEditor.RulerTobbleBreakpointAction",1296890091768
+activated,view,org.eclipse.ui.console,3.5.0.v20100526,"org.eclipse.ui.console.ConsoleView",1296890102006
+deactivated,workbench,org.eclipse.ui.workbench,3.6.0.I20100603-1100,"",1296890118122
+executed,command,org.eclipse.ui.ide,3.6.0.I20100601-0800,"org.eclipse.ui.project.cleanAction",1296890124566
+activated,workbench,org.eclipse.ui.workbench,3.6.0.I20100603-1100,"",1296890124699
+deactivated,workbench,org.eclipse.ui.workbench,3.6.0.I20100603-1100,"",1296890126108
+activated,workbench,org.eclipse.ui.workbench,3.6.0.I20100603-1100,"",1296890149970
+deactivated,workbench,org.eclipse.ui.workbench,3.6.0.I20100603-1100,"",1296890156739
+activated,perspective,org.eclipse.debug.ui,3.6.0.v20100601-1530,"org.eclipse.debug.ui.DebugPerspective",1296890159228
+activated,view,org.eclipse.debug.ui,3.6.0.v20100601-1530,"org.eclipse.debug.ui.DebugView",1296890159289
+error,log,,,"null argument:",1296890159292
+error,log,,,"null argument:",1296890159293
+error,log,,,"null argument:",1296890159295
+error,log,,,"null argument:",1296890159375
+activated,workbench,org.eclipse.ui.workbench,3.6.0.I20100603-1100,"",1296890159428
+deactivated,workbench,org.eclipse.ui.workbench,3.6.0.I20100603-1100,"",1296890182503
+activated,workbench,org.eclipse.ui.workbench,3.6.0.I20100603-1100,"",1296890184228
+executed,command,org.eclipse.debug.ui,3.6.0.v20100601-1530,"org.eclipse.debug.ui.commands.StepInto",1296890204235
+opened,editor,org.eclipse.cdt.debug.ui,7.0.0.201006141710,"org.eclipse.cdt.debug.ui.SourceNotFoundEditor",1296890204395
+executed,command,org.eclipse.debug.ui,3.6.0.v20100601-1530,"org.eclipse.debug.ui.commands.StepInto",1296890206562
+error,log,,,"Request for monitor: 'RequestMonitor (org.eclipse.cdt.dsf.debug.ui.viewmodel.SteppingController$3@1d251a6): Status ERROR: org.eclipse.cdt.dsf.gdb code=10004 Failed to execute MI command:\n-exec-step 1\nError message from debugger back end:\nCannot find bounds of current function java.lang.Exception: Cannot find bounds of current function' resulted in an error.",1296890206580
+executed,command,org.eclipse.debug.ui,3.6.0.v20100601-1530,"org.eclipse.debug.ui.commands.StepOver",1296890209113
+error,log,,,"Request for monitor: 'RequestMonitor (org.eclipse.cdt.dsf.debug.ui.viewmodel.SteppingController$3@106c58a): Status ERROR: org.eclipse.cdt.dsf.gdb code=10004 Failed to execute MI command:\n-exec-next 1\nError message from debugger back end:\nCannot find bounds of current function java.lang.Exception: Cannot find bounds of current function' resulted in an error.",1296890209116
+executed,command,org.eclipse.debug.ui,3.6.0.v20100601-1530,"org.eclipse.debug.ui.commands.StepOver",1296890211137
+error,log,,,"Request for monitor: 'RequestMonitor (org.eclipse.cdt.dsf.debug.ui.viewmodel.SteppingController$3@15c9583): Status ERROR: org.eclipse.cdt.dsf.gdb code=10004 Failed to execute MI command:\n-exec-next 1\nError message from debugger back end:\nCannot find bounds of current function java.lang.Exception: Cannot find bounds of current function' resulted in an error.",1296890211140
+error,log,,,"Request for monitor: 'RequestMonitor (org.eclipse.cdt.dsf.debug.ui.viewmodel.SteppingController$3@ca2017): Status ERROR: org.eclipse.cdt.dsf.gdb code=10004 Failed to execute MI command:\n-exec-next 1\nError message from debugger back end:\nCannot find bounds of current function java.lang.Exception: Cannot find bounds of current function' resulted in an error.",1296890211411
+executed,command,org.eclipse.debug.ui,3.6.0.v20100601-1530,"org.eclipse.debug.ui.commands.StepOver",1296890211412
+executed,command,org.eclipse.debug.ui,3.6.0.v20100601-1530,"org.eclipse.debug.ui.commands.StepOver",1296890211647
+error,log,,,"Request for monitor: 'RequestMonitor (org.eclipse.cdt.dsf.debug.ui.viewmodel.SteppingController$3@1612a4c): Status ERROR: org.eclipse.cdt.dsf.gdb code=10004 Failed to execute MI command:\n-exec-next 1\nError message from debugger back end:\nCannot find bounds of current function java.lang.Exception: Cannot find bounds of current function' resulted in an error.",1296890211650
+error,log,,,"Request for monitor: 'RequestMonitor (org.eclipse.cdt.dsf.debug.ui.viewmodel.SteppingController$3@1b83ac6): Status ERROR: org.eclipse.cdt.dsf.gdb code=10004 Failed to execute MI command:\n-exec-next 1\nError message from debugger back end:\nCannot find bounds of current function java.lang.Exception: Cannot find bounds of current function' resulted in an error.",1296890211842
+executed,command,org.eclipse.debug.ui,3.6.0.v20100601-1530,"org.eclipse.debug.ui.commands.StepOver",1296890211842
+error,log,,,"Request for monitor: 'RequestMonitor (org.eclipse.cdt.dsf.debug.ui.viewmodel.SteppingController$3@19c62bb): Status ERROR: org.eclipse.cdt.dsf.gdb code=10004 Failed to execute MI command:\n-exec-next 1\nError message from debugger back end:\nCannot find bounds of current function java.lang.Exception: Cannot find bounds of current function' resulted in an error.",1296890212082
+executed,command,org.eclipse.debug.ui,3.6.0.v20100601-1530,"org.eclipse.debug.ui.commands.StepOver",1296890212083
+executed,command,org.eclipse.debug.ui,3.6.0.v20100601-1530,"org.eclipse.debug.ui.commands.StepOver",1296890212312
+error,log,,,"Request for monitor: 'RequestMonitor (org.eclipse.cdt.dsf.debug.ui.viewmodel.SteppingController$3@1c10dd7): Status ERROR: org.eclipse.cdt.dsf.gdb code=10004 Failed to execute MI command:\n-exec-next 1\nError message from debugger back end:\nCannot find bounds of current function java.lang.Exception: Cannot find bounds of current function' resulted in an error.",1296890212314
+opened,editor,org.eclipse.cdt.ui,5.2.0.201006141710,"org.eclipse.cdt.ui.editor.CEditor",1296890222938
+activated,view,org.eclipse.debug.ui,3.6.0.v20100601-1530,"org.eclipse.debug.ui.BreakpointView",1296890229294
+executed,command,org.eclipse.ui,3.6.0.I20100603-1100,"org.eclipse.ui.views.showView",1296890229314
+opened,view,org.eclipse.cdt.dsf.ui,2.1.0.201006141710,"org.eclipse.cdt.dsf.debug.ui.disassembly.view",1296890234646
+activated,view,org.eclipse.cdt.dsf.ui,2.1.0.201006141710,"org.eclipse.cdt.dsf.debug.ui.disassembly.view",1296890234709
+executed,command,org.eclipse.ui,3.6.0.I20100603-1100,"org.eclipse.ui.views.showView",1296890234709
+activated,view,org.eclipse.debug.ui,3.6.0.v20100601-1530,"org.eclipse.debug.ui.DebugView",1296890242467
+executed,command,org.eclipse.ui,3.6.0.I20100603-1100,"org.eclipse.ui.views.showView",1296890242467
+deactivated,workbench,org.eclipse.ui.workbench,3.6.0.I20100603-1100,"",1296890249095
+activated,workbench,org.eclipse.ui.workbench,3.6.0.I20100603-1100,"",1296890251445
+activated,perspective,org.eclipse.cdt.ui,5.2.0.201006141710,"org.eclipse.cdt.ui.CPerspective",1296890253551
+activated,editor,org.eclipse.cdt.ui,5.2.0.201006141710,"org.eclipse.cdt.ui.editor.CEditor",1296890253592
+activated,view,org.eclipse.ui.console,3.5.0.v20100526,"org.eclipse.ui.console.ConsoleView",1296890258890
+activated,view,org.eclipse.ui.navigator.resources,3.4.200.I20100601-0800,"org.eclipse.ui.navigator.ProjectExplorer",1296890287019
+activated,editor,org.eclipse.cdt.ui,5.2.0.201006141710,"org.eclipse.cdt.ui.editor.CEditor",1296890289630
+activated,view,org.eclipse.ui.navigator.resources,3.4.200.I20100601-0800,"org.eclipse.ui.navigator.ProjectExplorer",1296890289673
+activated,editor,org.eclipse.cdt.ui,5.2.0.201006141710,"org.eclipse.cdt.ui.editor.CEditor",1296890293784
+deactivated,workbench,org.eclipse.ui.workbench,3.6.0.I20100603-1100,"",1296890304568
+activated,workbench,org.eclipse.ui.workbench,3.6.0.I20100603-1100,"",1296890337725
+activated,view,org.eclipse.ui.navigator.resources,3.4.200.I20100601-0800,"org.eclipse.ui.navigator.ProjectExplorer",1296890340273
+started,bundle,org.qkdt.ui,0.1.0.201002222243NGT,"org.qkdt.ui",1296890340853
+started,bundle,org.eclipse.dltk.console.ui,1.0.0.v20090610-1638,"org.eclipse.dltk.console.ui",1296890340862
+started,bundle,org.eclipse.dltk.tcl.ui,1.0.0.v20090617-1157,"org.eclipse.dltk.tcl.ui",1296890340863
+started,bundle,org.eclipse.dltk.validators.ui,1.0.0.v20090610-1638,"org.eclipse.dltk.validators.ui",1296890340896
+started,bundle,org.eclipse.compare,3.5.100.I20100526-0800,"org.eclipse.compare",1296890340910
+deactivated,workbench,org.eclipse.ui.workbench,3.6.0.I20100603-1100,"",1296890342170
+error,log,,,"Error while parsing /genSchedule/schedule.cpp.",1296890376258
+executed,command,org.eclipse.ui,3.6.0.I20100603-1100,"org.eclipse.ui.file.import",1296890376412
+executed,command,org.eclipse.ui,3.6.0.I20100603-1100,"org.eclipse.ui.file.import",1296890376412
+activated,workbench,org.eclipse.ui.workbench,3.6.0.I20100603-1100,"",1296890376434
+activated,editor,org.eclipse.cdt.ui,5.2.0.201006141710,"org.eclipse.cdt.ui.editor.CEditor",1296890378762
+activated,view,org.eclipse.ui.navigator.resources,3.4.200.I20100601-0800,"org.eclipse.ui.navigator.ProjectExplorer",1296890378801
+error,log,,,"Error while parsing /genSchedule/schedule.cpp.",1296890388733
+error,log,,,"Error while parsing /genSchedule/schedule.cpp.",1296890391312
+error,log,,,"Error logged from Debug Core: ",1296890397970
+deactivated,workbench,org.eclipse.ui.workbench,3.6.0.I20100603-1100,"",1296890410228
+activated,view,org.eclipse.debug.ui,3.6.0.v20100601-1530,"org.eclipse.debug.ui.DebugView",1296890411329
+activated,workbench,org.eclipse.ui.workbench,3.6.0.I20100603-1100,"",1296890411351
+activated,editor,org.eclipse.cdt.ui,5.2.0.201006141710,"org.eclipse.cdt.ui.editor.CEditor",1296890414406
+deactivated,workbench,org.eclipse.ui.workbench,3.6.0.I20100603-1100,"",1296890435357
+activated,perspective,org.eclipse.debug.ui,3.6.0.v20100601-1530,"org.eclipse.debug.ui.DebugPerspective",1296890441602
+activated,view,org.eclipse.debug.ui,3.6.0.v20100601-1530,"org.eclipse.debug.ui.DebugView",1296890441654
+error,log,,,"null argument:",1296890441659
+error,log,,,"null argument:",1296890441661
+error,log,,,"null argument:",1296890441663
+error,log,,,"null argument:",1296890441665
+activated,workbench,org.eclipse.ui.workbench,3.6.0.I20100603-1100,"",1296890441717
+executed,command,org.eclipse.debug.ui,3.6.0.v20100601-1530,"org.eclipse.debug.ui.commands.StepInto",1296890444720
+deactivated,workbench,org.eclipse.ui.workbench,3.6.0.I20100603-1100,"",1296890459862
+activated,workbench,org.eclipse.ui.workbench,3.6.0.I20100603-1100,"",1296890475743
+executed,command,org.eclipse.debug.ui,3.6.0.v20100601-1530,"org.eclipse.debug.ui.commands.StepOver",1296890482640
+executed,command,org.eclipse.debug.ui,3.6.0.v20100601-1530,"org.eclipse.debug.ui.commands.StepOver",1296890483431
+executed,command,org.eclipse.debug.ui,3.6.0.v20100601-1530,"org.eclipse.debug.ui.commands.StepOver",1296890484452
+executed,command,org.eclipse.debug.ui,3.6.0.v20100601-1530,"org.eclipse.debug.ui.commands.StepOver",1296890485134
+executed,command,org.eclipse.debug.ui,3.6.0.v20100601-1530,"org.eclipse.debug.ui.commands.StepOver",1296890485677
+executed,command,org.eclipse.debug.ui,3.6.0.v20100601-1530,"org.eclipse.debug.ui.commands.StepOver",1296890485897
+executed,command,org.eclipse.debug.ui,3.6.0.v20100601-1530,"org.eclipse.debug.ui.commands.StepOver",1296890486096
+executed,command,org.eclipse.debug.ui,3.6.0.v20100601-1530,"org.eclipse.debug.ui.commands.StepOver",1296890486265
+executed,command,org.eclipse.debug.ui,3.6.0.v20100601-1530,"org.eclipse.debug.ui.commands.StepOver",1296890486447
+executed,command,org.eclipse.debug.ui,3.6.0.v20100601-1530,"org.eclipse.debug.ui.commands.StepOver",1296890486647
+executed,command,org.eclipse.debug.ui,3.6.0.v20100601-1530,"org.eclipse.debug.ui.commands.StepOver",1296890486828
+executed,command,org.eclipse.debug.ui,3.6.0.v20100601-1530,"org.eclipse.debug.ui.commands.StepOver",1296890487023
+executed,command,org.eclipse.debug.ui,3.6.0.v20100601-1530,"org.eclipse.debug.ui.commands.StepOver",1296890487236
+activated,view,org.eclipse.ui.console,3.5.0.v20100526,"org.eclipse.ui.console.ConsoleView",1296890487369
+activated,view,org.eclipse.debug.ui,3.6.0.v20100601-1530,"org.eclipse.debug.ui.DebugView",1296890491631
+error,log,,,"null argument:",1296890491634
+error,log,,,"null argument:",1296890491636
+error,log,,,"null argument:",1296890491637
+error,log,,,"null argument:",1296890491638
+activated,view,org.eclipse.cdt.dsf.ui,2.1.0.201006141710,"org.eclipse.cdt.dsf.debug.ui.disassembly.view",1296890493618
+activated,view,org.eclipse.debug.ui,3.6.0.v20100601-1530,"org.eclipse.debug.ui.BreakpointView",1296890494535
+activated,view,org.eclipse.debug.ui,3.6.0.v20100601-1530,"org.eclipse.debug.ui.ModuleView",1296890498269
+executed,command,org.eclipse.ui,3.6.0.I20100603-1100,"org.eclipse.ui.views.showView",1296890498270
+activated,view,org.eclipse.debug.ui,3.6.0.v20100601-1530,"org.eclipse.debug.ui.VariableView",1296890503479
+executed,command,org.eclipse.ui,3.6.0.I20100603-1100,"org.eclipse.ui.views.showView",1296890503479
+activated,view,org.eclipse.ui.console,3.5.0.v20100526,"org.eclipse.ui.console.ConsoleView",1296890503792
+opened,view,org.eclipse.cdt.dsf.gdb.ui,2.1.0.201006141710,"org.eclipse.cdt.dsf.gdb.ui.tracecontrol.view",1296890506296
+activated,view,org.eclipse.cdt.dsf.gdb.ui,2.1.0.201006141710,"org.eclipse.cdt.dsf.gdb.ui.tracecontrol.view",1296890506343
+executed,command,org.eclipse.ui,3.6.0.I20100603-1100,"org.eclipse.ui.views.showView",1296890506343
+activated,view,org.eclipse.debug.ui,3.6.0.v20100601-1530,"org.eclipse.debug.ui.BreakpointView",1296890510219
+executed,command,org.eclipse.ui,3.6.0.I20100603-1100,"org.eclipse.ui.views.showView",1296890510220
+activated,view,org.eclipse.ui.console,3.5.0.v20100526,"org.eclipse.ui.console.ConsoleView",1296890512737
+executed,command,org.eclipse.ui,3.6.0.I20100603-1100,"org.eclipse.ui.views.showView",1296890512745
+activated,view,org.eclipse.debug.ui,3.6.0.v20100601-1530,"org.eclipse.debug.ui.ExpressionView",1296890516711
+executed,command,org.eclipse.ui,3.6.0.I20100603-1100,"org.eclipse.ui.views.showView",1296890516711
+error,log,,,"Category org.eclipse.datatools not found for view org.eclipse.datatools.sqltools.result.resultView.  This view added to 'Other' category.",1296890527428
+error,log,,,"Category org.qkdt.debug.ui not found for view org.qkdt.ui.internal.views.ExpressionAnalyzerView.  This view added to 'Other' category.",1296890527429
+error,log,,,"Category org.eclipse.datatools not found for view org.eclipse.datatools.sqltools.result.resultView.  This view added to 'Other' category.",1296890527433
+error,log,,,"Category org.qkdt.debug.ui not found for view org.qkdt.ui.internal.views.ExpressionAnalyzerView.  This view added to 'Other' category.",1296890527433
+deactivated,workbench,org.eclipse.ui.workbench,3.6.0.I20100603-1100,"",1296890527569
+executed,command,org.eclipse.ui,3.6.0.I20100603-1100,"org.eclipse.ui.views.showView",1296890529237
+executed,command,org.eclipse.ui,3.6.0.I20100603-1100,"org.eclipse.ui.views.showView",1296890529243
+activated,workbench,org.eclipse.ui.workbench,3.6.0.I20100603-1100,"",1296890529293
+activated,view,org.eclipse.cdt.dsf.ui,2.1.0.201006141710,"org.eclipse.cdt.dsf.debug.ui.disassembly.view",1296890530698
+activated,view,org.eclipse.debug.ui,3.6.0.v20100601-1530,"org.eclipse.debug.ui.ModuleView",1296890534098
+opened,view,org.eclipse.ui.views,3.5.0.I20100527-0800,"org.eclipse.ui.views.ContentOutline",1296890543484
+deactivated,workbench,org.eclipse.ui.workbench,3.6.0.I20100603-1100,"",1296890561362
+activated,workbench,org.eclipse.ui.workbench,3.6.0.I20100603-1100,"",1296890591802
+activated,editor,org.eclipse.cdt.ui,5.2.0.201006141710,"org.eclipse.cdt.ui.editor.CEditor",1296890591975
+executed,command,org.eclipse.ui,3.6.0.I20100603-1100,"org.eclipse.ui.edit.paste",1296890610220
+executed,command,org.eclipse.ui,3.6.0.I20100603-1100,"org.eclipse.ui.file.saveAll",1296890617358
+activated,view,org.eclipse.debug.ui,3.6.0.v20100601-1530,"org.eclipse.debug.ui.DebugView",1296890622679
+activated,editor,org.eclipse.cdt.ui,5.2.0.201006141710,"org.eclipse.cdt.ui.editor.CEditor",1296890635798
+opened,view,org.eclipse.ui.ide,3.6.0.I20100601-0800,"org.eclipse.ui.views.TaskList",1296890635955
+executed,command,,,"AUTOGEN:::org.eclipse.cdt.debug.ui.CEditor.BreakpointRulerActions/org.eclipse.cdt.debug.ui.CEditor.RulerTobbleBreakpointAction",1296890647421
+deactivated,workbench,org.eclipse.ui.workbench,3.6.0.I20100603-1100,"",1296890647475
+activated,workbench,org.eclipse.ui.workbench,3.6.0.I20100603-1100,"",1296890647491
+activated,view,org.eclipse.debug.ui,3.6.0.v20100601-1530,"org.eclipse.debug.ui.DebugView",1296890649340
+activated,editor,org.eclipse.cdt.ui,5.2.0.201006141710,"org.eclipse.cdt.ui.editor.CEditor",1296890655450
+activated,view,org.eclipse.debug.ui,3.6.0.v20100601-1530,"org.eclipse.debug.ui.DebugView",1296890656048
+activated,editor,org.eclipse.cdt.ui,5.2.0.201006141710,"org.eclipse.cdt.ui.editor.CEditor",1296890658121
+activated,view,org.eclipse.debug.ui,3.6.0.v20100601-1530,"org.eclipse.debug.ui.DebugView",1296890668905
+executed,command,org.eclipse.debug.ui,3.6.0.v20100601-1530,"org.eclipse.debug.ui.commands.Terminate",1296890671095
+activated,editor,org.eclipse.cdt.ui,5.2.0.201006141710,"org.eclipse.cdt.ui.editor.CEditor",1296890675206
+activated,view,org.eclipse.debug.ui,3.6.0.v20100601-1530,"org.eclipse.debug.ui.DebugView",1296890677933
+activated,view,org.eclipse.debug.ui,3.6.0.v20100601-1530,"org.eclipse.debug.ui.RegisterView",1296890681040

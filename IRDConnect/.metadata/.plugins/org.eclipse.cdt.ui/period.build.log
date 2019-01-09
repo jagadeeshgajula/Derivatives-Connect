@@ -1,0 +1,9 @@
+
+**** Build of configuration Debug for project period ****
+
+make all 
+Building file: ../period.cpp
+Invoking: GCC C++ Compiler
+g++ -I/home/vishist/IRDConnect/include -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"period.d" -MT"period.d" -o"period.o" "../period.cpp"
+/bin/sh: g++: command not found
+make: *** [period.o] Error 127

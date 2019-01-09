@@ -1,0 +1,215 @@
+/*
+ * BusDayConvention.cpp
+ *
+ *  Created on: 24-Aug-2010
+ *      Author: vishist
+ */
+#include "busdayconv.h"
+#include "calendar.h"
+
+
+using namespace boost::gregorian ;
+using namespace std ;
+//----------------------------------------------------------------------
+
+BusDayConv::BusDayConv( const std::string name ) : name_ (name )
+{
+}
+
+BusDayConv::~BusDayConv()
+{
+}
+
+date
+BusDayConv::adjustToBusDay( const date &d, const Calendar &calendar ) const
+{
+	return calendar.isBusDay( d ) ? d : adjust( d, calendar );
+}
+
+date
+BusDayConv::adjustToBusDay( const date &d,
+					const Calendar &calendar,
+					const Calendar &secondCalendar ) const
+{
+    return calendar.isBusDay( d, secondCalendar ) ? d :
+				adjust( d, calendar, secondCalendar );
+}
+
+
+//----------------------------------------------------------------------
+
+class None : public BusDayConv {
+public:
+	None();
+	virtual ~None();
+private:
+	virtual date adjust( const date &d, const Calendar &calendar ) const;
+	virtual date adjust( const date &d, const Calendar &calendar,
+					const Calendar &secondCalendar ) const;
+};
+
+None::None() :
+	BusDayConv( "None" )
+{
+}
+
+None::~None()
+{
+}
+
+date
+None::adjust( const date &d, const Calendar & ) const
+{
+	return d;
+}
+
+date
+None::adjust( const date &d, const Calendar &, const Calendar & ) const
+{
+    return d;
+}
+
+//----------------------------------------------------------------------
+
+class Following : public BusDayConv {
+public:
+	Following();
+	virtual ~Following();
+private:
+	virtual date adjust( const date &d, const Calendar &calendar ) const;
+	virtual date adjust( const date &d, const Calendar &calendar,
+					const Calendar &secondCalendar ) const;
+};
+
+Following::Following() :
+	BusDayConv(  "FOL" )
+{
+}
+
+Following::~Following()
+{
+}
+
+date
+Following::adjust( const date &d, const Calendar &calendar ) const
+{
+	return calendar.nextBusDay( d );
+}
+
+date
+Following::adjust( const date &d, const Calendar &calendar,
+					const Calendar & secondCalendar ) const
+{
+    return calendar.nextBusDay( d, secondCalendar );
+}
+
+//----------------------------------------------------------------------
+
+class ModifiedFollowing : public BusDayConv {
+public:
+	ModifiedFollowing();
+	virtual ~ModifiedFollowing();
+private:
+	virtual date adjust( const date &d, const Calendar &calendar ) const;
+	virtual date adjust( const date &d, const Calendar &calendar,
+				const Calendar &secondCalendar ) const;
+};
+
+ModifiedFollowing::ModifiedFollowing() :
+	BusDayConv( "MFO" )
+{
+	//Remakrs: Originally, the UIName is "Modified Following". It
+	// screw up the UI screen. According to the suggestion to
+	// the Human factor specialist, agreed upon with the analytical
+	// guy and GUI PF, we changed to Modified.
+}
+
+ModifiedFollowing::~ModifiedFollowing()
+{
+}
+
+date
+ModifiedFollowing::adjust( const date &d, const Calendar &calendar ) const
+{
+	date adjDate = calendar.nextBusDay( d );
+
+	if( adjDate.month() != d.month() )
+		return calendar.prevBusDay( d );
+
+	return adjDate;
+}
+
+date
+ModifiedFollowing::adjust( const date &d, const Calendar &calendar,
+					const Calendar &secondCalendar ) const
+{
+    date adjDate = calendar.nextBusDay( d, secondCalendar);
+
+    if( adjDate.month() != d.month() )
+        return calendar.prevBusDay( d, secondCalendar );
+
+    return adjDate;
+}
+
+//----------------------------------------------------------------------
+
+class Preceding : public BusDayConv {
+public:
+	Preceding();
+	virtual ~Preceding();
+private:
+	virtual date adjust( const date &d, const Calendar &calendar ) const;
+	virtual date adjust( const date &d, const Calendar &calendar,
+					const Calendar &secondCalendar ) const;
+};
+
+Preceding::Preceding() :
+	BusDayConv( "PRE" )
+{
+}
+
+Preceding::~Preceding()
+{
+}
+
+date
+Preceding::adjust( const date &d, const Calendar &calendar ) const
+{
+	return calendar.prevBusDay( d );
+}
+
+date
+Preceding::adjust( const date &d, const Calendar &calendar,
+					const Calendar &secondCalendar ) const
+{
+    return calendar.prevBusDay( d, secondCalendar);
+}
+
+//----------------------------------------------------------------------
+const BusDayConv *
+BusDayConv::find( const std::string name )
+{
+    BdcMap::const_iterator it = getMap().find( name ) ;
+    if ( it != getMap().end() )
+        return it->second ;
+	return 0;
+}
+
+std::map<std::string, const BusDayConv *> & BusDayConv::getMap ( )
+
+{
+     static BdcMap bdcMap ;
+     static bool inited = false ;
+     if ( !inited ) {
+         bdcMap.insert ( BdcMap::value_type("NON",new None )) ;
+         bdcMap.insert ( BdcMap::value_type("FOL",new Following )) ;
+         bdcMap.insert ( BdcMap::value_type("MOD",new ModifiedFollowing )) ;
+         bdcMap.insert ( BdcMap::value_type("PRE",new Preceding )) ;
+         inited = true ;
+     }
+     return bdcMap ;
+}
+
+
+
+// End-Of-File

@@ -1,0 +1,301 @@
+what,kind,bundleId,bundleVersion,description,time
+executed,command,org.eclipse.debug.ui,3.6.0.v20100601-1530,"org.eclipse.debug.ui.commands.StepInto",1320876329914
+executed,command,org.eclipse.debug.ui,3.6.0.v20100601-1530,"org.eclipse.debug.ui.commands.StepOver",1320876337522
+executed,command,org.eclipse.debug.ui,3.6.0.v20100601-1530,"org.eclipse.debug.ui.commands.StepOver",1320876339140
+executed,command,org.eclipse.debug.ui,3.6.0.v20100601-1530,"org.eclipse.debug.ui.commands.StepOver",1320876342838
+executed,command,org.eclipse.debug.ui,3.6.0.v20100601-1530,"org.eclipse.debug.ui.commands.StepInto",1320876344719
+executed,command,org.eclipse.debug.ui,3.6.0.v20100601-1530,"org.eclipse.debug.ui.commands.StepOver",1320876347880
+executed,command,org.eclipse.debug.ui,3.6.0.v20100601-1530,"org.eclipse.debug.ui.commands.StepOver",1320876349385
+executed,command,org.eclipse.debug.ui,3.6.0.v20100601-1530,"org.eclipse.debug.ui.commands.StepOver",1320876349849
+activated,editor,org.eclipse.cdt.ui,5.2.0.201006141710,"org.eclipse.cdt.ui.editor.CEditor",1320876354023
+error,log,,,"Breakpoint already removed",1320876354205
+executed,command,,,"AUTOGEN:::org.eclipse.cdt.debug.ui.CEditor.BreakpointRulerActions/org.eclipse.cdt.debug.ui.CEditor.RulerTobbleBreakpointAction",1320876354207
+executed,command,,,"AUTOGEN:::org.eclipse.cdt.debug.ui.CEditor.BreakpointRulerActions/org.eclipse.cdt.debug.ui.CEditor.RulerTobbleBreakpointAction",1320876355061
+activated,view,org.eclipse.debug.ui,3.6.0.v20100601-1530,"org.eclipse.debug.ui.DebugView",1320876362264
+executed,command,org.eclipse.debug.ui,3.6.0.v20100601-1530,"org.eclipse.debug.ui.commands.Resume",1320876362315
+deactivated,workbench,org.eclipse.ui.workbench,3.6.0.I20100603-1100,"",1320876391905
+activated,workbench,org.eclipse.ui.workbench,3.6.0.I20100603-1100,"",1320876406566
+activated,editor,org.eclipse.cdt.ui,5.2.0.201006141710,"org.eclipse.cdt.ui.editor.CEditor",1320876408808
+activated,view,org.eclipse.ui.navigator.resources,3.4.200.I20100601-0800,"org.eclipse.ui.navigator.ProjectExplorer",1320876432930
+activated,editor,org.eclipse.cdt.ui,5.2.0.201006141710,"org.eclipse.cdt.ui.editor.CEditor",1320876433055
+activated,view,org.eclipse.ui.navigator.resources,3.4.200.I20100601-0800,"org.eclipse.ui.navigator.ProjectExplorer",1320876433071
+activated,editor,org.eclipse.cdt.ui,5.2.0.201006141710,"org.eclipse.cdt.ui.editor.CEditor",1320876435470
+activated,view,org.eclipse.ui.navigator.resources,3.4.200.I20100601-0800,"org.eclipse.ui.navigator.ProjectExplorer",1320876435486
+activated,view,org.eclipse.debug.ui,3.6.0.v20100601-1530,"org.eclipse.debug.ui.DebugView",1320876437960
+executed,command,org.eclipse.debug.ui,3.6.0.v20100601-1530,"org.eclipse.debug.ui.commands.Terminate",1320876438034
+activated,view,org.eclipse.ui.navigator.resources,3.4.200.I20100601-0800,"org.eclipse.ui.navigator.ProjectExplorer",1320876439974
+activated,editor,org.eclipse.cdt.ui,5.2.0.201006141710,"org.eclipse.cdt.ui.editor.CEditor",1320876440108
+activated,view,org.eclipse.ui.navigator.resources,3.4.200.I20100601-0800,"org.eclipse.ui.navigator.ProjectExplorer",1320876440126
+activated,editor,org.eclipse.cdt.ui,5.2.0.201006141710,"org.eclipse.cdt.ui.editor.CEditor",1320876451672
+executed,command,org.eclipse.ui,3.6.0.I20100603-1100,"org.eclipse.ui.file.saveAll",1320876454470
+activated,view,org.eclipse.ui.navigator.resources,3.4.200.I20100601-0800,"org.eclipse.ui.navigator.ProjectExplorer",1320876456441
+executed,command,org.eclipse.ui.ide,3.6.0.I20100601-0800,"org.eclipse.ui.project.buildProject",1320876458714
+deactivated,workbench,org.eclipse.ui.workbench,3.6.0.I20100603-1100,"",1320876459250
+activated,workbench,org.eclipse.ui.workbench,3.6.0.I20100603-1100,"",1320876463732
+error,log,,,"Error while parsing /genSchedule/schedule.cpp.",1320876463976
+deactivated,workbench,org.eclipse.ui.workbench,3.6.0.I20100603-1100,"",1320876466106
+activated,workbench,org.eclipse.ui.workbench,3.6.0.I20100603-1100,"",1320876471471
+error,log,,,"Error while parsing /genSchedule/schedule.cpp.",1320876477299
+error,log,,,"Error while parsing /genSchedule/schedule.cpp.",1320876479412
+error,log,,,"Error while parsing /genSchedule/schedule.cpp.",1320876479670
+error,log,,,"Error while parsing /genSchedule/schedule.cpp.",1320876481628
+error,log,,,"Error while parsing /genSchedule/schedule.cpp.",1320876482460
+error,log,,,"Error while parsing /genSchedule/schedule.cpp.",1320876486163
+error,log,,,"Error logged from Debug Core: ",1320876486561
+deactivated,workbench,org.eclipse.ui.workbench,3.6.0.I20100603-1100,"",1320876490807
+activated,workbench,org.eclipse.ui.workbench,3.6.0.I20100603-1100,"",1320876611661
+activated,editor,org.eclipse.cdt.ui,5.2.0.201006141710,"org.eclipse.cdt.ui.editor.CEditor",1320876611862
+deactivated,workbench,org.eclipse.ui.workbench,3.6.0.I20100603-1100,"",1320876612969
+activated,workbench,org.eclipse.ui.workbench,3.6.0.I20100603-1100,"",1320876613150
+deactivated,workbench,org.eclipse.ui.workbench,3.6.0.I20100603-1100,"",1320876613194
+activated,workbench,org.eclipse.ui.workbench,3.6.0.I20100603-1100,"",1320876614388
+activated,view,org.eclipse.ui.navigator.resources,3.4.200.I20100601-0800,"org.eclipse.ui.navigator.ProjectExplorer",1320876615031
+deactivated,workbench,org.eclipse.ui.workbench,3.6.0.I20100603-1100,"",1320876618436
+error,log,,,"Error while parsing /genSchedule/schedule.cpp.",1320876619238
+error,log,,,"Error while parsing /genSchedule/schedule.cpp.",1320876619380
+error,log,,,"Error while parsing /genSchedule/schedule.cpp.",1320876621653
+error,log,,,"Error while parsing /genSchedule/schedule.cpp.",1320876622382
+error,log,,,"Error while parsing /genSchedule/schedule.cpp.",1320876623676
+error,log,,,"Error while parsing /genSchedule/schedule.cpp.",1320876627013
+error,log,,,"Error logged from Debug Core: ",1320876627155
+activated,workbench,org.eclipse.ui.workbench,3.6.0.I20100603-1100,"",1320876667525
+activated,editor,org.eclipse.cdt.ui,5.2.0.201006141710,"org.eclipse.cdt.ui.editor.CEditor",1320876667710
+activated,view,org.eclipse.ui.navigator.resources,3.4.200.I20100601-0800,"org.eclipse.ui.navigator.ProjectExplorer",1320876673109
+activated,editor,org.eclipse.cdt.ui,5.2.0.201006141710,"org.eclipse.cdt.ui.editor.CEditor",1320876673278
+activated,view,org.eclipse.ui.navigator.resources,3.4.200.I20100601-0800,"org.eclipse.ui.navigator.ProjectExplorer",1320876673302
+activated,editor,org.eclipse.cdt.ui,5.2.0.201006141710,"org.eclipse.cdt.ui.editor.CEditor",1320876673994
+error,log,,,"Problems occurred when invoking code from plug-in: ""org.eclipse.cdt.core"".",1320876674729
+error,log,,,"Error in CDT Core during AST creation",1320876674730
+executed,command,org.eclipse.ui,3.6.0.I20100603-1100,"org.eclipse.ui.edit.findReplace",1320876675263
+deactivated,workbench,org.eclipse.ui.workbench,3.6.0.I20100603-1100,"",1320876675297
+error,log,,,"Problems occurred when invoking code from plug-in: ""org.eclipse.cdt.core"".",1320876708432
+error,log,,,"Error in CDT Core during AST creation",1320876708434
+activated,workbench,org.eclipse.ui.workbench,3.6.0.I20100603-1100,"",1320876711220
+error,log,,,"Problems occurred when invoking code from plug-in: ""org.eclipse.cdt.core"".",1320876714756
+error,log,,,"Error in CDT Core during AST creation",1320876714757
+error,log,,,"Problems occurred when invoking code from plug-in: ""org.eclipse.cdt.core"".",1320876716562
+error,log,,,"Error in CDT Core during AST creation",1320876716566
+error,log,,,"Problems occurred when invoking code from plug-in: ""org.eclipse.cdt.core"".",1320876719039
+error,log,,,"Error in CDT Core during AST creation",1320876719040
+error,log,,,"Problems occurred when invoking code from plug-in: ""org.eclipse.cdt.core"".",1320876724816
+error,log,,,"Error in CDT Core during AST creation",1320876724816
+executed,command,org.eclipse.ui,3.6.0.I20100603-1100,"org.eclipse.ui.file.saveAll",1320876727151
+error,log,,,"Error while parsing /tradeticket/swapLeg.cpp.",1320876727261
+activated,view,org.eclipse.ui.navigator.resources,3.4.200.I20100601-0800,"org.eclipse.ui.navigator.ProjectExplorer",1320876732299
+executed,command,org.eclipse.ui.ide,3.6.0.I20100601-0800,"org.eclipse.ui.project.buildProject",1320876734601
+deactivated,workbench,org.eclipse.ui.workbench,3.6.0.I20100603-1100,"",1320876735240
+activated,workbench,org.eclipse.ui.workbench,3.6.0.I20100603-1100,"",1320876739626
+activated,editor,org.eclipse.cdt.ui,5.2.0.201006141710,"org.eclipse.cdt.ui.editor.CEditor",1320876739717
+error,log,,,"Error while parsing /tradeticket/swapLeg.cpp.",1320876740642
+error,log,,,"Error while parsing /genSchedule/schedule.cpp.",1320876740744
+error,log,,,"Problems occurred when invoking code from plug-in: ""org.eclipse.cdt.core"".",1320876741275
+error,log,,,"Error in CDT Core during AST creation",1320876741277
+deactivated,workbench,org.eclipse.ui.workbench,3.6.0.I20100603-1100,"",1320876741706
+activated,workbench,org.eclipse.ui.workbench,3.6.0.I20100603-1100,"",1320876745270
+activated,view,org.eclipse.ui.navigator.resources,3.4.200.I20100601-0800,"org.eclipse.ui.navigator.ProjectExplorer",1320876747172
+error,log,,,"Error while parsing /tradeticket/swapLeg.cpp.",1320876753530
+error,log,,,"Error while parsing /tradeticket/swapLeg.cpp.",1320876753744
+error,log,,,"Error while parsing /genSchedule/schedule.cpp.",1320876753980
+error,log,,,"Error while parsing /genSchedule/schedule.cpp.",1320876754221
+error,log,,,"Error while parsing /tradeticket/swapLeg.cpp.",1320876756403
+error,log,,,"Error while parsing /tradeticket/swapLeg.cpp.",1320876756541
+error,log,,,"Error while parsing /genSchedule/schedule.cpp.",1320876756596
+error,log,,,"Error while parsing /genSchedule/schedule.cpp.",1320876756646
+error,log,,,"Error while parsing /tradeticket/swapLeg.cpp.",1320876758150
+error,log,,,"Error while parsing /genSchedule/schedule.cpp.",1320876758256
+error,log,,,"Error while parsing /tradeticket/swapLeg.cpp.",1320876761651
+error,log,,,"Error while parsing /genSchedule/schedule.cpp.",1320876761711
+error,log,,,"Error logged from Debug Core: ",1320876761862
+deactivated,workbench,org.eclipse.ui.workbench,3.6.0.I20100603-1100,"",1320876795153
+activated,workbench,org.eclipse.ui.workbench,3.6.0.I20100603-1100,"",1320876814097
+opened,editor,org.eclipse.cdt.ui,5.2.0.201006141710,"org.eclipse.cdt.ui.editor.CEditor",1320876843088
+activated,editor,org.eclipse.cdt.ui,5.2.0.201006141710,"org.eclipse.cdt.ui.editor.CEditor",1320876843151
+activated,view,org.eclipse.ui.navigator.resources,3.4.200.I20100601-0800,"org.eclipse.ui.navigator.ProjectExplorer",1320876843172
+activated,editor,org.eclipse.cdt.ui,5.2.0.201006141710,"org.eclipse.cdt.ui.editor.CEditor",1320876855826
+executed,command,org.eclipse.ui,3.6.0.I20100603-1100,"org.eclipse.ui.edit.copy",1320876886382
+executed,command,org.eclipse.ui,3.6.0.I20100603-1100,"org.eclipse.ui.edit.paste",1320876889091
+executed,command,org.eclipse.ui,3.6.0.I20100603-1100,"org.eclipse.ui.file.saveAll",1320876953750
+executed,command,org.eclipse.ui,3.6.0.I20100603-1100,"org.eclipse.ui.file.saveAll",1320876990755
+activated,view,org.eclipse.ui.navigator.resources,3.4.200.I20100601-0800,"org.eclipse.ui.navigator.ProjectExplorer",1320877011001
+activated,editor,org.eclipse.cdt.ui,5.2.0.201006141710,"org.eclipse.cdt.ui.editor.CEditor",1320877011142
+activated,view,org.eclipse.ui.navigator.resources,3.4.200.I20100601-0800,"org.eclipse.ui.navigator.ProjectExplorer",1320877011163
+activated,editor,org.eclipse.cdt.ui,5.2.0.201006141710,"org.eclipse.cdt.ui.editor.CEditor",1320877024486
+error,log,,,"Problems occurred when invoking code from plug-in: ""org.eclipse.cdt.core"".",1320877025232
+error,log,,,"Error in CDT Core during AST creation",1320877025233
+error,log,,,"Problems occurred when invoking code from plug-in: ""org.eclipse.cdt.core"".",1320877027789
+error,log,,,"Error in CDT Core during AST creation",1320877027789
+error,log,,,"Problems occurred when invoking code from plug-in: ""org.eclipse.cdt.core"".",1320877028511
+error,log,,,"Error in CDT Core during AST creation",1320877028512
+error,log,,,"Problems occurred when invoking code from plug-in: ""org.eclipse.cdt.core"".",1320877031116
+error,log,,,"Error in CDT Core during AST creation",1320877031116
+error,log,,,"Problems occurred when invoking code from plug-in: ""org.eclipse.cdt.core"".",1320877036350
+error,log,,,"Error in CDT Core during AST creation",1320877036350
+error,log,,,"Problems occurred when invoking code from plug-in: ""org.eclipse.cdt.core"".",1320877036613
+error,log,,,"Error in CDT Core during AST creation",1320877036613
+error,log,,,"Problems occurred when invoking code from plug-in: ""org.eclipse.cdt.core"".",1320877053899
+error,log,,,"Error in CDT Core during AST creation",1320877053899
+error,log,,,"Problems occurred when invoking code from plug-in: ""org.eclipse.cdt.core"".",1320877055397
+error,log,,,"Error in CDT Core during AST creation",1320877055398
+error,log,,,"Problems occurred when invoking code from plug-in: ""org.eclipse.cdt.core"".",1320877061460
+error,log,,,"Error in CDT Core during AST creation",1320877061460
+error,log,,,"Problems occurred when invoking code from plug-in: ""org.eclipse.cdt.core"".",1320877063988
+error,log,,,"Error in CDT Core during AST creation",1320877063988
+error,log,,,"Problems occurred when invoking code from plug-in: ""org.eclipse.cdt.core"".",1320877065027
+error,log,,,"Error in CDT Core during AST creation",1320877065028
+error,log,,,"Problems occurred when invoking code from plug-in: ""org.eclipse.cdt.core"".",1320877066039
+error,log,,,"Error in CDT Core during AST creation",1320877066039
+executed,command,org.eclipse.ui,3.6.0.I20100603-1100,"org.eclipse.ui.file.saveAll",1320877066758
+error,log,,,"Error while parsing /tradeticket/swapLeg.cpp.",1320877066791
+activated,view,org.eclipse.ui.navigator.resources,3.4.200.I20100601-0800,"org.eclipse.ui.navigator.ProjectExplorer",1320877089595
+activated,editor,org.eclipse.cdt.ui,5.2.0.201006141710,"org.eclipse.cdt.ui.editor.CEditor",1320877089772
+activated,view,org.eclipse.ui.navigator.resources,3.4.200.I20100601-0800,"org.eclipse.ui.navigator.ProjectExplorer",1320877089789
+activated,editor,org.eclipse.cdt.ui,5.2.0.201006141710,"org.eclipse.cdt.ui.editor.CEditor",1320877108443
+executed,command,org.eclipse.ui,3.6.0.I20100603-1100,"org.eclipse.ui.file.saveAll",1320877138439
+activated,editor,org.eclipse.cdt.ui,5.2.0.201006141710,"org.eclipse.cdt.ui.editor.CEditor",1320877143549
+executed,command,org.eclipse.ui,3.6.0.I20100603-1100,"org.eclipse.ui.file.saveAll",1320877199269
+activated,editor,org.eclipse.cdt.ui,5.2.0.201006141710,"org.eclipse.cdt.ui.editor.CEditor",1320877203963
+error,log,,,"Problems occurred when invoking code from plug-in: ""org.eclipse.cdt.core"".",1320877215709
+error,log,,,"Error in CDT Core during AST creation",1320877215709
+error,log,,,"Problems occurred when invoking code from plug-in: ""org.eclipse.cdt.core"".",1320877217400
+error,log,,,"Error in CDT Core during AST creation",1320877217400
+error,log,,,"Problems occurred when invoking code from plug-in: ""org.eclipse.cdt.core"".",1320877219372
+error,log,,,"Error in CDT Core during AST creation",1320877219372
+error,log,,,"Problems occurred when invoking code from plug-in: ""org.eclipse.cdt.core"".",1320877220123
+error,log,,,"Error in CDT Core during AST creation",1320877220123
+executed,command,org.eclipse.ui,3.6.0.I20100603-1100,"org.eclipse.ui.file.saveAll",1320877221367
+error,log,,,"Error while parsing /tradeticket/swapLeg.cpp.",1320877221407
+executed,command,org.eclipse.ui.ide,3.6.0.I20100601-0800,"org.eclipse.ui.project.buildProject",1320877235408
+deactivated,workbench,org.eclipse.ui.workbench,3.6.0.I20100603-1100,"",1320877235975
+activated,workbench,org.eclipse.ui.workbench,3.6.0.I20100603-1100,"",1320877244781
+error,log,,,"Error while parsing /tradeticket/swapLeg.cpp.",1320877244913
+error,log,,,"Error while parsing /genSchedule/schedule.cpp.",1320877244972
+deactivated,workbench,org.eclipse.ui.workbench,3.6.0.I20100603-1100,"",1320877249430
+activated,workbench,org.eclipse.ui.workbench,3.6.0.I20100603-1100,"",1320877253809
+activated,view,org.eclipse.ui.navigator.resources,3.4.200.I20100601-0800,"org.eclipse.ui.navigator.ProjectExplorer",1320877253886
+executed,command,org.eclipse.ui.ide,3.6.0.I20100601-0800,"org.eclipse.ui.project.buildProject",1320877256082
+deactivated,workbench,org.eclipse.ui.workbench,3.6.0.I20100603-1100,"",1320877256587
+activated,workbench,org.eclipse.ui.workbench,3.6.0.I20100603-1100,"",1320877260939
+error,log,,,"Error while parsing /tradeticket/swapLeg.cpp.",1320877261113
+error,log,,,"Error while parsing /genSchedule/schedule.cpp.",1320877261172
+deactivated,workbench,org.eclipse.ui.workbench,3.6.0.I20100603-1100,"",1320877261459
+activated,workbench,org.eclipse.ui.workbench,3.6.0.I20100603-1100,"",1320877265948
+activated,editor,org.eclipse.cdt.ui,5.2.0.201006141710,"org.eclipse.cdt.ui.editor.CEditor",1320877274780
+error,log,,,"Problems occurred when invoking code from plug-in: ""org.eclipse.cdt.core"".",1320877275466
+error,log,,,"Error in CDT Core during AST creation",1320877275467
+executed,command,org.eclipse.ui,3.6.0.I20100603-1100,"org.eclipse.ui.edit.findReplace",1320877275641
+deactivated,workbench,org.eclipse.ui.workbench,3.6.0.I20100603-1100,"",1320877275669
+error,log,,,"Problems occurred when invoking code from plug-in: ""org.eclipse.cdt.core"".",1320877285124
+error,log,,,"Error in CDT Core during AST creation",1320877285124
+error,log,,,"Problems occurred when invoking code from plug-in: ""org.eclipse.cdt.core"".",1320877287627
+error,log,,,"Error in CDT Core during AST creation",1320877287628
+activated,workbench,org.eclipse.ui.workbench,3.6.0.I20100603-1100,"",1320877289196
+error,log,,,"Problems occurred when invoking code from plug-in: ""org.eclipse.cdt.core"".",1320877293764
+error,log,,,"Error in CDT Core during AST creation",1320877293765
+error,log,,,"Problems occurred when invoking code from plug-in: ""org.eclipse.cdt.core"".",1320877295083
+error,log,,,"Error in CDT Core during AST creation",1320877295085
+error,log,,,"Problems occurred when invoking code from plug-in: ""org.eclipse.cdt.core"".",1320877296207
+error,log,,,"Error in CDT Core during AST creation",1320877296210
+error,log,,,"Problems occurred when invoking code from plug-in: ""org.eclipse.cdt.core"".",1320877299673
+error,log,,,"Error in CDT Core during AST creation",1320877299674
+error,log,,,"Problems occurred when invoking code from plug-in: ""org.eclipse.cdt.core"".",1320877301442
+error,log,,,"Error in CDT Core during AST creation",1320877301442
+error,log,,,"Problems occurred when invoking code from plug-in: ""org.eclipse.cdt.core"".",1320877305789
+error,log,,,"Error in CDT Core during AST creation",1320877305789
+error,log,,,"Problems occurred when invoking code from plug-in: ""org.eclipse.cdt.core"".",1320877307839
+error,log,,,"Error in CDT Core during AST creation",1320877307839
+error,log,,,"Problems occurred when invoking code from plug-in: ""org.eclipse.cdt.core"".",1320877308879
+error,log,,,"Error in CDT Core during AST creation",1320877308879
+error,log,,,"Problems occurred when invoking code from plug-in: ""org.eclipse.cdt.core"".",1320877313206
+error,log,,,"Error in CDT Core during AST creation",1320877313206
+error,log,,,"Problems occurred when invoking code from plug-in: ""org.eclipse.cdt.core"".",1320877314557
+error,log,,,"Error in CDT Core during AST creation",1320877314558
+error,log,,,"Problems occurred when invoking code from plug-in: ""org.eclipse.cdt.core"".",1320877319423
+error,log,,,"Error in CDT Core during AST creation",1320877319423
+error,log,,,"Problems occurred when invoking code from plug-in: ""org.eclipse.cdt.core"".",1320877319636
+error,log,,,"Error in CDT Core during AST creation",1320877319636
+error,log,,,"Problems occurred when invoking code from plug-in: ""org.eclipse.cdt.core"".",1320877319647
+error,log,,,"Error in CDT Core during AST creation",1320877319648
+error,log,,,"Problems occurred when invoking code from plug-in: ""org.eclipse.cdt.core"".",1320877324286
+error,log,,,"Error in CDT Core during AST creation",1320877324286
+error,log,,,"Problems occurred when invoking code from plug-in: ""org.eclipse.cdt.core"".",1320877325496
+error,log,,,"Error in CDT Core during AST creation",1320877325497
+error,log,,,"Problems occurred when invoking code from plug-in: ""org.eclipse.cdt.core"".",1320877326030
+error,log,,,"Error in CDT Core during AST creation",1320877326030
+error,log,,,"Problems occurred when invoking code from plug-in: ""org.eclipse.cdt.core"".",1320877326041
+error,log,,,"Error in CDT Core during AST creation",1320877326041
+executed,command,org.eclipse.ui,3.6.0.I20100603-1100,"org.eclipse.ui.file.saveAll",1320877330094
+error,log,,,"Error while parsing /tradeticket/swapLeg.cpp.",1320877330173
+activated,view,org.eclipse.ui.navigator.resources,3.4.200.I20100601-0800,"org.eclipse.ui.navigator.ProjectExplorer",1320877335097
+executed,command,org.eclipse.ui.ide,3.6.0.I20100601-0800,"org.eclipse.ui.project.buildProject",1320877337259
+deactivated,workbench,org.eclipse.ui.workbench,3.6.0.I20100603-1100,"",1320877337790
+error,log,,,"Error while parsing /tradeticket/swapLeg.cpp.",1320877342975
+activated,workbench,org.eclipse.ui.workbench,3.6.0.I20100603-1100,"",1320877343014
+error,log,,,"Error while parsing /genSchedule/schedule.cpp.",1320877343078
+deactivated,workbench,org.eclipse.ui.workbench,3.6.0.I20100603-1100,"",1320877343209
+activated,workbench,org.eclipse.ui.workbench,3.6.0.I20100603-1100,"",1320877349163
+deactivated,workbench,org.eclipse.ui.workbench,3.6.0.I20100603-1100,"",1320877357131
+executed,command,org.eclipse.ui.ide,3.6.0.I20100601-0800,"org.eclipse.ui.project.cleanAction",1320877358490
+activated,workbench,org.eclipse.ui.workbench,3.6.0.I20100603-1100,"",1320877358653
+deactivated,workbench,org.eclipse.ui.workbench,3.6.0.I20100603-1100,"",1320877359530
+activated,workbench,org.eclipse.ui.workbench,3.6.0.I20100603-1100,"",1320877364912
+deactivated,workbench,org.eclipse.ui.workbench,3.6.0.I20100603-1100,"",1320877365156
+error,log,,,"Error while parsing /tradeticket/swapLeg.cpp.",1320877366785
+error,log,,,"Error while parsing /genSchedule/schedule.cpp.",1320877366854
+error,log,,,"Error while parsing /tradeticket/swapLeg.cpp.",1320877368186
+error,log,,,"Error while parsing /genSchedule/schedule.cpp.",1320877368539
+error,log,,,"Error while parsing /tradeticket/swapLeg.cpp.",1320877371844
+error,log,,,"Error while parsing /genSchedule/schedule.cpp.",1320877371913
+error,log,,,"Error while parsing /tradeticket/swapLeg.cpp.",1320877374867
+error,log,,,"Error while parsing /genSchedule/schedule.cpp.",1320877374929
+error,log,,,"Error while parsing /tradeticket/swapLeg.cpp.",1320877389213
+error,log,,,"Error while parsing /genSchedule/schedule.cpp.",1320877389271
+error,log,,,"Error while parsing /tradeticket/swapLeg.cpp.",1320877391479
+error,log,,,"Error while parsing /genSchedule/schedule.cpp.",1320877391545
+error,log,,,"Error while parsing /tradeticket/swapLeg.cpp.",1320877393720
+error,log,,,"Error while parsing /genSchedule/schedule.cpp.",1320877393900
+error,log,,,"Error while parsing /tradeticket/swapLeg.cpp.",1320877394506
+error,log,,,"Error while parsing /genSchedule/schedule.cpp.",1320877394580
+error,log,,,"Error while parsing /tradeticket/swapLeg.cpp.",1320877397406
+error,log,,,"Error while parsing /genSchedule/schedule.cpp.",1320877397484
+error,log,,,"Error while parsing /tradeticket/swapLeg.cpp.",1320877399936
+error,log,,,"Error while parsing /genSchedule/schedule.cpp.",1320877400255
+error,log,,,"Error while parsing /tradeticket/swapLeg.cpp.",1320877401821
+error,log,,,"Error while parsing /genSchedule/schedule.cpp.",1320877401951
+error,log,,,"Error while parsing /tradeticket/swapLeg.cpp.",1320877403397
+error,log,,,"Error while parsing /genSchedule/schedule.cpp.",1320877403464
+error,log,,,"Error while parsing /tradeticket/swapLeg.cpp.",1320877408319
+error,log,,,"Error while parsing /genSchedule/schedule.cpp.",1320877408401
+error,log,,,"Error while parsing /tradeticket/swapLeg.cpp.",1320877409796
+error,log,,,"Error while parsing /genSchedule/schedule.cpp.",1320877410047
+error,log,,,"Error while parsing /tradeticket/swapLeg.cpp.",1320877411677
+error,log,,,"Error while parsing /genSchedule/schedule.cpp.",1320877411837
+error,log,,,"Error while parsing /tradeticket/swapLeg.cpp.",1320877414537
+error,log,,,"Error while parsing /tradeticket/swapLeg.cpp.",1320877414651
+error,log,,,"Error while parsing /tradeticket/swapLeg.cpp.",1320877414748
+error,log,,,"Error while parsing /genSchedule/schedule.cpp.",1320877414856
+error,log,,,"Error while parsing /genSchedule/schedule.cpp.",1320877415203
+error,log,,,"Error while parsing /genSchedule/schedule.cpp.",1320877415393
+error,log,,,"Error while parsing /tradeticket/swapLeg.cpp.",1320877416849
+error,log,,,"Error while parsing /genSchedule/schedule.cpp.",1320877416907
+error,log,,,"Error while parsing /tradeticket/swapLeg.cpp.",1320877444747
+error,log,,,"Error while parsing /genSchedule/schedule.cpp.",1320877444853
+error,log,,,"Error while parsing /tradeticket/swapLeg.cpp.",1320877448259
+error,log,,,"Error while parsing /genSchedule/schedule.cpp.",1320877448341
+error,log,,,"Error while parsing /tradeticket/swapLeg.cpp.",1320877454279
+error,log,,,"Error while parsing /genSchedule/schedule.cpp.",1320877454342
+activated,workbench,org.eclipse.ui.workbench,3.6.0.I20100603-1100,"",1320877460205
+error,log,,,"Error while parsing /tradeticket/swapLeg.cpp.",1320877467974
+deactivated,workbench,org.eclipse.ui.workbench,3.6.0.I20100603-1100,"",1320877468083
+error,log,,,"Error while parsing /tradeticket/swapLeg.cpp.",1320877468412
+error,log,,,"Error while parsing /genSchedule/schedule.cpp.",1320877468514
+error,log,,,"Error while parsing /genSchedule/schedule.cpp.",1320877468645
+error,log,,,"Error while parsing /tradeticket/swapLeg.cpp.",1320877471135
+error,log,,,"Error while parsing /genSchedule/schedule.cpp.",1320877471298
+error,log,,,"Error while parsing /tradeticket/swapLeg.cpp.",1320877472260
+error,log,,,"Error while parsing /genSchedule/schedule.cpp.",1320877472331
+error,log,,,"Error while parsing /tradeticket/swapLeg.cpp.",1320877473648
+error,log,,,"Error while parsing /genSchedule/schedule.cpp.",1320877473748
+error,log,,,"Error while parsing /tradeticket/swapLeg.cpp.",1320877476893
+error,log,,,"Error while parsing /genSchedule/schedule.cpp.",1320877476954
+error,log,,,"Error logged from Debug Core: ",1320877477323
+activated,workbench,org.eclipse.ui.workbench,3.6.0.I20100603-1100,"",1320877521426

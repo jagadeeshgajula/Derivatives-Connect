@@ -1,0 +1,80 @@
+#include<iostream>
+#include<string>
+#include "String.h"
+
+using namespace std;
+
+class  StubResets
+{
+       public:
+StubResets(){;};
+StubResets
+(String backStubMarketIndexA,
+String backStubMarketIndexB,
+double backStubRateA,
+String backStubRateAType,
+
+double backStubRateB,
+String frontStubMarketIndexA,
+String frontStubMarketIndexB,
+double frontStubRateA,
+double frontStubRateB,
+int legNumber,
+String tradeRef)
+{
+_backStubMarketIndexA=backStubMarketIndexA;
+_backStubMarketIndexB=backStubMarketIndexB;
+_backStubRateA=backStubRateA;
+_backStubRateAType=backStubRateAType;
+_backStubRateB=backStubRateB;
+_frontStubMarketIndexA=frontStubMarketIndexA;
+_frontStubMarketIndexB=frontStubMarketIndexB;
+_frontStubRateA=frontStubRateA;
+_frontStubRateB=frontStubRateB;
+_legNumber=legNumber;
+_tradeRef=tradeRef;
+}
+String getBackStubMarketIndexA(){return _backStubMarketIndexA;}
+void setBackStubMarketIndexA(String backStubMarketIndexA){ _backStubMarketIndexA=backStubMarketIndexA;}
+
+String getBackStubMarketIndexB() { return  _backStubMarketIndexB;}    
+void setBackStubMarketIndexB(String backStubMarketIndexB) { _backStubMarketIndexB =backStubMarketIndexB; }
+
+double getBackStubRateA(){return _backStubRateA;}
+void setBackStubRateA(double backStubRateA){ _backStubRateA = backStubRateA; }
+
+double getBackStubRateB(){return _backStubRateB;}
+void setBackStubRateB(double backStubRateB){ _backStubRateB=backStubRateB;}
+
+String getFrontStubMarketIndexA(){return _frontStubMarketIndexA;}
+void setFrontStubMarketIndexA(String frontStubMarketIndexA){ _frontStubMarketIndexA = frontStubMarketIndexA; }
+
+String getFrontStubMarketIndexB(){return _frontStubMarketIndexB;}
+void setFrontStubMarketIndexB(String frontStubMarketIndexB){ _frontStubMarketIndexB = frontStubMarketIndexB;}
+
+double getFrontStubRateA(){return _frontStubRateA;}
+void setFrontStubRateA(double frontStubRateA){ _frontStubRateA=frontStubRateA;}
+
+double getFrontStubRateB(){return _frontStubRateB;}
+void setFrontStubRateB (double frontStubRateB){ _frontStubRateB=frontStubRateB;}
+
+int getLegNumber(){return _legNumber;}
+void setLegNumber(int legNumber){ _legNumber=legNumber;}
+
+String getTradeRef(){return _tradeRef;}
+void setTradeRef (String tradeRef){ _tradeRef=tradeRef;}
+String getBackStubRateAType(){return _backStubRateAType;}
+void setBackStubRateAType (String backStubRateAType){ _backStubRateAType=backStubRateAType;}
+protected:
+String _backStubMarketIndexA;
+String _backStubMarketIndexB;
+double _backStubRateA;
+String _backStubRateAType;
+double _backStubRateB;
+String _frontStubMarketIndexA;
+String _frontStubMarketIndexB;
+double _frontStubRateA;
+double _frontStubRateB;
+int _legNumber;
+String _tradeRef;
+};

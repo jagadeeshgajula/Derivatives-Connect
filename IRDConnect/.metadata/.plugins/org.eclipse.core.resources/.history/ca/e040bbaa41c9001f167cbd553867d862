@@ -1,0 +1,135 @@
+/*
+ * money.cpp
+ *
+ *  Created on: 26-Sep-2010
+ *      Author: vishist
+ */
+
+
+#include "money.h"
+#include "currency.h"
+
+//#include "roundconv.h"
+#include <assert.h>
+//#include "envparam.h"
+
+ using namespace std;
+
+namespace IRDConnect {
+
+
+ static const unsigned int    EURO_ROUNDCONV =5;
+
+Money&
+Money::operator+=(const Money& other)
+{
+	assert(getCurrency() == other.getCurrency());
+	_amount += other._amount;
+	return *this;
+}
+
+Money&
+Money::operator-=(const Money& other)
+{
+	assert(getCurrency() == other.getCurrency());
+	_amount -= other._amount;
+	return *this;
+}
+
+Money&
+Money::operator*=(double qty)
+{
+	_amount *= qty;
+	return *this;
+}
+
+Money&
+Money::operator/=(double qty)
+{
+	_amount /= qty;
+	return *this;
+}
+
+Money
+Money::operator-() const
+{
+	return Money(-_amount, _currency);
+}
+
+Money
+Money::operator+(const Money& money) const
+{
+	Money m(*this);
+	m += money;
+	return m;
+}
+
+Money
+Money::operator-(const Money& money) const
+{
+	Money m(*this);
+	m -= money;
+	return m;
+}
+
+
+Money
+Money::operator*( double qty ) const
+{
+	return Money( _amount * qty, _currency );
+}
+
+Money
+Money::convert( const Currency * toCcy, Date valueDate ) const
+{
+	if(_currency == 0)
+		return Money(0, toCcy);
+
+	if (toCcy == _currency)
+		return Money( _amount, toCcy );
+}
+Money
+Money::convert( const Currency * toCcy ) const
+{
+	if(_currency == 0)
+		return Money(0, toCcy);
+
+	if (toCcy == _currency)
+		return Money( _amount, toCcy );
+
+	//const Date & emuDay = EnvParam::emuDate();
+
+
+
+	if( Date::getToday() >= emuDay &&
+				 toCcy->isInEMU() && _currency->isInEMU() ) {
+        const Currency * euroCcy = Currency::eur;
+        // rounding of euro to 5 decimal is required
+        const RoundingConv * roundingConv = euroCcy->getRoundingConv();
+        double amt = _amount/_currency->getEuroConvRate();
+        amt = roundingConv->round( amt, EURO_ROUNDCONV);
+        Money euro = Money( amt, euroCcy);
+		return euro.convert(toCcy);
+	}
+
+	// apart from above cases everything is ok with the old code
+
+	double amount = _amount * fxRate;
+	return Money( amount, toCcy );
+}
+
+
+double
+Money::calcRoundedAmount(double amt) const
+{
+	if ( _currency ) {
+		const RoundingConv * roundingConv = _currency -> getRoundingConv();
+		if ( roundingConv ) {
+			const unsigned int numDecimal = _currency -> getNumDecimal();
+			amt = roundingConv -> round( amt, numDecimal );
+		}
+	}
+	return amt;
+}
+
+}

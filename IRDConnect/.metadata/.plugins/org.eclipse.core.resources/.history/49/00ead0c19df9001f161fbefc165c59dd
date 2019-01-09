@@ -1,0 +1,50 @@
+/*
+ * stubResets.cpp
+ *
+ *  Created on: 17-Aug-2010
+ *      Author: vishist
+ */
+
+#include <iostream>
+#include "stubResets.h"
+
+using namespace std;
+
+using namespace IRDConnect;
+
+StubResets::StubResets (
+
+String 		bsMarketIndexA,
+String 		bsMarketIndexB,
+double 		bsRateA,
+String 		bsRateAType,
+double 		bsRateB,
+String 		bsRateBType,
+String 		fsMarketIndexA,
+String 		fsMarketIndexB,
+double 		fsRateA,
+String 		fsRateAType,
+double 		fsRateB,
+String 		fsRateBType)
+
+{
+_bsMarketIndexA 	= bsMarketIndexA;
+_bsMarketIndexB 	= bsMarketIndexB;
+_bsRateA 		  	= bsRateA;
+_bsRateAType    	= bsRateAType;
+_bsRateB        	= bsRateB;
+_bsRateBType    	= bsRateBType;
+_fsMarketIndexA		= fsMarketIndexA;
+_fsMarketIndexB		= fsMarketIndexB;
+_fsRateA			= fsRateA;
+_fsRateAType		= fsRateAType;
+_fsRateB			= fsRateB;
+_fsRateBType		= fsRateBType;
+}
+
+StubResets::~StubResets()
+{
+
+	// do nothing
+
+}

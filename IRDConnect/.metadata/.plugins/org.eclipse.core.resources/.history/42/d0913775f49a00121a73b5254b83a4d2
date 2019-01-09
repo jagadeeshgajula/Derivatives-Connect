@@ -1,0 +1,219 @@
+/*
+ * curveCache.cpp
+ *
+ *  Created on: 13-Aug-2011
+ *      Author: vishist
+ */
+
+#include "curveCache.h"
+#include "buildCurveFromMarketRates.h"
+#include "curveDef.h"
+#include <boost/lexical_cast.hpp>
+#include <boost/foreach.hpp>
+
+using namespace boost;
+
+namespace IRDConnect {
+
+  bool operator < (const curveKey &k1, const curveKey &k2 ) {
+    return (k1.date_ < k2.date_ || ( k1.date_ == k2.date_ && k1.curveName_ < k2.curveName_ )) ;
+  }
+
+  bool operator < (const curveScenKey &k1, const curveScenKey &k2 ) {
+    return ( ( k1.date_ < k2.date_ ) ||
+             ( k1.date_ == k2.date_ && k1.curveName_ < k2.curveName_ ) ||
+             ( k1.date_ == k2.date_ && k1.curveName_ == k2.curveName_ && k1.bumpTenor_ < k2.bumpTenor_ ) ||
+             ( k1.date_ == k2.date_ && k1.curveName_ == k2.curveName_ && k1.bumpTenor_ == k2.bumpTenor_ &&
+               k1.bumpSize_ < k2.bumpSize_ ) ) ;
+  }
+
+  CurveCache::CurveCache( ) {
+    const std::string curveDef_filename = "/home/vishist/indir/curveDefs.txt" ;
+    ifstream curvedef_ofs (curveDef_filename.c_str());
+    std::string buf ;
+    while ( std::getline (curvedef_ofs, buf )) {
+      std::stringstream str ( buf ) ;
+      std::string curveName , fileName ;
+      std::getline( str ,curveName , '|') ;
+      std::getline( str ,fileName , '|') ;
+      //curveDefMap_[curveName] = boost::shared_ptr<CurveDef>  ( new CurveDef ( fileName));
+      curveDefMap_ [curveName] = fileName ;
+    }
+
+  }
+
+  boost::shared_ptr<Curve> CurveCache::find ( const Date & date, const std::string & curveName ) {
+    std::map<curveKey, boost::shared_ptr<Curve> >::const_iterator it ;
+    it=curveMap_.find( curveKey(date, curveName) ) ;
+    if ( it == curveMap_.end() ) {
+      return loadCurve ( date,curveName);
+    }
+    return (*it).second ;
+  }
+
+  boost::shared_ptr<Curve> CurveCache::find ( const Date & date, const std::string & curveName,
+                                              const std::string & bumpTenor, double bumpSize ) {
+    std::map<curveScenKey, boost::shared_ptr<Curve> >::const_iterator it ;
+    it=curveScenMap_.find( curveScenKey(date, curveName, bumpTenor, bumpSize) ) ;
+    if ( it == curveScenMap_.end() ) {
+      return loadBumpCurve ( date,curveName,bumpTenor,bumpSize);
+    }
+    return (*it).second ;
+  }
+
+  void CurveCache::loadRates ( const std::string & rates_filename) {
+   /* ifstream rates_ofs (rates_filename.c_str());
+    std::string buf;
+    while ( std::getline (rates_ofs, buf ) ) {
+      std::string id,rate_str ;
+      std::stringstream str ( buf ) ;
+      std::getline(str, id,':' ) ;
+      std::getline(str,rate_str,':');
+      ratesMap_[id]=boost::lexical_cast<double>(rate_str) ; */
+
+      ifstream rates_ofs (rates_filename.c_str());
+              std::string buf;
+              boost::char_separator<char> sep(":");
+              typedef boost::tokenizer<boost::char_separator<char> > tokenizer;
+              tokenizer tok(buf,sep);
+
+              while ( std::getline (rates_ofs, buf ) ) {
+                      tokenizer tok(buf,sep);
+                      int k =0;
+                      std::string id ;
+                      double rate ;
+
+                      for(tokenizer::iterator beg=tok.begin(); beg!=tok.end();++beg,++k){
+                              if (k==0 )
+                                      id=*beg ;
+                              if (k==1 )
+                                      rate= boost::lexical_cast<double>(*beg);
+
+                      ratesMap_[id]=rate ;
+                      }
+
+
+    }
+  }
+  boost::shared_ptr<Curve> CurveCache::loadCurve ( const Date & curveDate, const std::string & curveName ) {
+    CurveBuilder * cbuilder = 0 ;
+    //std::map<std::string, boost::shared_ptr<CurveDef> >::const_iterator it = curveDefMap_.find( curveName ) ;
+    //if ( it == curveDefMap_.end() )
+      //throw ( std::string ( "Curve Def for '" + curveName + "' does not exist ")) ;
+
+
+	Date cDate = curveDate; // copy it as curve Date can't be altered - not a pointer
+
+	std::string loadRatesPath = "/home/vishist/indir/curveRates/";
+			loadRatesPath += cDate.string("Ymd");
+			loadRatesPath += "/";
+			loadRatesPath += curveName;
+			loadRatesPath += ".txt";
+
+			logFile << "Curve Path is : " << loadRatesPath << endl;
+
+			loadRates (loadRatesPath ) ;
+
+			std::string loadCurveDefPath = "/home/vishist/indir/curveDefs/";
+			loadCurveDefPath += cDate.string("Ymd");
+			loadCurveDefPath += "/";
+			loadCurveDefPath += curveName;
+			loadCurveDefPath += ".xml";
+
+			//boost::shared_ptr<CurveDef> curveDef ( new CurveDef ( it->second));  // let us not read from file, which is hard coded
+
+			boost::shared_ptr<CurveDef> curveDef ( new CurveDef (loadCurveDefPath ));
+
+
+    cbuilder = new BuildCurveFromMarketRates (curveDate, future, curveDef, ratesMap_) ;
+    try {
+      boost::shared_ptr<Curve> curvePtr(cbuilder->build() ) ;
+      curveMap_.insert(make_pair(curveKey(curveDate, curveName ),curvePtr));
+      return curvePtr ;
+    }
+    catch ( std::string & s ) {
+      cout << s << endl ;
+    }
+    delete cbuilder ;
+    return boost::shared_ptr<Curve> () ;
+  }
+
+
+  boost::shared_ptr<Curve> CurveCache::loadBumpCurve ( const Date & curveDate, const std::string & curveName,
+                                                       const std::string & bumpTenor, double bumpSize ) {
+    CurveBuilder * cbuilder = 0 ;
+    //std::map<std::string, boost::shared_ptr<CurveDef> >::const_iterator it = curveDefMap_.find( curveName ) ;
+    //if ( it == curveDefMap_.end() )
+     // throw ( std::string ( "Curve Def for '" + curveName + "' does not exist ")) ;
+
+    	Date cDate = curveDate; // copy it as curve Date can't be altered - not a pointer
+
+    	std::string loadRatesPath = "/home/vishist/indir/curveRates/";
+    			loadRatesPath += cDate.string("Ymd");
+    			loadRatesPath += "/";
+    			loadRatesPath += curveName;
+    			loadRatesPath += ".txt";
+
+    			logFile << "Curve Path is : " << loadRatesPath << endl;
+
+    			loadRates (loadRatesPath ) ;
+
+    			std::string loadCurveDefPath = "/home/vishist/indir/curveDefs/";
+    			loadCurveDefPath += cDate.string("Ymd");
+    			loadCurveDefPath += "/";
+    			loadCurveDefPath += curveName;
+    			loadCurveDefPath += ".xml";
+
+    			//boost::shared_ptr<CurveDef> curveDef ( new CurveDef ( it->second));  // let us not read from file, which is hard coded
+
+    			boost::shared_ptr<CurveDef> curveDef ( new CurveDef (loadCurveDefPath ));
+
+
+    if ( bumpTenor == "Theta") {
+    	cbuilder = new BuildCurveFromMarketRates (curveDate + bumpSize, future, curveDef, ratesMap_) ;
+    }
+    else {
+		std::map<std::string,double> ratesMap = ratesMap_ ;
+
+		if ( bumpTenor == "ALL")
+		{
+			std::map<std::string,double>::iterator itr = ratesMap.begin();
+			std::pair <std::string,double> tmpRM;
+			std::vector<std::string> v;
+
+			BOOST_FOREACH (tmpRM, ratesMap)
+			{
+				v.push_back(tmpRM.first);
+				if (ratesMap[tmpRM.first] > 1.0 )
+					ratesMap[tmpRM.first] -= bumpSize * 100;
+				else
+					ratesMap[tmpRM.first] += bumpSize ;
+
+				cout << "Tenor and Rate " << tmpRM.first <<" :" << ratesMap[tmpRM.first] << endl;
+
+			}
+
+		}
+		else
+		{
+		std::map<std::string,double>::iterator itr = ratesMap.find(bumpTenor);
+		if ( itr == ratesMap.end() )
+		  throw ( std::string ("Invalid Bump Tenor " + bumpTenor ));
+		ratesMap[bumpTenor] += bumpSize ;
+		}
+
+		cbuilder = new BuildCurveFromMarketRates (curveDate, future, curveDef, ratesMap) ;
+    }
+    try {
+      boost::shared_ptr<Curve> curvePtr(cbuilder->build() ) ;
+      curveScenMap_.insert(make_pair(curveScenKey(curveDate, curveName, bumpTenor, bumpSize ),curvePtr));
+      return curvePtr ;
+    }
+    catch ( std::string & s ) {
+      cout << s << endl ;
+    }
+    delete cbuilder ;
+    return boost::shared_ptr<Curve> () ;
+  }
+
+}

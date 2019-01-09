@@ -1,0 +1,24 @@
+/*
+ * genTradeRef.cpp
+ *
+ *  Created on: 01-Oct-2010
+ *      Author: vishist
+ */
+#include "tradeTicket.h"
+#include <iostream>
+#include "irdString.h"
+
+using namespace std;
+
+namespace IRDConnect {
+
+
+static int Util::genSeqNo( String seqType)
+{
+
+
+
+}
+
+
+}

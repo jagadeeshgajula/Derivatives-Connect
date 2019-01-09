@@ -1,0 +1,105 @@
+################################################################################
+# Automatically-generated file. Do not edit!
+################################################################################
+
+# Add inputs and outputs from these tool invocations to the build variables 
+CPP_SRCS += \
+../additionalPayments.cpp \
+../amortSchedule.cpp \
+../assetSwaps.cpp \
+../bond.cpp \
+../bondFuture.cpp \
+../bondFutureOption.cpp \
+../capFloorTicket.cpp \
+../compSchedule.cpp \
+../externalSystemTrades.cpp \
+../fXReset.cpp \
+../fixingRates.cpp \
+../fraTicket.cpp \
+../mmFuture.cpp \
+../mmFutureOption.cpp \
+../optionSchedule.cpp \
+../paySchedule.cpp \
+../premiums.cpp \
+../resetSchedule.cpp \
+../revalRates.cpp \
+../rightToTerminate.cpp \
+../salesCredit.cpp \
+../stubResets.cpp \
+../swapDeal.cpp \
+../swapLeg.cpp \
+../swapOption.cpp \
+../tradeMargin.cpp \
+../tradeModificationReasons.cpp \
+../tradeTicket.cpp 
+
+OBJS += \
+./additionalPayments.o \
+./amortSchedule.o \
+./assetSwaps.o \
+./bond.o \
+./bondFuture.o \
+./bondFutureOption.o \
+./capFloorTicket.o \
+./compSchedule.o \
+./externalSystemTrades.o \
+./fXReset.o \
+./fixingRates.o \
+./fraTicket.o \
+./mmFuture.o \
+./mmFutureOption.o \
+./optionSchedule.o \
+./paySchedule.o \
+./premiums.o \
+./resetSchedule.o \
+./revalRates.o \
+./rightToTerminate.o \
+./salesCredit.o \
+./stubResets.o \
+./swapDeal.o \
+./swapLeg.o \
+./swapOption.o \
+./tradeMargin.o \
+./tradeModificationReasons.o \
+./tradeTicket.o 
+
+CPP_DEPS += \
+./additionalPayments.d \
+./amortSchedule.d \
+./assetSwaps.d \
+./bond.d \
+./bondFuture.d \
+./bondFutureOption.d \
+./capFloorTicket.d \
+./compSchedule.d \
+./externalSystemTrades.d \
+./fXReset.d \
+./fixingRates.d \
+./fraTicket.d \
+./mmFuture.d \
+./mmFutureOption.d \
+./optionSchedule.d \
+./paySchedule.d \
+./premiums.d \
+./resetSchedule.d \
+./revalRates.d \
+./rightToTerminate.d \
+./salesCredit.d \
+./stubResets.d \
+./swapDeal.d \
+./swapLeg.d \
+./swapOption.d \
+./tradeMargin.d \
+./tradeModificationReasons.d \
+./tradeTicket.d 
+
+
+# Each subdirectory must supply rules for building sources it contributes
+%.o: ../%.cpp
+	@echo 'Building file: $<'
+	@echo 'Invoking: GCC C++ Compiler'
+	g++ -I/home/vishist/IRDConnect/include -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -o"$@" "$<"
+	@echo 'Finished building: $<'
+	@echo ' '
+
+

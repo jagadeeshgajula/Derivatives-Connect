@@ -1,0 +1,791 @@
+#include <assert.h>
+#include <stdlib.h>
+#include "IRDMarchingConv.h"
+#include "boost/date_time/gregorian/gregorian.hpp"
+
+using namespace boost::gregorian;
+
+typedef int RetCode ;
+
+
+
+DateStreamWrapper::DateStreamWrapper( DateMarcher::EventStream & es ) :
+	_es( es ),
+	_minDate( 0 ),
+	_maxDate( 0 )
+{
+}
+
+DateStreamWrapper::~DateStreamWrapper()
+{
+	delete _minDate;
+	delete _maxDate;
+}
+
+RetCode
+DateStreamWrapper::addEvent( const Date & date )
+{
+	if ( !_es.addEvent( date ) )
+		return false;
+
+	if ( _minDate ) {
+		if ( date < *_minDate )
+			*_minDate = date;
+	}
+	else {
+
+		_minDate = new Date( date );
+
+	}
+
+	if ( _maxDate ) {
+		if ( date > *_maxDate )
+			*_maxDate = date;
+	}
+	else {
+
+		_maxDate = new Date( date );
+
+	}
+
+	return true;
+}
+
+const Date *
+DateStreamWrapper::getMinDate() const
+{
+	return _minDate;
+}
+
+const Date *
+DateStreamWrapper::getMaxDate() const
+{
+	return _maxDate;
+}
+
+//----------------------------------------------------------------------
+
+DateMarcher::DateMarcher( const std::string  dateMarcher )
+{
+	name_ = dateMarcher;
+}
+
+DateMarcher::~DateMarcher()
+{
+}
+
+//----------------------------------------------------------------------
+
+GeneralForwardDateMarcher::GeneralForwardDateMarcher(const std::string  dateMarcher):DateMarcher("FRWARD")
+{
+	// do nothing
+}
+
+GeneralForwardDateMarcher::~GeneralForwardDateMarcher()
+{
+}
+
+// the marchedDateList will contain two events the actual settlementDate and the maturityDate
+RetCode
+GeneralForwardDateMarcher::firstAndLastEventsToEventStream(
+const Date				& start,
+const Date				& end,
+int						  noOfPeriods,
+const IRDFrequency			* freq,
+const Calendar			& calendar,
+const BusDayConv		* bdc,
+EventStream				& eventStream,
+int					 	  evenFinalPeriod,
+const SpcMarConvParam 	* spcMarConvParam  ) const
+{
+	// Argument validation ...
+	if ( !noOfPeriods )
+		return false;
+
+	// for comments visit GeneralForwardDateMarcher::eventStream interface.
+	DateStreamWrapper esw( eventStream );
+
+	DateCtl * ctl = createDateCtl( start, freq, calendar, bdc, spcMarConvParam );
+	if ( !ctl )
+		return false;
+
+	for (int n = noOfPeriods; n >= 0; ctl->next(), n-- )
+		if ( start <= *ctl && (n == noOfPeriods || n == 0))
+			esw.addEvent( *ctl );
+	// added the first & last date-events, with the condition that they are >= startDate
+
+	delete ctl;
+
+	return true;
+}
+
+
+RetCode
+GeneralForwardDateMarcher::eventStream(
+const Date			& start,
+const Date			& end,
+const IRDFrequency		* freq,
+const Calendar		& calendar,
+const BusDayConv	* bdc,
+EventStream			& eventStream,
+int					  evenFinalPeriod,
+const SpcMarConvParam    * spcMarConvParam  ) const
+{
+	//------------------------------------------------------------------
+	// Argument validation ...
+
+	if ( !(start < end) )
+		return false;
+
+
+	//------------------------------------------------------------------
+	//
+	// The good stuff ...
+	//
+	// Inside the 'for()' loop below is an odd looking 'if()' statement.
+	// It's there to take care of the following scenario. Assume 'start'
+	// is a saturday ( odd but possible ), 'freq' is daily, 'bdc' is
+	// preceding and the real marching convention is 'forward'. On the
+	// first iteration of the loop 'ctl's value is 'start', the saturday
+	// and on the second iteration it's the friday just before 'start'
+	// (assuming friday is a business day). Why? 'ctl -> next()' advances
+	// the date to sunday and then adjusts to the preceeding business
+	// day. This is undesirable behaviour!! So, the 'if()' statement is
+	// there to avoid generating events before 'start'.
+	//
+
+	DateStreamWrapper esw( eventStream );
+
+	DateCtl * ctl = createDateCtl( start, freq, calendar, bdc, spcMarConvParam);
+	if ( !ctl )
+		return false;
+
+	RetCode rc = true;
+	for ( ; *ctl < end && rc == true; ctl -> next() )
+		if ( start <= *ctl )
+			rc = esw.addEvent( *ctl );
+
+	if (rc != true)
+		return rc;
+
+	if ( evenFinalPeriod ) {
+
+		//
+		//	--------+-----+-----+--------
+		//	        ^     ^     ^
+		//	        |     |     |
+		//	last ---+     |     |
+		//	 end ---------+     |
+		//	 ctl ---------------+
+		//
+
+		const Date * last = esw.getMaxDate();
+		if ( !last ) {
+			delete ctl;
+			return false;
+		}
+
+		const unsigned int lastToEnd = end - *last;
+		const unsigned int endToDate = *ctl - end;
+
+		if ( endToDate < lastToEnd )
+			eventStream.addEvent( *ctl );
+
+	}
+	else {
+
+		eventStream.addEvent( end );
+
+	}
+
+	delete ctl;
+
+	return true;
+}
+
+GeneralForwardDateMarcher::DateCtl::DateCtl( const Date & date ) :
+	Date( date )
+{
+}
+
+GeneralForwardDateMarcher::DateCtl::~DateCtl()
+{
+}
+
+//----------------------------------------------------------------------
+
+ForwardDateMarcher::ForwardDateMarcher() :
+	GeneralForwardDateMarcher( "FRWARD" )
+{
+}
+
+ForwardDateMarcher::~ForwardDateMarcher()
+{
+}
+
+GeneralForwardDateMarcher::DateCtl *
+ForwardDateMarcher::createDateCtl(
+const Date		& start,
+const IRDFrequency		* freq,
+const Calendar		& calendar,
+const BusDayConv	* bdc,
+const SpcMarConvParam	* spcMarConvParam ) const
+{
+	return new DateCtl( start, freq, calendar, bdc);
+}
+
+ForwardDateMarcher::DateCtl::DateCtl(
+const Date		& date,
+const IRDFrequency		* freq,
+const Calendar		& cal,
+const BusDayConv	* bdc ) :
+	GeneralForwardDateMarcher::DateCtl( date ),
+	_date( date ),
+	_startDate( date ),
+	_tenor,
+	_tenorsAddedToStartDate,
+	_cal( cal ),
+	_bdc( bdc )
+{
+}
+
+ForwardDateMarcher::DateCtl::~DateCtl()
+{
+}
+
+void
+ForwardDateMarcher::DateCtl::next()
+{
+	IRDPeriod stDate = IRDPeriod(_tenorsAddedToStartDate);
+			stDate += IRDPeriod(_tenor);
+	_date = _startDate + stDate;
+	boost::gregorian::date _dateTmp(_date.dayOfMonth(), _date.month(),_date.year());
+
+	boost::gregorian::date bdcDate = _bdc -> adjustToBusDay( _dateTmp, _cal );
+
+	Date dateMarcher(bdcDate.day(),bdcDate.month(),bdcDate.year());
+
+	Date::operator = ( _bdc ? dateMarcher : _date );
+}
+
+//----------------------------------------------------------------------
+
+EuroDollarDateMarcher::EuroDollarDateMarcher() :
+	GeneralForwardDateMarcher(  "ED" )
+{
+}
+
+EuroDollarDateMarcher::~EuroDollarDateMarcher()
+{
+}
+
+
+GeneralForwardDateMarcher::DateCtl *
+EuroDollarDateMarcher::createDateCtl(
+const Date		& start,
+const IRDFrequency		* freq,
+const Calendar		& calendar,
+const BusDayConv	* /** bdc **/,
+const SpcMarConvParam	* /** spcMarConv **/ ) const
+{
+	return new DateCtl( start, freq, calendar );
+}
+
+EuroDollarDateMarcher::DateCtl::DateCtl(
+const Date			& date,
+const IRDFrequency		* freq,
+const Calendar		& cal ) :
+	GeneralForwardDateMarcher::DateCtl( date ),
+	_tenor,
+	_cal( cal ),
+	_lastBusDay( *this == findLastBusDay() )
+{
+}
+
+EuroDollarDateMarcher::DateCtl::~DateCtl()
+{
+}
+
+void
+EuroDollarDateMarcher::DateCtl::next()
+{
+	*this += _tenor;
+
+	if ( _lastBusDay ) {
+
+		Date::operator = ( findLastBusDay() );
+
+	}
+	else {
+
+		if ( !_cal.isBusDay( *this ) ) {
+
+			const BusDayConv * bdc = BusDayConv::find("MFO");
+			assert( bdc );
+
+			Date::operator = ( bdc -> adjustToBusDay( *this, _cal ) );
+
+		}
+
+		if ( !_lastBusDay )
+			if ( *this == findLastBusDay() )
+				_lastBusDay = 1;
+
+	}
+
+	assert( _cal.isBusDay( *this ) );
+
+}
+
+Date
+EuroDollarDateMarcher::DateCtl::findLastBusDay() const
+{
+	const Date firstdom( year(), month(), Day( 1 ) );
+	const Date lastdom( year(), month(), firstdom.endOfMonth(firstdom).dayOfMonth() );
+	if ( _cal.isBusDay( lastdom ) )
+		return lastdom;
+	return _cal.prevBusDay( lastdom );
+}
+
+//----------------------------------------------------------------------
+
+IMMDateMarcher::IMMDateMarcher() :
+	GeneralForwardDateMarcher(  "IMM"  )
+{
+}
+
+IMMDateMarcher::~IMMDateMarcher()
+{
+}
+
+GeneralForwardDateMarcher::DateCtl *
+IMMDateMarcher::createDateCtl(
+const Date		& start,
+const IRDFrequency		* freq,
+const Calendar		& calendar,
+const BusDayConv	* bdc,
+const SpcMarConvParam	* spcMarConvParam ) const
+{
+	return new DateCtl( start, freq, calendar, bdc );
+}
+
+IMMDateMarcher::DateCtl::DateCtl(
+const Date		& date,
+const IRDFrequency		* freq,
+const Calendar		& cal,
+const BusDayConv	* bdc ) :
+	GeneralForwardDateMarcher::DateCtl( date ),
+	_tenor( freq -> getIRDTenor().getAmount(),
+			IRDPeriod(*freq),
+			&cal ),
+	_cal( cal ),
+	_bdc( bdc )
+{
+}
+
+IMMDateMarcher::DateCtl::~DateCtl()
+{
+}
+
+void
+IMMDateMarcher::DateCtl::next()
+{
+	*this += IRDPeriod(_tenor);
+
+	if ( IMM::isIMMDate( *this,false ) )
+		return;
+
+	const Date prev = prevIMMDate( *this, _bdc, _cal );
+	const Date next = nextIMMDate( *this, _bdc, _cal );
+
+	assert( prev < *this );
+	assert( *this < next );
+
+	Date::operator = ( (*this - prev) < (next - *this) ? prev : next );
+}
+
+
+
+//------------------------------------------------------------------------------------
+
+DOWDateMarcher::DOWDateMarcher() :
+	GeneralForwardDateMarcher( "DOFW" )
+{
+}
+
+DOWDateMarcher::~DOWDateMarcher()
+{
+}
+
+GeneralForwardDateMarcher::DateCtl *
+DOWDateMarcher::createDateCtl(
+				const Date			& date,
+			 	const IRDFrequency		* freq,
+				const Calendar		& calendar,
+				const BusDayConv	* bdc,
+				const SpcMarConvParam	* spcMarConvParam) const
+{
+	assert(spcMarConvParam);
+	return new DateCtl( date, freq, calendar, bdc, spcMarConvParam );
+}
+
+
+DOWDateMarcher::DateCtl::DateCtl(
+ 		const Date         & date,
+        const IRDFrequency    * freq,
+        const Calendar     & cal,
+        const BusDayConv   * bdc,
+		const SpcMarConvParam  * spcMarConvParam
+		) :
+		GeneralForwardDateMarcher::DateCtl( date ),
+		_date ( date ),
+		_tenor( freq->getIRDTenor().getAmount(),
+				freq->getIRDTenor().getPeriod(),
+				&cal ),
+		_currentIRDTenor( 0,
+				freq->getIRDTenor().getPeriod(),
+				&cal ),
+		_cal( cal ),
+		_bdc( bdc ),
+		_sdate( date ),
+		_spcMarConvParam((const DOWMarConvParam *)spcMarConvParam),
+		_dayOfWeek ( (unsigned int )(*_spcMarConvParam->dayOfWeek()) ),
+		_occurrence( _spcMarConvParam->occurrence() )
+{
+}
+
+
+DOWDateMarcher::DateCtl::~DateCtl()
+{
+}
+
+
+void
+DOWDateMarcher::DateCtl::next()
+{
+	// 1) construct the date for the first day of the coming month
+	// 2) find the day Of Week
+	// 3) calculate the offset ( if -ve, add 7 )
+	// 4) return date as the ' date + (occurrence - 1)*7 '
+	// e.g. start date : Nov 23, 1995 a Thursday, occurence 2W, land on Wednesday
+	//	  	1) construct date( 12/01/95 )
+	//	  	2) day of week( 12/01/95 ) = 5
+	//		3) offset = (3 - 5) = - 2 + 7 = 5
+	//		4) date  = 12/01/95 + ( 2 - 1 )*7 + 5 = 12/13/95
+
+	_date += IRDTenor(_tenor);
+
+	if (_occurrence == 0) {
+		// The last occurance of DOW
+		Date lastDate(_date.year(), _date.month(), _date.endOfMonth(_date).dayOfMonth() );
+		int dayOfWeekOfLastOfMonth = (int)((unsigned int)lastDate.weekday());
+		int theOffset = dayOfWeekOfLastOfMonth - (int)((unsigned int)_dayOfWeek);
+		int theDay = _date.endOfMonth(_date).dayOfMonth();
+		if (theOffset)
+			theDay -= theOffset;
+		else
+			theDay -= (7 + theOffset);
+		Date theDate(_date.year(), _date.month(), theDay);
+		if ( _bdc && !_cal.isBusDay( theDate ) )
+			theDate = _bdc->adjustToBusDay(theDate, _cal);
+
+		Date::operator = (theDate);
+		return;
+	}
+
+	assert( _occurrence <= 4 && _occurrence > 0 );
+
+	// Rarely a  month starts on first day of week. What day of week the month started?
+
+	Date tempDate(_date.year(), _date.month(), 1);
+	int	 dayOfWeekTheMonthStartedOn = (int)((unsigned int)tempDate.weekday());
+
+	int offsetToFirst = (int)((unsigned int)_dayOfWeek) - dayOfWeekTheMonthStartedOn;
+	if (offsetToFirst < 0)
+		offsetToFirst += 7;
+
+	int dayOfMonth = (1 + offsetToFirst ) + ((_occurrence - 1) * 7);
+
+	if (_date.endOfMonth(_date).dayOfMonth() < dayOfMonth) {
+		// This would have taken us beyond this month
+		dayOfMonth -= 7;
+		assert (_date.endOfMonth(_date).dayOfMonth() >= dayOfMonth);
+	}
+
+	Date newDate(_date.year(), _date.month(), dayOfMonth);
+
+	boost::gregorian::date newDateTmp(newDate.dayOfMonth(), newDate.month(),newDate.year());
+
+
+	if ( _bdc && !_cal.isBusDay( newDateTmp ) )
+		newDateTmp = _bdc->adjustToBusDay(newDateTmp, _cal);
+
+	Date dateMarcher(newDateTmp.day(),newDateTmp.month(),newDateTmp.year());
+	Date::operator = (dateMarcher);
+}
+
+//-------------------------------------------------------------------------
+
+DOMDateMarcher::DOMDateMarcher() :
+    GeneralForwardDateMarcher(  "DOFM"  )
+{
+}
+
+DOMDateMarcher::~DOMDateMarcher()
+{
+}
+
+
+GeneralForwardDateMarcher::DateCtl *
+DOMDateMarcher::createDateCtl(
+                const Date          & date,
+                const IRDFrequency     * freq,
+                const Calendar      & calendar,
+                const BusDayConv    * bdc,
+				const SpcMarConvParam * spcMarConvParam ) const
+{
+    return new DateCtl( date, freq, calendar, bdc, spcMarConvParam);
+}
+
+DOMDateMarcher::DateCtl::DateCtl(
+        const Date         & date,
+        const IRDFrequency    * freq,
+        const Calendar     & cal,
+        const BusDayConv   * bdc,
+		const SpcMarConvParam * spcMarConvParam
+        ) :
+        GeneralForwardDateMarcher::DateCtl( date ),
+        _date ( date ),
+        _tenor( freq->getIRDTenor().getAmount(),
+                IRDPeriod(*freq),
+                &cal ),
+        _currentIRDTenor( 0,
+               IRDPeriod(*freq),
+                &cal ),
+        _cal( cal ),
+        _bdc( bdc ),
+        _sdate( date ),
+		_spcMarConvParam((const DOMMarConvParam *)spcMarConvParam),
+        _dayOfMonth ( _spcMarConvParam->dayOfMonth() ),
+		_busConv ( _spcMarConvParam->busConv() )
+{
+}
+
+
+DOMDateMarcher::DateCtl::~DateCtl()
+{
+}
+
+
+void
+DOMDateMarcher::DateCtl::next()
+{
+    // 1) calculate the offset ( if any ) and add to date
+    // 2) construct the date with the start date but with the select dayOfMonth
+    // 3) add the period
+    // e.g. start date : Nov 23, 1995,  land on 15
+	//		1) offset = 0
+    //      2) construct day as Date ( 1995, 11, ( 15 + 0 )  ) = 11/15/95
+    //      3) 11/15/95 + 1M = 12/15/95
+    //      the first hit is 12/15/95
+
+
+	_date += _tenor;
+
+	if ( !_busConv ) {		// i.e. going to nth calendar day
+		int dayOfMonth = _dayOfMonth;
+		if (_date.endOfMonth(_date).dayOfMonth() < _dayOfMonth)
+			dayOfMonth = _date.endOfMonth(_date).dayOfMonth(); // set to last day of month
+
+		Date newDate(_date.year(), _date.month(), dayOfMonth);
+
+		if ( _bdc && !_cal.isBusDay( newDate ) )
+			newDate = _bdc->adjustToBusDay(newDate, _cal);
+
+		Date::operator = (newDate);
+	}
+	else {					// _busConv, i.e. going to nth business day
+		Date newDate = Date(_date.year(), _date.month(), 1);
+		bool firstOfMonthAlreadyABusDay = _cal.isBusDay( newDate );
+		if (_dayOfMonth == 1) {
+			if( ! firstOfMonthAlreadyABusDay )
+				newDate = _cal.addBusDay( newDate, 1 );
+		}
+		else {
+			if( ! firstOfMonthAlreadyABusDay )
+				newDate = _cal.addBusDay( newDate, _dayOfMonth );
+			else
+				newDate = _cal.addBusDay( newDate, _dayOfMonth - 1 );
+
+			if ( newDate.month() != _date.month() ) { // go to last business day of the _date.month()
+                newDate = Date( _date.year(), _date.month(), _date.endOfMonth(_date).dayOfMonth() );
+                if ( !_cal.isBusDay( newDate ) )
+                    newDate = _cal.prevBusDay( newDate );
+			}
+		}
+
+		Date::operator = (newDate);
+	}
+
+}
+
+
+//----------------------------------------------------------------------
+
+BackwardDateMarcher::BackwardDateMarcher() :
+	DateMarcher(  "BCKWRD" )
+{
+}
+
+BackwardDateMarcher::~BackwardDateMarcher()
+{
+}
+
+RetCode
+BackwardDateMarcher::eventStream(
+const Date			& start,
+const Date			& end,
+const IRDFrequency		* freq,
+const Calendar		& calendar,
+const BusDayConv	* bdc,
+EventStream			& eventStream,
+int					evenFinalPeriod,
+const SpcMarConvParam	* spcMarConvParam ) const
+{
+	//------------------------------------------------------------------
+	// Argument validation ...
+
+	if ( !(start < end) )
+		return false;
+
+
+	//------------------------------------------------------------------
+	//
+	// See 'GeneralForwardDateMarcher::eventStream()' for a comment on 'if()'
+	// inside the 'for()' loop below.
+	//
+
+	DateStreamWrapper esw( eventStream );
+	BackDate date( end, freq, calendar, bdc );
+	for (; start < date; date.next() )
+		if ( date <= end )
+			esw.addEvent( date );
+
+	if ( evenFinalPeriod ) {
+
+		//
+		//	 --------+-----+-----+--------
+		//	         ^     ^     ^
+		//	         |     |     |
+		//	 date ---+     |     |
+		//	start ---------+     |
+		//	 last ---------------+
+		//
+
+		const Date * last = esw.getMinDate();
+		if ( !last )
+			return false;
+
+		const unsigned int dateToStart = start - date;
+		const unsigned int startToLast = *last - start;
+
+		if ( dateToStart < startToLast )
+			eventStream.addEvent( date );
+
+	}
+	else {
+
+		eventStream.addEvent( start );
+
+	}
+
+	//------------------------------------------------------------------
+
+	return true;
+}
+
+BackwardDateMarcher::BackDate::BackDate(
+const Date		& date,
+const IRDFrequency		* freq,
+const Calendar		& cal,
+const BusDayConv	* bdc ) :
+	Date( date ),
+	_date( date ),
+	_startDate( date ),
+	_tenor( freq -> getIRDTenor().getAmount(),
+			IRDPeriod(*freq),
+			&cal ),
+	_tenorsAddedToStartDate( 0,
+							IRDPeriod(*freq),
+							&cal ),
+	_cal( cal ),
+	_bdc( bdc )
+{
+}
+
+BackwardDateMarcher::BackDate::~BackDate()
+{
+}
+
+void
+BackwardDateMarcher::BackDate::next()
+{
+	IRDPeriod stDate = IRDPeriod(_tenorsAddedToStartDate);
+	stDate += IRDPeriod(_tenor);
+	_date = _startDate - stDate;
+
+	Date::operator = ( _bdc ? _bdc -> adjustToBusDay( _date, _cal ) : _date );
+}
+
+//----------------------------------------------------------------------
+
+DateMarcher::EventStream::EventStream()
+{
+}
+
+DateMarcher::EventStream::EventStream( const EventStream & )
+{
+}
+
+DateMarcher::EventStream::~EventStream()
+{
+}
+
+DateMarcher::EventStream &
+DateMarcher::EventStream::operator = ( const EventStream & )
+{
+	return *this;
+}
+
+
+const DateMarcher *
+DateMarcher::find( const std::string & name )
+{
+
+	 MarchMap::const_iterator it = getMarchMap().find( name ) ;
+	    if ( it != getMarchMap().end() )
+	        return it->second ;
+		return 0;
+
+}
+
+
+std::map<std::string, const DateMarcher *> & DateMarcher::getMarchMap ()
+{
+
+	static MarchMap marMap ;
+	static bool inited = false ;
+	 if ( !inited ) {
+		 marMap.insert ( MarchMap::value_type("_forward", new ForwardDateMarcher )) ;
+		         marMap.insert ( MarchMap::value_type("_backward", new BackwardDateMarcher )) ;
+		         marMap.insert ( MarchMap::value_type(" _imm ", new IMMDateMarcher )) ;
+		         marMap.insert ( MarchMap::value_type(" _eurodollar " , new EuroDollarDateMarcher )) ;
+		         marMap.insert ( MarchMap::value_type(" _dayofweek ", new DOWDateMarcher  )) ;
+		         marMap.insert ( MarchMap::value_type("_dayofmonth ", new DOMDateMarcher )) ;
+
+		         inited = true;
+	 }
+
+}
+
+// End-Of-File ---------------------------------------------------------

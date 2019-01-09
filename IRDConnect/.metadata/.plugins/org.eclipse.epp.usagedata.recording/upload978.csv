@@ -1,0 +1,279 @@
+what,kind,bundleId,bundleVersion,description,time
+error,log,,,"Error in CDT Core during AST creation",1315955128948
+error,log,,,"Problems occurred when invoking code from plug-in: ""org.eclipse.cdt.core"".",1315955130080
+error,log,,,"Error in CDT Core during AST creation",1315955130081
+error,log,,,"Problems occurred when invoking code from plug-in: ""org.eclipse.cdt.core"".",1315955131532
+error,log,,,"Error in CDT Core during AST creation",1315955131532
+error,log,,,"Problems occurred when invoking code from plug-in: ""org.eclipse.cdt.core"".",1315955135545
+error,log,,,"Error in CDT Core during AST creation",1315955135545
+error,log,,,"Problems occurred when invoking code from plug-in: ""org.eclipse.cdt.core"".",1315955136685
+error,log,,,"Error in CDT Core during AST creation",1315955136686
+deactivated,workbench,org.eclipse.ui.workbench,3.6.0.I20100603-1100,"",1315955138017
+activated,workbench,org.eclipse.ui.workbench,3.6.0.I20100603-1100,"",1315955142639
+error,log,,,"Problems occurred when invoking code from plug-in: ""org.eclipse.cdt.core"".",1315955143420
+error,log,,,"Error in CDT Core during AST creation",1315955143420
+error,log,,,"Problems occurred when invoking code from plug-in: ""org.eclipse.cdt.core"".",1315955144963
+error,log,,,"Error in CDT Core during AST creation",1315955144964
+error,log,,,"Problems occurred when invoking code from plug-in: ""org.eclipse.cdt.core"".",1315955149697
+error,log,,,"Error in CDT Core during AST creation",1315955149697
+error,log,,,"Problems occurred when invoking code from plug-in: ""org.eclipse.cdt.core"".",1315955153819
+error,log,,,"Error in CDT Core during AST creation",1315955153819
+error,log,,,"Problems occurred when invoking code from plug-in: ""org.eclipse.cdt.core"".",1315955155162
+error,log,,,"Error in CDT Core during AST creation",1315955155163
+error,log,,,"Problems occurred when invoking code from plug-in: ""org.eclipse.cdt.core"".",1315955157688
+error,log,,,"Error in CDT Core during AST creation",1315955157689
+executed,command,org.eclipse.ui,3.6.0.I20100603-1100,"org.eclipse.ui.edit.copy",1315955159034
+error,log,,,"Problems occurred when invoking code from plug-in: ""org.eclipse.cdt.core"".",1315955160394
+error,log,,,"Error in CDT Core during AST creation",1315955160401
+executed,command,org.eclipse.ui,3.6.0.I20100603-1100,"org.eclipse.ui.edit.paste",1315955160778
+error,log,,,"Problems occurred when invoking code from plug-in: ""org.eclipse.cdt.core"".",1315955161701
+error,log,,,"Error in CDT Core during AST creation",1315955161701
+error,log,,,"Problems occurred when invoking code from plug-in: ""org.eclipse.cdt.core"".",1315955163636
+error,log,,,"Error in CDT Core during AST creation",1315955163636
+error,log,,,"Problems occurred when invoking code from plug-in: ""org.eclipse.cdt.core"".",1315955167175
+error,log,,,"Error in CDT Core during AST creation",1315955167175
+error,log,,,"Problems occurred when invoking code from plug-in: ""org.eclipse.cdt.core"".",1315955167192
+error,log,,,"Error in CDT Core during AST creation",1315955167192
+error,log,,,"Problems occurred when invoking code from plug-in: ""org.eclipse.cdt.core"".",1315955167536
+error,log,,,"Error in CDT Core during AST creation",1315955167536
+executed,command,org.eclipse.ui,3.6.0.I20100603-1100,"org.eclipse.ui.file.saveAll",1315955168491
+error,log,,,"Error while parsing /genSchedule/schedule.cpp.",1315955168547
+activated,view,org.eclipse.ui.navigator.resources,3.4.200.I20100601-0800,"org.eclipse.ui.navigator.ProjectExplorer",1315955169577
+error,log,,,"Error while parsing /genSchedule/schedule.cpp.",1315955173307
+error,log,,,"Error while parsing /genSchedule/schedule.cpp.",1315955173987
+error,log,,,"Error logged from Debug Core: ",1315955182330
+activated,editor,org.eclipse.cdt.ui,5.2.0.201006141710,"org.eclipse.cdt.ui.editor.CEditor",1315955259436
+error,log,,,"Problems occurred when invoking code from plug-in: ""org.eclipse.cdt.core"".",1315955259700
+error,log,,,"Error in CDT Core during AST creation",1315955259702
+error,log,,,"Problems occurred when invoking code from plug-in: ""org.eclipse.cdt.core"".",1315955260284
+error,log,,,"Error in CDT Core during AST creation",1315955260284
+error,log,,,"Problems occurred when invoking code from plug-in: ""org.eclipse.cdt.core"".",1315955262735
+error,log,,,"Error in CDT Core during AST creation",1315955262736
+activated,perspective,org.eclipse.cdt.ui,,"org.eclipse.cdt.ui.CPerspective",1315994790172
+started,bundle,org.eclipse.osgi,3.6.0.v20100517,"org.eclipse.osgi",1315994790176
+started,bundle,org.eclipse.equinox.simpleconfigurator,1.0.200.v20100503,"org.eclipse.equinox.simpleconfigurator",1315994790180
+started,bundle,com.ibm.icu,4.2.1.v20100412,"com.ibm.icu",1315994790199
+started,bundle,org.eclipse.cdt.core,5.2.0.201006141710,"org.eclipse.cdt.core",1315994790199
+started,bundle,org.eclipse.cdt.debug.core,7.0.0.201006141710,"org.eclipse.cdt.debug.core",1315994790214
+started,bundle,org.eclipse.cdt.debug.ui,7.0.0.201006141710,"org.eclipse.cdt.debug.ui",1315994790214
+started,bundle,org.eclipse.cdt.make.core,7.0.0.201006141710,"org.eclipse.cdt.make.core",1315994790222
+started,bundle,org.eclipse.cdt.make.ui,7.0.0.201006141710,"org.eclipse.cdt.make.ui",1315994790247
+started,bundle,org.eclipse.cdt.managedbuilder.core,7.0.0.201006141710,"org.eclipse.cdt.managedbuilder.core",1315994790255
+started,bundle,org.eclipse.cdt.ui,5.2.0.201006141710,"org.eclipse.cdt.ui",1315994790255
+started,bundle,org.eclipse.compare.core,3.5.100.I20100526-0800,"org.eclipse.compare.core",1315994790255
+started,bundle,org.eclipse.core.contenttype,3.4.100.v20100505-1235,"org.eclipse.core.contenttype",1315994790263
+started,bundle,org.eclipse.core.databinding.observable,1.3.0.I20100601-0800,"org.eclipse.core.databinding.observable",1315994790283
+started,bundle,org.eclipse.core.expressions,3.4.200.v20100505,"org.eclipse.core.expressions",1315994790294
+started,bundle,org.eclipse.core.filebuffers,3.5.100.v20100520-0800,"org.eclipse.core.filebuffers",1315994790295
+started,bundle,org.eclipse.core.filesystem,1.3.0.v20100526-0737,"org.eclipse.core.filesystem",1315994790297
+started,bundle,org.eclipse.core.jobs,3.5.0.v20100515,"org.eclipse.core.jobs",1315994790360
+started,bundle,org.eclipse.core.net,1.2.100.I20100511-0800,"org.eclipse.core.net",1315994790360
+started,bundle,org.eclipse.core.resources,3.6.0.v20100526-0737,"org.eclipse.core.resources",1315994790370
+started,bundle,org.eclipse.core.runtime,3.6.0.v20100505,"org.eclipse.core.runtime",1315994790370
+started,bundle,org.eclipse.core.runtime.compatibility,3.2.100.v20100505,"org.eclipse.core.runtime.compatibility",1315994790399
+started,bundle,org.eclipse.core.runtime.compatibility.auth,3.2.200.v20100517,"org.eclipse.core.runtime.compatibility.auth",1315994790400
+started,bundle,org.eclipse.core.variables,3.2.400.v20100505,"org.eclipse.core.variables",1315994790400
+started,bundle,org.eclipse.debug.core,3.6.0.v20100519,"org.eclipse.debug.core",1315994790413
+started,bundle,org.eclipse.debug.ui,3.6.0.v20100601-1530,"org.eclipse.debug.ui",1315994790452
+started,bundle,org.eclipse.epp.usagedata.gathering,1.3.0.R201005261100,"org.eclipse.epp.usagedata.gathering",1315994790452
+started,bundle,org.eclipse.epp.usagedata.recording,1.3.0.R201005261100,"org.eclipse.epp.usagedata.recording",1315994790452
+started,bundle,org.eclipse.equinox.app,1.3.0.v20100512,"org.eclipse.equinox.app",1315994790462
+started,bundle,org.eclipse.equinox.common,3.6.0.v20100503,"org.eclipse.equinox.common",1315994790466
+started,bundle,org.eclipse.equinox.ds,1.2.0.v20100507,"org.eclipse.equinox.ds",1315994790477
+started,bundle,org.eclipse.equinox.event,1.2.0.v20100503,"org.eclipse.equinox.event",1315994790478
+started,bundle,org.eclipse.equinox.p2.core,2.0.0.v20100510,"org.eclipse.equinox.p2.core",1315994790478
+started,bundle,org.eclipse.equinox.p2.directorywatcher,1.0.200.v20100601,"org.eclipse.equinox.p2.directorywatcher",1315994790479
+started,bundle,org.eclipse.equinox.p2.engine,2.0.0.v20100606,"org.eclipse.equinox.p2.engine",1315994790519
+started,bundle,org.eclipse.equinox.p2.metadata,2.0.0.v20100601,"org.eclipse.equinox.p2.metadata",1315994790524
+started,bundle,org.eclipse.equinox.p2.metadata.repository,1.1.0.v20100513,"org.eclipse.equinox.p2.metadata.repository",1315994790530
+started,bundle,org.eclipse.equinox.p2.operations,2.0.0.v20100510,"org.eclipse.equinox.p2.operations",1315994790531
+started,bundle,org.eclipse.equinox.p2.reconciler.dropins,1.1.0.v20100525,"org.eclipse.equinox.p2.reconciler.dropins",1315994790535
+started,bundle,org.eclipse.equinox.p2.repository,2.0.0.v20100519,"org.eclipse.equinox.p2.repository",1315994790545
+started,bundle,org.eclipse.equinox.p2.ui.sdk.scheduler,1.0.0.v20100507-1815,"org.eclipse.equinox.p2.ui.sdk.scheduler",1315994790546
+started,bundle,org.eclipse.equinox.p2.updatechecker,1.1.100.v20100503a,"org.eclipse.equinox.p2.updatechecker",1315994790546
+started,bundle,org.eclipse.equinox.preferences,3.3.0.v20100503,"org.eclipse.equinox.preferences",1315994790592
+started,bundle,org.eclipse.equinox.registry,3.5.0.v20100503,"org.eclipse.equinox.registry",1315994790649
+started,bundle,org.eclipse.equinox.security,1.0.200.v20100503,"org.eclipse.equinox.security",1315994790656
+started,bundle,org.eclipse.equinox.util,1.0.200.v20100503,"org.eclipse.equinox.util",1315994790657
+started,bundle,org.eclipse.help,3.5.0.v20100524,"org.eclipse.help",1315994790668
+started,bundle,org.eclipse.jface,3.6.0.I20100601-0800,"org.eclipse.jface",1315994790673
+started,bundle,org.eclipse.ltk.core.refactoring,3.5.100.v20100526-0800,"org.eclipse.ltk.core.refactoring",1315994790674
+started,bundle,org.eclipse.ltk.ui.refactoring,3.5.0.v20100526-0800,"org.eclipse.ltk.ui.refactoring",1315994790676
+started,bundle,org.eclipse.search,3.6.0.v20100520-0800,"org.eclipse.search",1315994790687
+started,bundle,org.eclipse.team.core,3.5.100.I20100527-0800,"org.eclipse.team.core",1315994790695
+started,bundle,org.eclipse.ui,3.6.0.I20100603-1100,"org.eclipse.ui",1315994790701
+started,bundle,org.eclipse.ui.console,3.5.0.v20100526,"org.eclipse.ui.console",1315994790713
+started,bundle,org.eclipse.ui.editors,3.6.0.v20100520-0800,"org.eclipse.ui.editors",1315994790713
+started,bundle,org.eclipse.ui.forms,3.5.0.v20100427,"org.eclipse.ui.forms",1315994790718
+started,bundle,org.eclipse.ui.ide,3.6.0.I20100601-0800,"org.eclipse.ui.ide",1315994790728
+started,bundle,org.eclipse.ui.navigator,3.5.0.I20100601-0800,"org.eclipse.ui.navigator",1315994790731
+started,bundle,org.eclipse.ui.navigator.resources,3.4.200.I20100601-0800,"org.eclipse.ui.navigator.resources",1315994790843
+started,bundle,org.eclipse.ui.net,1.2.100.I20100505-1245,"org.eclipse.ui.net",1315994790844
+started,bundle,org.eclipse.ui.views,3.5.0.I20100527-0800,"org.eclipse.ui.views",1315994790856
+started,bundle,org.eclipse.ui.workbench,3.6.0.I20100603-1100,"org.eclipse.ui.workbench",1315994790863
+started,bundle,org.eclipse.ui.workbench.texteditor,3.6.0.v20100520-0800,"org.eclipse.ui.workbench.texteditor",1315994790940
+started,bundle,org.eclipse.update.configurator,3.3.100.v20100512,"org.eclipse.update.configurator",1315994790948
+started,bundle,org.eclipse.update.core,3.2.400.v20100512,"org.eclipse.update.core",1315994790968
+started,bundle,org.eclipse.update.scheduler,3.2.300.v20100512,"org.eclipse.update.scheduler",1315994790975
+started,bundle,org.eclipse.dltk.rse.ui,1.0.0.v20090610-1638,"org.eclipse.dltk.rse.ui",1315994790986
+started,bundle,org.eclipse.jdt.core,3.6.1.v_A68_R36x,"org.eclipse.jdt.core",1315994790999
+started,bundle,org.eclipse.jdt.core.manipulation,1.3.0.v20100520-0800,"org.eclipse.jdt.core.manipulation",1315994791007
+started,bundle,org.eclipse.jdt.ui,3.6.1.r361_v20100825-0800,"org.eclipse.jdt.ui",1315994791024
+started,bundle,org.eclipse.rse.core,3.1.101.v201009071110,"org.eclipse.rse.core",1315994791035
+started,bundle,org.eclipse.rse.services,3.2.0.v201006041352,"org.eclipse.rse.services",1315994791044
+started,bundle,org.eclipse.rse.ui,3.1.101.v201008191400,"org.eclipse.rse.ui",1315994791062
+os,sysinfo,,,"linux",1315994791086
+arch,sysinfo,,,"x86",1315994791086
+ws,sysinfo,,,"gtk",1315994791086
+locale,sysinfo,,,"en_IN",1315994791086
+processors,sysinfo,,,"1",1315994791090
+java.runtime.name,sysinfo,,,"Java(TM) SE Runtime Environment",1315994791090
+java.runtime.version,sysinfo,,,"1.6.0_21-b06",1315994791090
+java.specification.name,sysinfo,,,"Java Platform API Specification",1315994791090
+java.specification.vendor,sysinfo,,,"Sun Microsystems Inc.",1315994791090
+java.specification.version,sysinfo,,,"1.6",1315994791090
+java.vendor,sysinfo,,,"Sun Microsystems Inc.",1315994791090
+java.version,sysinfo,,,"1.6.0_21",1315994791090
+java.vm.info,sysinfo,,,"mixed mode, sharing",1315994791090
+java.vm.name,sysinfo,,,"Java HotSpot(TM) Client VM",1315994791090
+java.vm.specification.name,sysinfo,,,"Java Virtual Machine Specification",1315994791090
+java.vm.specification.vendor,sysinfo,,,"Sun Microsystems Inc.",1315994791090
+java.vm.specification.version,sysinfo,,,"1.0",1315994791090
+java.vm.vendor,sysinfo,,,"Sun Microsystems Inc.",1315994791090
+java.vm.version,sysinfo,,,"17.0-b16",1315994791090
+started,bundle,org.eclipse.dltk.core,1.0.0.v20090617-1157,"org.eclipse.dltk.core",1315994791199
+started,bundle,org.eclipse.dltk.launching,1.0.0.v20090610-1638,"org.eclipse.dltk.launching",1315994791329
+started,bundle,org.eclipse.dltk.ui,1.0.0.v20090617-1521,"org.eclipse.dltk.ui",1315994791348
+started,bundle,org.eclipse.mylyn.monitor.ui,3.4.0.v20100608-0100-e3x,"org.eclipse.mylyn.monitor.ui",1315994791600
+started,bundle,org.eclipse.mylyn.commons.net,3.4.1.v20100625-2100-e3x,"org.eclipse.mylyn.commons.net",1315994791680
+started,bundle,org.eclipse.jsch.core,1.1.200.I20100505-1245,"org.eclipse.jsch.core",1315994791917
+started,bundle,org.eclipse.team.cvs.core,3.3.300.I20100526-0800,"org.eclipse.team.cvs.core",1315994791950
+started,bundle,org.eclipse.mylyn.commons.ui,3.4.0.v20100608-0100-e3x,"org.eclipse.mylyn.commons.ui",1315994791975
+started,bundle,org.eclipse.team.ui,3.5.100.I20100527-0800,"org.eclipse.team.ui",1315994792116
+started,bundle,org.eclipse.mylyn.bugzilla.core,3.4.2.v20100902-0100-e3x,"org.eclipse.mylyn.bugzilla.core",1315994792775
+started,bundle,org.eclipse.team.cvs.ui,3.3.300.I20100526-0800,"org.eclipse.team.cvs.ui",1315994792886
+started,bundle,org.eclipse.mylyn.bugzilla.ui,3.4.2.v20100909-0100-e3x,"org.eclipse.mylyn.bugzilla.ui",1315994792948
+started,bundle,org.eclipse.mylyn.context.core,3.4.1.v20100909-0100-e3x,"org.eclipse.mylyn.context.core",1315994793186
+started,bundle,org.eclipse.mylyn.context.ui,3.4.1.v20100909-0100-e3x,"org.eclipse.mylyn.context.ui",1315994793251
+started,bundle,org.eclipse.mylyn.tasks.ui,3.4.2.v20100902-0100-e3x,"org.eclipse.mylyn.tasks.ui",1315994793613
+started,bundle,org.eclipse.mylyn.team.ui,3.4.2.v20100909-0100-e3x,"org.eclipse.mylyn.team.ui",1315994793740
+deactivated,workbench,org.eclipse.ui.workbench,3.6.0.I20100603-1100,"",1315994842897
+activated,workbench,org.eclipse.ui.workbench,3.6.0.I20100603-1100,"",1315994844348
+activated,view,org.eclipse.ui.navigator.resources,3.4.200.I20100601-0800,"org.eclipse.ui.navigator.ProjectExplorer",1315994856608
+deactivated,workbench,org.eclipse.ui.workbench,3.6.0.I20100603-1100,"",1315994859572
+activated,workbench,org.eclipse.ui.workbench,3.6.0.I20100603-1100,"",1316020467133
+opened,editor,org.eclipse.cdt.ui,5.2.0.201006141710,"org.eclipse.cdt.ui.editor.CEditor",1316020492349
+activated,editor,org.eclipse.cdt.ui,5.2.0.201006141710,"org.eclipse.cdt.ui.editor.CEditor",1316020492424
+activated,view,org.eclipse.ui.navigator.resources,3.4.200.I20100601-0800,"org.eclipse.ui.navigator.ProjectExplorer",1316020492446
+error,log,,,"Problems occurred when invoking code from plug-in: ""org.eclipse.cdt.core"".",1316020496622
+error,log,,,"Error in CDT Core during AST creation",1316020496623
+error,log,,,"Problems occurred when invoking code from plug-in: ""org.eclipse.cdt.core"".",1316020496654
+error,log,,,"Error in CDT Core during AST creation",1316020496654
+activated,editor,org.eclipse.cdt.ui,5.2.0.201006141710,"org.eclipse.cdt.ui.editor.CEditor",1316020634983
+error,log,,,"Problems occurred when invoking code from plug-in: ""org.eclipse.cdt.core"".",1316020635665
+error,log,,,"Error in CDT Core during AST creation",1316020635665
+activated,view,org.eclipse.ui.navigator.resources,3.4.200.I20100601-0800,"org.eclipse.ui.navigator.ProjectExplorer",1316031938936
+opened,editor,org.eclipse.cdt.ui,5.2.0.201006141710,"org.eclipse.cdt.ui.editor.CEditor",1316031945930
+activated,editor,org.eclipse.cdt.ui,5.2.0.201006141710,"org.eclipse.cdt.ui.editor.CEditor",1316031945988
+activated,view,org.eclipse.ui.navigator.resources,3.4.200.I20100601-0800,"org.eclipse.ui.navigator.ProjectExplorer",1316031946002
+activated,editor,org.eclipse.cdt.ui,5.2.0.201006141710,"org.eclipse.cdt.ui.editor.CEditor",1316031953075
+error,log,,,"Problems occurred when invoking code from plug-in: ""org.eclipse.cdt.core"".",1316031953841
+error,log,,,"Error in CDT Core during AST creation",1316031953841
+error,log,,,"Problems occurred when invoking code from plug-in: ""org.eclipse.cdt.core"".",1316031954619
+error,log,,,"Error in CDT Core during AST creation",1316031954619
+error,log,,,"Problems occurred when invoking code from plug-in: ""org.eclipse.cdt.core"".",1316031954625
+error,log,,,"Error in CDT Core during AST creation",1316031954626
+error,log,,,"Problems occurred when invoking code from plug-in: ""org.eclipse.cdt.core"".",1316032005098
+error,log,,,"Error in CDT Core during AST creation",1316032005098
+error,log,,,"Problems occurred when invoking code from plug-in: ""org.eclipse.cdt.core"".",1316032005104
+error,log,,,"Error in CDT Core during AST creation",1316032005104
+activated,view,org.eclipse.ui.navigator.resources,3.4.200.I20100601-0800,"org.eclipse.ui.navigator.ProjectExplorer",1316032148527
+opened,editor,org.eclipse.cdt.ui,5.2.0.201006141710,"org.eclipse.cdt.ui.editor.CEditor",1316032155648
+activated,editor,org.eclipse.cdt.ui,5.2.0.201006141710,"org.eclipse.cdt.ui.editor.CEditor",1316032155707
+activated,view,org.eclipse.ui.navigator.resources,3.4.200.I20100601-0800,"org.eclipse.ui.navigator.ProjectExplorer",1316032155724
+activated,editor,org.eclipse.cdt.ui,5.2.0.201006141710,"org.eclipse.cdt.ui.editor.CEditor",1316032163307
+error,log,,,"Problems occurred when invoking code from plug-in: ""org.eclipse.cdt.core"".",1316032164069
+error,log,,,"Error in CDT Core during AST creation",1316032164069
+activated,editor,org.eclipse.cdt.ui,5.2.0.201006141710,"org.eclipse.cdt.ui.editor.CEditor",1316032191623
+error,log,,,"Problems occurred when invoking code from plug-in: ""org.eclipse.cdt.core"".",1316032193050
+error,log,,,"Error in CDT Core during AST creation",1316032193051
+error,log,,,"Problems occurred when invoking code from plug-in: ""org.eclipse.cdt.core"".",1316032193070
+error,log,,,"Error in CDT Core during AST creation",1316032193070
+activated,view,org.eclipse.ui.navigator.resources,3.4.200.I20100601-0800,"org.eclipse.ui.navigator.ProjectExplorer",1316032307179
+opened,editor,org.eclipse.cdt.ui,5.2.0.201006141710,"org.eclipse.cdt.ui.editor.CEditor",1316032318178
+activated,editor,org.eclipse.cdt.ui,5.2.0.201006141710,"org.eclipse.cdt.ui.editor.CEditor",1316032318235
+activated,view,org.eclipse.ui.navigator.resources,3.4.200.I20100601-0800,"org.eclipse.ui.navigator.ProjectExplorer",1316032318252
+opened,editor,org.eclipse.cdt.ui,5.2.0.201006141710,"org.eclipse.cdt.ui.editor.CEditor",1316032330315
+activated,editor,org.eclipse.cdt.ui,5.2.0.201006141710,"org.eclipse.cdt.ui.editor.CEditor",1316032330371
+activated,view,org.eclipse.ui.navigator.resources,3.4.200.I20100601-0800,"org.eclipse.ui.navigator.ProjectExplorer",1316032330386
+deactivated,workbench,org.eclipse.ui.workbench,3.6.0.I20100603-1100,"",1316032340644
+activated,workbench,org.eclipse.ui.workbench,3.6.0.I20100603-1100,"",1316032693963
+deactivated,workbench,org.eclipse.ui.workbench,3.6.0.I20100603-1100,"",1316032695074
+activated,workbench,org.eclipse.ui.workbench,3.6.0.I20100603-1100,"",1316033781147
+activated,editor,org.eclipse.cdt.ui,5.2.0.201006141710,"org.eclipse.cdt.ui.editor.CEditor",1316033781171
+activated,view,org.eclipse.ui.navigator.resources,3.4.200.I20100601-0800,"org.eclipse.ui.navigator.ProjectExplorer",1316033785412
+executed,command,org.eclipse.ui.ide,3.6.0.I20100601-0800,"org.eclipse.ui.project.buildAll",1316033922236
+deactivated,workbench,org.eclipse.ui.workbench,3.6.0.I20100603-1100,"",1316033922726
+started,bundle,org.eclipse.cdt.managedbuilder.gnu.ui,7.0.0.201006141710,"org.eclipse.cdt.managedbuilder.gnu.ui",1316033922764
+activated,workbench,org.eclipse.ui.workbench,3.6.0.I20100603-1100,"",1316034140212
+deactivated,workbench,org.eclipse.ui.workbench,3.6.0.I20100603-1100,"",1316034141105
+activated,workbench,org.eclipse.ui.workbench,3.6.0.I20100603-1100,"",1316034200358
+activated,editor,org.eclipse.cdt.ui,5.2.0.201006141710,"org.eclipse.cdt.ui.editor.CEditor",1316034219036
+deactivated,workbench,org.eclipse.ui.workbench,3.6.0.I20100603-1100,"",1316034324276
+started,bundle,org.eclipse.epp.usagedata.ui,1.3.0.R201005261100,"org.eclipse.epp.usagedata.ui",1316034324393
+activated,workbench,org.eclipse.ui.workbench,3.6.0.I20100603-1100,"",1316034327774
+deactivated,workbench,org.eclipse.ui.workbench,3.6.0.I20100603-1100,"",1316034335072
+executed,command,org.eclipse.ui.ide,3.6.0.I20100601-0800,"org.eclipse.ui.project.cleanAction",1316034337905
+activated,workbench,org.eclipse.ui.workbench,3.6.0.I20100603-1100,"",1316034338120
+deactivated,workbench,org.eclipse.ui.workbench,3.6.0.I20100603-1100,"",1316034339050
+activated,workbench,org.eclipse.ui.workbench,3.6.0.I20100603-1100,"",1316034345701
+started,bundle,org.eclipse.cdt.mylyn.ui,1.1.2.v20100608-0100-e3x,"org.eclipse.cdt.mylyn.ui",1316034356970
+closed,workbench,org.eclipse.ui.workbench,3.6.0.I20100603-1100,"",1316034357139
+executed,command,org.eclipse.ui,3.6.0.I20100603-1100,"org.eclipse.ui.file.exit",1316034358077
+stopped,bundle,org.eclipse.cdt.debug.mi.ui,6.1.0.201006141710,"org.eclipse.cdt.debug.mi.ui",1316034358263
+stopped,bundle,org.eclipse.cdt.debug.mi.core,7.0.0.201006141710,"org.eclipse.cdt.debug.mi.core",1316034358282
+stopped,bundle,org.eclipse.cdt.debug.ui.memory.memorybrowser,1.2.0.201006141710,"org.eclipse.cdt.debug.ui.memory.memorybrowser",1316034358284
+stopped,bundle,org.eclipse.cdt.debug.ui.memory.search,1.2.0.201006141710,"org.eclipse.cdt.debug.ui.memory.search",1316034358295
+stopped,bundle,org.eclipse.cdt.dsf.gdb.ui,2.1.0.201006141710,"org.eclipse.cdt.dsf.gdb.ui",1316034358299
+stopped,bundle,org.eclipse.cdt.dsf.ui,2.1.0.201006141710,"org.eclipse.cdt.dsf.ui",1316034358304
+stopped,bundle,org.eclipse.cdt.gdb.ui,7.0.0.201006141710,"org.eclipse.cdt.gdb.ui",1316034358331
+stopped,bundle,org.eclipse.cdt.dsf.gdb,3.0.0.201006141710,"org.eclipse.cdt.dsf.gdb",1316034358370
+stopped,bundle,org.eclipse.cdt.launch,6.1.0.201006141710,"org.eclipse.cdt.launch",1316034358377
+stopped,bundle,org.eclipse.cdt.debug.ui,7.0.0.201006141710,"org.eclipse.cdt.debug.ui",1316034358378
+stopped,bundle,org.eclipse.cdt.debug.ui.memory.traditional,1.2.0.201006141710,"org.eclipse.cdt.debug.ui.memory.traditional",1316034358402
+stopped,bundle,org.eclipse.cdt.dsf,2.1.0.201006141710,"org.eclipse.cdt.dsf",1316034358434
+stopped,bundle,org.eclipse.cdt.debug.core,7.0.0.201006141710,"org.eclipse.cdt.debug.core",1316034358435
+stopped,bundle,org.eclipse.cdt.managedbuilder.ui,7.0.0.201006141710,"org.eclipse.cdt.managedbuilder.ui",1316034358455
+stopped,bundle,org.eclipse.cdt.make.ui,7.0.0.201006141710,"org.eclipse.cdt.make.ui",1316034358455
+stopped,bundle,org.eclipse.cdt.managedbuilder.gnu.ui,7.0.0.201006141710,"org.eclipse.cdt.managedbuilder.gnu.ui",1316034358455
+stopped,bundle,org.eclipse.cdt.managedbuilder.core,7.0.0.201006141710,"org.eclipse.cdt.managedbuilder.core",1316034358456
+stopped,bundle,org.eclipse.cdt.make.core,7.0.0.201006141710,"org.eclipse.cdt.make.core",1316034358456
+stopped,bundle,org.eclipse.cdt.mylyn.ui,1.1.2.v20100608-0100-e3x,"org.eclipse.cdt.mylyn.ui",1316034358456
+stopped,bundle,org.eclipse.cdt.ui,5.2.0.201006141710,"org.eclipse.cdt.ui",1316034358456
+stopped,bundle,org.eclipse.cdt.core,5.2.0.201006141710,"org.eclipse.cdt.core",1316034358456
+stopped,bundle,org.eclipse.equinox.p2.ui.sdk,1.0.100.v20100513,"org.eclipse.equinox.p2.ui.sdk",1316034358472
+activated,perspective,org.eclipse.cdt.ui,,"org.eclipse.cdt.ui.CPerspective",1316035540591
+started,bundle,org.eclipse.osgi,3.6.0.v20100517,"org.eclipse.osgi",1316035540593
+started,bundle,org.eclipse.equinox.simpleconfigurator,1.0.200.v20100503,"org.eclipse.equinox.simpleconfigurator",1316035540595
+started,bundle,com.ibm.icu,4.2.1.v20100412,"com.ibm.icu",1316035540595
+started,bundle,org.eclipse.cdt.core,5.2.0.201006141710,"org.eclipse.cdt.core",1316035540595
+started,bundle,org.eclipse.cdt.debug.core,7.0.0.201006141710,"org.eclipse.cdt.debug.core",1316035540596
+started,bundle,org.eclipse.cdt.debug.ui,7.0.0.201006141710,"org.eclipse.cdt.debug.ui",1316035540596
+started,bundle,org.eclipse.cdt.make.core,7.0.0.201006141710,"org.eclipse.cdt.make.core",1316035540597
+started,bundle,org.eclipse.cdt.make.ui,7.0.0.201006141710,"org.eclipse.cdt.make.ui",1316035540598
+started,bundle,org.eclipse.cdt.managedbuilder.core,7.0.0.201006141710,"org.eclipse.cdt.managedbuilder.core",1316035540615
+started,bundle,org.eclipse.cdt.ui,5.2.0.201006141710,"org.eclipse.cdt.ui",1316035540615
+started,bundle,org.eclipse.compare.core,3.5.100.I20100526-0800,"org.eclipse.compare.core",1316035540616
+started,bundle,org.eclipse.core.contenttype,3.4.100.v20100505-1235,"org.eclipse.core.contenttype",1316035540616
+started,bundle,org.eclipse.core.databinding.observable,1.3.0.I20100601-0800,"org.eclipse.core.databinding.observable",1316035540620
+started,bundle,org.eclipse.core.expressions,3.4.200.v20100505,"org.eclipse.core.expressions",1316035540620
+started,bundle,org.eclipse.core.filebuffers,3.5.100.v20100520-0800,"org.eclipse.core.filebuffers",1316035540621
+started,bundle,org.eclipse.core.filesystem,1.3.0.v20100526-0737,"org.eclipse.core.filesystem",1316035540627
+started,bundle,org.eclipse.core.jobs,3.5.0.v20100515,"org.eclipse.core.jobs",1316035540627
+started,bundle,org.eclipse.core.net,1.2.100.I20100511-0800,"org.eclipse.core.net",1316035540629
+started,bundle,org.eclipse.core.resources,3.6.0.v20100526-0737,"org.eclipse.core.resources",1316035540629
+started,bundle,org.eclipse.core.runtime,3.6.0.v20100505,"org.eclipse.core.runtime",1316035540630
+started,bundle,org.eclipse.core.runtime.compatibility,3.2.100.v20100505,"org.eclipse.core.runtime.compatibility",1316035540631
+started,bundle,org.eclipse.core.runtime.compatibility.auth,3.2.200.v20100517,"org.eclipse.core.runtime.compatibility.auth",1316035540632
+started,bundle,org.eclipse.core.variables,3.2.400.v20100505,"org.eclipse.core.variables",1316035540632
+started,bundle,org.eclipse.debug.core,3.6.0.v20100519,"org.eclipse.debug.core",1316035540633

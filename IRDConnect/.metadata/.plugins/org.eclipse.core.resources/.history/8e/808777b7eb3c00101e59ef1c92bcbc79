@@ -1,0 +1,834 @@
+/*
+ * schedule.cpp
+ *
+ *  Created on: 29-Sep-2010
+ *      Author: vishist
+ */
+
+
+#include<iostream>
+#include <fstream>
+#include <string>
+#include "tradeTicket.h"
+#include "date.h"
+#include "swapDeal.h"
+#include "swapLeg.h"
+#include "currency.h"
+#include "busDayConv.h"
+#include "marchingConv.h"
+#include "dayCountConv.h"
+#include "frequency.h"
+#include "calendarUtil.h"
+#include "fixingRates.h"
+#include "fraTicket.h"
+#include "capFloorTicket.h"
+#include <set>
+
+using namespace std;
+using  namespace IRDConnect;
+using namespace IRDdetail;
+
+
+int main(int arvc, char * arv[])
+{
+
+	//Date valDate(15,10,2010);
+	//Date::setValuationDate(15,10,2010); // set valuation date i.e. today
+	cout << "Today is : " << Date::todaysDate() << endl;
+	Currency::init();
+	FixingRates::init();
+
+	TradeTicket tt;
+
+	String tradeRef = "SWP1022901146";
+	tt.setTradeRef(tradeRef);
+
+    Date tradeDate(15,10,2010);
+	tt.setTradeDate(tradeDate);
+
+	Date startDate(15,10,2010);
+	tt.setStartDate(startDate);
+
+    Date maturityDate(10,12,2012);
+	tt.setMaturityDate(maturityDate);
+
+    String trader = "Bollu, Nagesh";
+	tt.setTrader (trader );
+
+	String firmAccount = "IRDBOOK";
+	tt.setFirmAccount(firmAccount);
+
+	String customerAccount = "IRDCUST";
+
+	tt.setCustomerAccount(customerAccount);
+
+    String location = "NY";
+	tt.setLocation(location);
+
+    String alternateRef = "";
+	tt.setAlternateRef (alternateRef );
+
+    String externalSystem = "";
+	tt.setExternalSystem (externalSystem );
+
+	String externalRef = "";
+	tt.setExternalRef (externalRef );
+
+    Date earlyTermDate(01,01,1901);
+	tt.setEarlyTermDate (earlyTermDate );
+
+    String earlyTermReason = "";
+	tt.setEarlyTermReason (earlyTermReason );
+
+    String operationsRef = "OPS123101";
+	tt.setOperationsRef (operationsRef );
+
+    String productType = "SWAP";
+	tt.setProductType (productType );
+
+    String subType = "REG";
+	tt.setSubType (subType );
+
+    String tradeType = "CUSTOMER";
+	tt.setTradeType (tradeType );
+
+	String legalEntity = "IRDLV";
+	tt.setLegalEntity (legalEntity );
+
+	String bookingType = "PH";
+	tt.setBookingType (bookingType );
+
+    String matchingStatus = "UMAT";
+	tt.setMatchingStatus (matchingStatus );
+
+	String lastModifiedBy = "Ambati, Nag";
+	tt.setLastModifiedBy (lastModifiedBy );
+
+    String lastVerifiedBy = "Bollu, Ram";
+	tt.setLastVerifiedBy (lastVerifiedBy );
+
+	String modifiedTimeStamp = "";
+	tt.setModifiedTimeStamp (modifiedTimeStamp );
+
+    String verifiedTimeStamp = "";
+	tt.setVerifiedTimeStamp (verifiedTimeStamp);
+
+	String tradeStatus = "NEW";
+	tt.setTradeStatus (tradeStatus );
+
+	String flowStatus = "V";
+	tt.setFlowStatus (flowStatus );
+
+	String salesPerson = "Bollu, Ram";
+	tt.setSalesPerson (salesPerson );
+
+	String originalTradeRef = "";
+	tt.setOriginalTradeRef (originalTradeRef );
+
+	String washAccount = "";
+	tt.setWashAccount(washAccount );
+
+	// FRA STARTS
+
+	/*
+	startDate = Date(19,10,2010);
+	tt.setStartDate(startDate);
+
+    maturityDate = Date(19,01,2011);
+	tt.setMaturityDate(maturityDate);
+
+	tt.setTradeRef("IRDFRA1103300001");
+
+		String			fraBuySell = "BUY"; // buy float rate
+		//String			fraBuySell = "SELL"; // sell float rate
+
+		double 			fraNotional = 10000000;
+		Date 			fraSettlementDate(19,10,2010);
+		int 			fraQuoteLag = 0;
+		Date 			fraQuoteDate(19,10,2010);
+
+
+		std::set < std::string > fraPayCalendars;
+		fraPayCalendars.insert("LON");
+
+		const BusDayConv * fraBusinessDayConv =  BusDayConv::find("MOD");
+		double 			fraAgreedRate = 0.66750;
+		String 			fraResetType = "AUTO";
+		String			fraResetApplied = "RESET"; // MANUAL OR RESET(from the market) or PROJECTED
+		String 			fraRateType = "ADD_ON"; // simple or add_on or discount
+		//String 			fraRateType = "SIMPLE";
+		//String 			fraRateType = "DISCOUNT";
+		String 			fraMarketIndex = "GBPDOM_3M.T3750";
+		const DayCountConv * 	fraDayCount =  DayCountConv::find("_actAct");
+		std::set < std::string > fraQuoteCalendars;
+		fraQuoteCalendars.insert("LON");
+		String 			fraDiscountCurve = "GBPSWPTSIR";
+		String 			fraPaymentConvention = "IN_ADVANCE";
+		String 			fraResetConvention = "IN_ADVANCE";
+
+	FraTicket fraTicket(
+		 tt.getAlternateRef(),
+		 tt.getBookingType(),
+		 tt.getCustomerAccount(),
+		 tt.getEarlyTermDate(),
+		 tt.getEarlyTermReason(),
+		 tt.getExternalSystem(),
+		 tt.getExternalRef(),
+		 tt.getFirmAccount(),
+		 tt.getFlowStatus(),
+		 tt.getLastModifiedBy(),
+		 tt.getLastVerifiedBy(),
+		 tt.getLegalEntity(),
+		 tt.getLocation(),
+		 tt.getMatchingStatus(),
+		 tt.getMaturityDate(),
+		 tt.getModifiedTimeStamp(),
+		 tt.getOperationsRef(),
+		 tt.getOriginalTradeRef(),
+		 tt.getProductType(),
+		 tt.getSalesPerson(),
+		 tt.getStartDate(),
+		 tt.getSubType(),
+		 "",  // this is swap status
+		 "",  // this is swaption ref
+		 tt.getTradeDate(),
+		 tt.getTrader(),
+		 tt.getTradeRef(),
+		 tt.getTradeStatus(),
+		 tt.getTradeType(),
+		 tt.getTradeVersion(),
+		 tt.getVerifiedTimeStamp(),
+		 tt.getWashAccount(),
+fraBuySell,
+fraNotional,
+fraSettlementDate,
+fraQuoteLag,
+fraQuoteDate,
+fraPayCalendars,
+fraBusinessDayConv,
+fraAgreedRate,
+fraResetType,
+fraResetApplied,
+fraRateType,
+fraMarketIndex,
+fraDayCount,
+fraQuoteCalendars,
+fraDiscountCurve,
+fraPaymentConvention,
+fraResetConvention);
+
+
+if ( ! fraTicket.genPaySchedule() )
+{
+	cout << "Sorry, Schedule generation failed. " << endl;
+}
+
+return 1;
+*/
+
+/*
+
+	int 						amortRollDay(0);
+	DayOfWeek 					amortRollWeek(NULL_DOW);
+	//double 						amortAmount = 0.0;
+	double 						amortAmount = 120000.00;
+	const BusDayConv * 			amortBusDay = BusDayConv::find("MOD");
+
+	std::set < std::string > 	amortCalendars;
+
+	amortCalendars.insert("LON");
+
+	Date 						amortEndDate (Date(10,12,2012));
+	Frequency 					amortFreq(Semiannual);
+	const DateMarcher * 		amortMarching = DateMarcher::find("_forward");
+	Date 						amortStartDate(Date(15,10,2010));
+	//String 						amortType = "NONE";
+	String 						amortType = "AMOUNT";
+	Date 						backStubDate(Date(10,12,2012));
+	double 						backStubManualRate = -1;
+	//String 						buyFlag = "Yes";
+	String 						buyFlag = "No";
+	//String						capFloorType = "CAP";
+	String						capFloorType = "FLOOR";
+	const Currency *  			currency = Currency::find("GBP");
+	DayCountConv * 	 			dayCount = DayCountConv::find("_actAct");
+	String 						discountCurve = "GBPSWPTSIR";
+	Date 						endDate(Date(10,12,2012));
+	String 						endDateRollFlag = "Yes";
+	Date 						frontStubDate(Date(15,10,2010));
+	double 						frontStubManualRate = -1;
+	double 						gearFactor = 1.0;
+	std::set < std::string > 	initialQuoteCalendars;
+
+	initialQuoteCalendars.insert("LON");
+
+	Date 						initialQuoteDate(Date(1,1,1901));
+	int 						initialQuoteLag = -1;
+	int 						legNo = 1;
+	String 						marketIndex = "GBPDOM_6M.T3750";
+	double 						notional = 10000000;
+	const BusDayConv * 			payBusDay = BusDayConv::find("MOD");
+	std::set < std::string >	payCalendars;
+
+	payCalendars.insert("LON");
+
+	Frequency 					payFreq(Semiannual);
+	const DateMarcher * 		payMarching = DateMarcher::find("_forward");
+	String 						paymentConvention = "IN_ARRIARS";
+	const Currency * 	 		paymentConversionCurrency = Currency::find("GBP");
+	String 						paymentConversionIndex = "GBP/USD_SPOT";
+	int 						paymentConversionLag = -1;
+	int							payLag = 0;
+	int 						payRollDay(0);
+	DayOfWeek 					payRollWeek(NULL_DOW);
+	String						pricingMethod = "ClosedForm" ;// closed Form, Tree, Mc 3000:10000:40000 etc
+	std::set < std::string >	quoteCalendars;
+
+	quoteCalendars.insert("LON");
+
+	int 						quoteLag = 0;
+	String						resetAveraging = "NONE"; // could WEIGHTED_CAL or UNWEIGHTED
+	String 						resetConvention = "IN_ADVANCE";
+	Frequency 					resetFreq = payFreq;
+	String 						resetType = "AUTO";
+	int 						scheduleCustomFlag = 0;
+	double 						spread = 0.0;
+	String						cfSubType = "REG" ;
+	Date 						capStartDate(Date(15,10,2010));
+	String						startDateRollFlag = "No";
+	double 						strike = 2.0;
+	String						volId = "GBPCAPVOL";
+
+
+
+	CapFloorTicket cfTicket = CapFloorTicket(
+				 tt.getAlternateRef(),
+				 tt.getBookingType(),
+				 tt.getCustomerAccount(),
+				 tt.getEarlyTermDate(),
+				 tt.getEarlyTermReason(),
+				 tt.getExternalSystem(),
+				 tt.getExternalRef(),
+				 tt.getFirmAccount(),
+				 tt.getFlowStatus(),
+				 tt.getLastModifiedBy(),
+				 tt.getLastVerifiedBy(),
+				 tt.getLegalEntity(),
+				 tt.getLocation(),
+				 tt.getMatchingStatus(),
+				 tt.getMaturityDate(),
+				 tt.getModifiedTimeStamp(),
+				 tt.getOperationsRef(),
+				 tt.getOriginalTradeRef(),
+				 tt.getProductType(),
+				 tt.getSalesPerson(),
+				 tt.getStartDate(),
+				 tt.getSubType(),
+				 "",  // this is swap status
+				 "",  // this is swaption ref
+				 tt.getTradeDate(),
+				 tt.getTrader(),
+				 tt.getTradeRef(),
+				 tt.getTradeStatus(),
+				 tt.getTradeType(),
+				 tt.getTradeVersion(),
+				 tt.getVerifiedTimeStamp(),
+				 tt.getWashAccount(),
+	amortRollDay,
+	amortRollWeek,
+	amortAmount,
+	amortBusDay,
+	amortCalendars,
+	amortEndDate,
+	amortFreq,
+	amortMarching,
+	amortStartDate,
+	amortType,
+	backStubDate,
+	backStubManualRate,
+	buyFlag,
+	capFloorType,
+	currency,
+	dayCount,
+	discountCurve,
+	endDate,
+	endDateRollFlag,
+	frontStubDate,
+	frontStubManualRate,
+	gearFactor,
+	initialQuoteCalendars,
+	initialQuoteDate,
+	initialQuoteLag,
+	legNo,
+	marketIndex,
+	notional,
+	payBusDay,
+	payCalendars,
+	payFreq,
+	payMarching,
+	paymentConvention,
+	paymentConversionCurrency,
+	paymentConversionIndex,
+	paymentConversionLag,
+	payLag,
+	payRollDay,
+	payRollWeek,
+	pricingMethod,
+	quoteCalendars,
+	quoteLag,
+	resetAveraging,
+	resetConvention,
+	resetFreq,
+	resetType,
+	scheduleCustomFlag,
+	spread,
+	capStartDate,
+	startDateRollFlag,
+	strike,
+	cfSubType,
+	volId );
+
+
+	cfTicket.setIsPSGenerated(false);
+	cfTicket.setIsRSGenerated(false);
+
+if ( ! cfTicket.genPaySchedule() )
+	cout << "Sorry, Pay schedule failed to egenrate ";
+
+//if ( ! cfTicket.genResetSchedule() )
+//	cout << "Sorry, Reset schedule failed to egenrate ";
+
+if ( ! cfTicket.genCashFlows() )
+	cout << "cashFlows failed to generate... " << endl;
+
+
+*/
+
+// LET US SET SwapLeg NOW::
+
+SwapDeal swapDeal(
+	 tt.getAlternateRef(),
+	 tt.getBookingType(),
+	 tt.getCustomerAccount(),
+	 tt.getEarlyTermDate(),
+	 tt.getEarlyTermReason(),
+	 tt.getExternalSystem(),
+	 tt.getExternalRef(),
+	 tt.getFirmAccount(),
+	 tt.getFlowStatus(),
+	 tt.getLastModifiedBy(),
+	 tt.getLastVerifiedBy(),
+	 tt.getLegalEntity(),
+	 tt.getLocation(),
+	 tt.getMatchingStatus(),
+	 tt.getMaturityDate(),
+	 tt.getModifiedTimeStamp(),
+	 tt.getOperationsRef(),
+	 tt.getOriginalTradeRef(),
+	 tt.getProductType(),
+	 tt.getSalesPerson(),
+	 tt.getStartDate(),
+	 tt.getSubType(),
+	 "",  // this is swap status
+	 "",  // this is swaption ref
+	 tt.getTradeDate(),
+	 tt.getTrader(),
+	 tt.getTradeRef(),
+	 tt.getTradeStatus(),
+	 tt.getTradeType(),
+	 tt.getTradeVersion(),
+	 tt.getVerifiedTimeStamp(),
+	 tt.getWashAccount()) ;
+
+const BusDayConv * accrualBusDay =  BusDayConv::find("NONE");
+//const BusDayConv * accrualBusDay =  BusDayConv::find("PRE");
+//const BusDayConv * accrualBusDay =  BusDayConv::find("FOL");
+//const BusDayConv * accrualBusDay =  BusDayConv::find("MOD");
+
+std::set < std::string > accrualCalendars;
+
+accrualCalendars.insert("LON");
+
+
+//const DateMarcher * accrualMarching = DateMarcher::find("_backward");
+//const DateMarcher * accrualMarching = DateMarcher::find("_forward");
+//const DateMarcher * accrualMarching = DateMarcher::find("_dayofmonth");
+const DateMarcher * accrualMarching = DateMarcher::find("_dayofweek");
+//const DateMarcher * accrualMarching = DateMarcher::find("_imm");
+//const DateMarcher * accrualMarching = DateMarcher::find("_eurodollar");
+
+//const DateMarcher * payMarching = DateMarcher::find("_backward");
+//const DateMarcher * amortMarching = DateMarcher::find("_backward");
+
+//const DateMarcher * payMarching = DateMarcher::find("_forward");
+//const DateMarcher * amortMarching = DateMarcher::find("_forward");
+
+//const DateMarcher * payMarching = DateMarcher::find("_dayofmonth");
+//const DateMarcher * amortMarching = DateMarcher::find("_dayofmonth");
+
+const DateMarcher * payMarching = DateMarcher::find("_dayofweek");
+const DateMarcher * amortMarching = DateMarcher::find("_dayofweek");
+
+//const DateMarcher * payMarching = DateMarcher::find("_imm");
+//const DateMarcher * amortMarching = DateMarcher::find("_imm");
+
+//const DateMarcher * payMarching = DateMarcher::find("_eurodollar");
+//const DateMarcher * amortMarching = DateMarcher::find("_eurodollar");
+
+// for imm
+int accrualRollDay(3);
+DayOfWeek accrualRollWeek(MON);
+
+//for dofm
+//int accrualRollDay(15);
+//DayOfWeek accrualRollWeek(NULL_DOW);
+
+
+//for DOFW OR imm
+//int accrualRollDay(3);
+//DayOfWeek accrualRollWeek(WED);
+
+
+int amortRollDay(accrualRollDay);
+DayOfWeek amortRollWeek(accrualRollWeek);
+
+double amortAmount = 4.00;
+//const BusDayConv * amortBusDay = BusDayConv::find("MOD"); // same as settlement, but it could be different
+const BusDayConv * amortBusDay = accrualBusDay;
+Date amortEndDate(10,12,2012);
+Date amortStartDate = startDate;
+
+//String amortType = "PERCENT";
+//String amortType = "AMOUNT";
+//String amortType = "EQUAL";
+//String amortType = "MORTGAGE";
+String amortType = "NONE";
+String averagingMethod = "";
+Date backStubDate(10,12,2012);
+double backStubManualRate = -1;
+
+//String compoundingConv = "FLAT/FLAT";
+//String compoundingConv = "FLAT/ADJ";
+//String compoundingConv = "ADJ/FLAT";
+//String compoundingConv = "ADJ/ADJ";
+String compoundingConv = "NONE";
+
+//==== frequency ====
+
+//Frequency amortFreq(NoFrequency);
+//Frequency amortFreq(Monthly);
+//Frequency amortFreq(Quarterly);
+Frequency amortFreq(Semiannual);
+Frequency resetFreq(Semiannual);
+//Frequency resetFreq(Quarterly);
+//Frequency accrualFreq(Quarterly);
+Frequency accrualFreq(Semiannual);
+Frequency compFreq(accrualFreq);
+// Frequency compFreq(Quarterly);
+Frequency payFreq(Semiannual);
+
+//Frequency payFreq(Quarterly);
+
+
+
+const Currency * currency = Currency::find("GBP");
+
+//DayCountConv * dayCount = DayCountConv::find("_actAct");
+// DayCountConv * dayCount = DayCountConv::find("_act365F");
+//DayCountConv * dayCount = DayCountConv::find("_actActISMA251");
+//DayCountConv * dayCount = DayCountConv::find("_act360");
+//DayCountConv * dayCount = DayCountConv::find("_thirtyE360");
+//DayCountConv * dayCount = DayCountConv::find("_thirtyI360");
+//DayCountConv * dayCount = DayCountConv::find("_thirtyB360");
+//DayCountConv * dayCount = DayCountConv::find("_thirtyS360");
+//DayCountConv * dayCount = DayCountConv::find("_thirtyE360last");
+//DayCountConv * dayCount = DayCountConv::find("_act36525");
+//DayCountConv * dayCount = DayCountConv::find("_bus360");
+//DayCountConv * dayCount = DayCountConv::find("_bus252");
+//DayCountConv * dayCount = DayCountConv::find("_fullPayment");
+DayCountConv * dayCount = DayCountConv::find("_equalPayment");
+
+dayCount->setCalendar("LON"); // bus360 needs calendar
+
+String discountCurve = "GBPSWPTSIR";
+Date endDate = backStubDate; // as there is no back stub
+String endDateRollFlag = "Yes";	// by default this should be Yes
+String endOfMonthIndicator = "No";
+double fixedQuote = -1; // this is float leg no fixed quote
+
+Date frontStubDate(15,10,2010);
+
+double frontStubManualRate = -1;
+double gearFactor = 1.0;
+std::set < std::string > initialQuoteCalendars;
+
+initialQuoteCalendars.insert("LON");
+
+Date initialQuoteDate(01,01,1901);
+int initialQuoteLag = -1;
+int legNo = 1 ; // first leg, let it start with 1
+String legType = "FLOAT";
+String marketIndex = "GBPDOM_6M.T3750";
+double notional = 10000000.00 ;  // 10 MM
+String notionalExchange = "NONE";
+const std::string payBusDaytmp = "MOD" ;
+//const std::string payBusDaytmp = "NONE" ;
+//const std::string payBusDaytmp = "FOL" ;
+//const std::string payBusDaytmp = "PRE" ;
+
+const BusDayConv * payBusDay = BusDayConv::find(payBusDaytmp);
+
+std::set < std::string > payCalendars;
+
+payCalendars.insert("LON");
+
+
+std::set < std::string > amortCalendars;
+
+amortCalendars.insert("LON");
+
+
+
+String paymentConvention = "IN_ARRIARS";
+
+const Currency * paymentConversionCurrency = Currency::find("GBP");
+
+
+//const Currency * paymentConversionCurrency = Currency::getEUR();
+
+String paymentConversionIndex = "NONE";
+int paymentConversionLag = -1;
+int payRollDay = accrualRollDay;
+DayOfWeek payRollWeek = accrualRollWeek;
+String position = "LONG"; // means Pay
+std::set < std::string > quoteCalendars;
+
+quoteCalendars.insert("LON");
+
+//int quoteLag = -2 ;
+int quoteLag = 0 ;
+int payLag = 2;
+int rateCutOff = -1;
+String resetConvention = "IN_ADVANCE";
+
+String resetType = "AUTO";
+//String resetAveraging = "UNWEIGHTED";
+//String resetAveraging = "WEIGHTED_CAL";
+String resetAveraging = "NONE";
+int scheduleCustomFlag = 0; // not customized
+//double spread = 20.00;
+double spread = 0.00;
+
+String startDateRollFlag = "No"; // by default this should be No
+
+SwapLeg * paySwapLeg = new SwapLeg(
+        accrualBusDay,
+        accrualCalendars,
+        accrualFreq,
+        accrualMarching,
+        accrualRollDay,
+        accrualRollWeek,
+        amortRollDay,
+        amortRollWeek,
+        amortAmount,
+        amortBusDay,
+        amortCalendars,
+        amortEndDate,
+		amortFreq,
+	    amortMarching,
+	    amortStartDate,
+		amortType,
+		averagingMethod,
+		backStubDate,
+		backStubManualRate,
+		compFreq,
+		compoundingConv,
+		currency,
+		dayCount,
+		discountCurve,
+		endDate,
+		endDateRollFlag,
+		endOfMonthIndicator,
+		fixedQuote,
+		frontStubDate,
+		frontStubManualRate,
+		gearFactor,
+		initialQuoteCalendars,
+		initialQuoteDate,
+		initialQuoteLag,
+		legNo,
+		legType,
+		marketIndex,
+		notional,
+		notionalExchange,
+		payBusDay,
+		payCalendars,
+		payFreq,
+		payMarching,
+		paymentConvention,
+		paymentConversionCurrency,
+		paymentConversionIndex,
+		paymentConversionLag,
+		payLag,
+		payRollDay,
+		payRollWeek,
+		position,
+		quoteCalendars,
+		quoteLag,
+		rateCutOff,
+		resetAveraging,
+		resetConvention,
+		resetFreq,
+		resetType,
+		scheduleCustomFlag,
+		spread,
+		startDate,
+		startDateRollFlag
+);
+
+legNo = 2 ; // second leg, let it be 2
+legType = "FIXED";
+position = "SHORT"; // means receive
+marketIndex = "";
+fixedQuote = 5.0;
+quoteLag = 0; // not applicable
+resetType = "NONE"; // not applicable
+//payFreq = Frequency(Monthly);
+//accrualFreq = Frequency(Monthly);
+
+SwapLeg * recvSwapLeg = new SwapLeg(
+		accrualBusDay,
+		accrualCalendars,
+		accrualFreq,
+		accrualMarching,
+		accrualRollDay,
+		accrualRollWeek,
+		amortRollDay,
+		amortRollWeek,
+		amortAmount,
+		amortBusDay,
+		amortCalendars,
+		amortEndDate,
+		amortFreq,
+	    amortMarching,
+	    amortStartDate,
+		amortType,
+		averagingMethod,
+		backStubDate,
+		backStubManualRate,
+		compFreq,
+		compoundingConv,
+		currency,
+		dayCount,
+		discountCurve,
+		endDate,
+		endDateRollFlag,
+		endOfMonthIndicator,
+		fixedQuote,
+		frontStubDate,
+		frontStubManualRate,
+		gearFactor,
+		initialQuoteCalendars,
+		initialQuoteDate,
+		initialQuoteLag,
+		legNo,
+		legType,
+		marketIndex,
+		notional,
+		notionalExchange,
+		payBusDay,
+		payCalendars,
+		payFreq,
+		payMarching,
+		paymentConvention,
+		paymentConversionCurrency,
+		paymentConversionIndex,
+		paymentConversionLag,
+		payLag,
+		payRollDay,
+		payRollWeek,
+		position,
+		quoteCalendars,
+		quoteLag,
+		rateCutOff,
+		resetAveraging,
+		resetConvention,
+		resetFreq,
+		resetType,
+		scheduleCustomFlag,
+		spread,
+		startDate,
+		startDateRollFlag
+);
+
+//SwapLegList swapLegList;
+
+//SwapDeal swapDeal (&tt, &swapLegList);
+
+swapDeal.setSwapPayLeg(paySwapLeg);
+swapDeal.setSwapRecvLeg(recvSwapLeg);
+
+// set FX Reset info
+std::set < std::string >  fxQuoteCalendars = quoteCalendars;
+
+String 		fXResetType = "Auto"; // manual or auto
+int 		fxResetLegNo = 1;
+String 		fxMarketIndex = "GBP/USD_BOESAF";
+double		initialFXRate = 1.515;
+Frequency	fxResetFreq = resetFreq;
+int			fxResetQuoteLag = 0;
+FXReset * fxReset = new FXReset(
+fxQuoteCalendars,
+fXResetType,
+fxResetLegNo,
+fxMarketIndex,
+initialFXRate,
+fxResetFreq,
+fxResetQuoteLag
+);
+
+//swapDeal.setFXReset(fxReset);
+
+
+if ( swapDeal.getFXReset() )
+{
+	cout << "came here " << endl;
+
+	if ( swapDeal.getFXReset()->getFXResetLegNo() ==  swapDeal.getFirstPayLeg()->getLegNo() )
+		swapDeal.getFirstPayLeg()->setFXResetFlag(true);
+
+	if ( swapDeal.getFXReset()->getFXResetLegNo() ==  swapDeal.getFirstReceiveLeg()->getLegNo() )
+			swapDeal.getFirstReceiveLeg()->setFXResetFlag(true);
+
+}
+
+if ( ! swapDeal.getFirstPayLeg()->generateStubs() )
+	cerr << "Stub Generation for Pay Leg is failed " << endl;
+
+//if ( !swapDeal.genFXResetSchedule())
+	//cerr << "Sorry can't generate fx reset schedule " << endl;
+
+if ( ! swapDeal.getFirstPayLeg()->genLegCashFlows() )
+	{
+	cerr << "failed in generating cashflows " << endl;
+}
+
+if ( ! swapDeal.getFirstReceiveLeg()->generateStubs() )
+	cerr << "Stub Generation for Receive Leg is failed " << endl;
+
+if ( ! swapDeal.getFirstReceiveLeg()->genLegCashFlows() )
+	{
+		cerr << "failed in generating cashflows " << endl;
+	}
+
+
+logFile.close();
+
+cout << "Program finished, check IRD.log file for output." << endl;
+
+return 1;
+}
+
+
+
+

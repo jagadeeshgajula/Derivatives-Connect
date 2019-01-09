@@ -1,0 +1,10 @@
+11:34:46 **** Build of configuration Debug for project date ****
+make all 
+Building file: ../date.cpp
+Invoking: GCC C++ Compiler
+g++ -I/home/vishist/IRDConnect/include -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"date.d" -MT"date.o" -o "date.o" "../date.cpp"
+/bin/sh: g++: command not found
+make: *** [date.o] Error 127
+
+11:34:48 Build Failed. 2 errors, 0 warnings. (took 1s.465ms)
+

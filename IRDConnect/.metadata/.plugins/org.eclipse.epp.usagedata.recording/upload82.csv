@@ -1,0 +1,276 @@
+what,kind,bundleId,bundleVersion,description,time
+started,bundle,org.eclipse.mylyn.commons.net,3.4.0.v20100608-0100-e3x,"org.eclipse.mylyn.commons.net",1285174950678
+started,bundle,org.eclipse.mylyn.commons.ui,3.4.0.v20100608-0100-e3x,"org.eclipse.mylyn.commons.ui",1285174950691
+started,bundle,org.eclipse.mylyn.context.core,3.4.0.v20100608-0100-e3x,"org.eclipse.mylyn.context.core",1285174950693
+started,bundle,org.eclipse.mylyn.context.ui,3.4.0.v20100608-0100-e3x,"org.eclipse.mylyn.context.ui",1285174950699
+started,bundle,org.eclipse.mylyn.monitor.ui,3.4.0.v20100608-0100-e3x,"org.eclipse.mylyn.monitor.ui",1285174950699
+started,bundle,org.eclipse.mylyn.tasks.ui,3.4.0.v20100608-0100-e3x,"org.eclipse.mylyn.tasks.ui",1285174950711
+started,bundle,org.eclipse.mylyn.team.ui,3.4.0.v20100608-0100-e3x,"org.eclipse.mylyn.team.ui",1285174950730
+started,bundle,org.eclipse.search,3.6.0.v20100520-0800,"org.eclipse.search",1285174950742
+started,bundle,org.eclipse.team.core,3.5.100.I20100527-0800,"org.eclipse.team.core",1285174950752
+started,bundle,org.eclipse.team.cvs.core,3.3.300.I20100526-0800,"org.eclipse.team.cvs.core",1285174950782
+started,bundle,org.eclipse.team.cvs.ui,3.3.300.I20100526-0800,"org.eclipse.team.cvs.ui",1285174950794
+started,bundle,org.eclipse.team.ui,3.5.100.I20100527-0800,"org.eclipse.team.ui",1285174950798
+started,bundle,org.eclipse.ui,3.6.0.I20100603-1100,"org.eclipse.ui",1285174950809
+started,bundle,org.eclipse.ui.console,3.5.0.v20100526,"org.eclipse.ui.console",1285174950815
+started,bundle,org.eclipse.ui.editors,3.6.0.v20100520-0800,"org.eclipse.ui.editors",1285174950815
+started,bundle,org.eclipse.ui.forms,3.5.0.v20100427,"org.eclipse.ui.forms",1285174950822
+started,bundle,org.eclipse.ui.ide,3.6.0.I20100601-0800,"org.eclipse.ui.ide",1285174950829
+started,bundle,org.eclipse.ui.navigator,3.5.0.I20100601-0800,"org.eclipse.ui.navigator",1285174950832
+started,bundle,org.eclipse.ui.navigator.resources,3.4.200.I20100601-0800,"org.eclipse.ui.navigator.resources",1285174950832
+started,bundle,org.eclipse.ui.net,1.2.100.I20100505-1245,"org.eclipse.ui.net",1285174950832
+started,bundle,org.eclipse.ui.views,3.5.0.I20100527-0800,"org.eclipse.ui.views",1285174950844
+started,bundle,org.eclipse.ui.workbench,3.6.0.I20100603-1100,"org.eclipse.ui.workbench",1285174950854
+started,bundle,org.eclipse.ui.workbench.texteditor,3.6.0.v20100520-0800,"org.eclipse.ui.workbench.texteditor",1285174950868
+started,bundle,org.eclipse.update.configurator,3.3.100.v20100512,"org.eclipse.update.configurator",1285174950874
+started,bundle,org.eclipse.update.core,3.2.400.v20100512,"org.eclipse.update.core",1285174951004
+started,bundle,org.eclipse.update.scheduler,3.2.300.v20100512,"org.eclipse.update.scheduler",1285174951012
+os,sysinfo,,,"linux",1285174951016
+arch,sysinfo,,,"x86",1285174951016
+ws,sysinfo,,,"gtk",1285174951016
+locale,sysinfo,,,"en_IN",1285174951016
+processors,sysinfo,,,"1",1285174951016
+java.runtime.name,sysinfo,,,"Java(TM) SE Runtime Environment",1285174951016
+java.runtime.version,sysinfo,,,"1.6.0_21-b06",1285174951016
+java.specification.name,sysinfo,,,"Java Platform API Specification",1285174951016
+java.specification.vendor,sysinfo,,,"Sun Microsystems Inc.",1285174951016
+java.specification.version,sysinfo,,,"1.6",1285174951016
+java.vendor,sysinfo,,,"Sun Microsystems Inc.",1285174951016
+java.version,sysinfo,,,"1.6.0_21",1285174951016
+java.vm.info,sysinfo,,,"mixed mode, sharing",1285174951016
+java.vm.name,sysinfo,,,"Java HotSpot(TM) Client VM",1285174951016
+java.vm.specification.name,sysinfo,,,"Java Virtual Machine Specification",1285174951016
+java.vm.specification.vendor,sysinfo,,,"Sun Microsystems Inc.",1285174951016
+java.vm.specification.version,sysinfo,,,"1.0",1285174951016
+java.vm.vendor,sysinfo,,,"Sun Microsystems Inc.",1285174951016
+java.vm.version,sysinfo,,,"17.0-b16",1285174951016
+executed,command,org.eclipse.ui.ide,3.6.0.I20100601-0800,"org.eclipse.ui.project.buildAll",1285174954969
+deactivated,workbench,org.eclipse.ui.workbench,3.6.0.I20100603-1100,"",1285174955522
+started,bundle,org.eclipse.cdt.managedbuilder.gnu.ui,7.0.0.201006141710,"org.eclipse.cdt.managedbuilder.gnu.ui",1285174957446
+activated,workbench,org.eclipse.ui.workbench,3.6.0.I20100603-1100,"",1285174968404
+opened,editor,org.eclipse.cdt.ui,5.2.0.201006141710,"org.eclipse.cdt.ui.editor.CEditor",1285174978453
+activated,editor,org.eclipse.cdt.ui,5.2.0.201006141710,"org.eclipse.cdt.ui.editor.CEditor",1285174978534
+activated,view,org.eclipse.ui.navigator.resources,3.4.200.I20100601-0800,"org.eclipse.ui.navigator.ProjectExplorer",1285174978557
+activated,editor,org.eclipse.cdt.ui,5.2.0.201006141710,"org.eclipse.cdt.ui.editor.CEditor",1285175018000
+deactivated,workbench,org.eclipse.ui.workbench,3.6.0.I20100603-1100,"",1285175067485
+activated,workbench,org.eclipse.ui.workbench,3.6.0.I20100603-1100,"",1285175227582
+activated,view,org.eclipse.ui.navigator.resources,3.4.200.I20100601-0800,"org.eclipse.ui.navigator.ProjectExplorer",1285175251403
+opened,editor,org.eclipse.cdt.ui,5.2.0.201006141710,"org.eclipse.cdt.ui.editor.CEditor",1285175253183
+activated,editor,org.eclipse.cdt.ui,5.2.0.201006141710,"org.eclipse.cdt.ui.editor.CEditor",1285175253256
+activated,view,org.eclipse.ui.navigator.resources,3.4.200.I20100601-0800,"org.eclipse.ui.navigator.ProjectExplorer",1285175253274
+activated,editor,org.eclipse.cdt.ui,5.2.0.201006141710,"org.eclipse.cdt.ui.editor.CEditor",1285175289693
+activated,editor,org.eclipse.cdt.ui,5.2.0.201006141710,"org.eclipse.cdt.ui.editor.CEditor",1285175294775
+activated,editor,org.eclipse.cdt.ui,5.2.0.201006141710,"org.eclipse.cdt.ui.editor.CEditor",1285175313778
+activated,editor,org.eclipse.cdt.ui,5.2.0.201006141710,"org.eclipse.cdt.ui.editor.CEditor",1285175322256
+deactivated,workbench,org.eclipse.ui.workbench,3.6.0.I20100603-1100,"",1285175377935
+activated,workbench,org.eclipse.ui.workbench,3.6.0.I20100603-1100,"",1285175502295
+activated,editor,org.eclipse.cdt.ui,5.2.0.201006141710,"org.eclipse.cdt.ui.editor.CEditor",1285175507088
+deactivated,workbench,org.eclipse.ui.workbench,3.6.0.I20100603-1100,"",1285175580050
+activated,workbench,org.eclipse.ui.workbench,3.6.0.I20100603-1100,"",1285175582791
+executed,command,org.eclipse.ui,3.6.0.I20100603-1100,"org.eclipse.ui.edit.paste",1285175587237
+opened,view,org.eclipse.ui.ide,3.6.0.I20100601-0800,"org.eclipse.ui.views.ProblemView",1285175645016
+activated,view,org.eclipse.ui.ide,3.6.0.I20100601-0800,"org.eclipse.ui.views.ProblemView",1285175645043
+activated,editor,org.eclipse.cdt.ui,5.2.0.201006141710,"org.eclipse.cdt.ui.editor.CEditor",1285175673210
+executed,command,org.eclipse.ui,3.6.0.I20100603-1100,"org.eclipse.ui.edit.paste",1285175674343
+deactivated,workbench,org.eclipse.ui.workbench,3.6.0.I20100603-1100,"",1285175751730
+activated,workbench,org.eclipse.ui.workbench,3.6.0.I20100603-1100,"",1285175753562
+executed,command,org.eclipse.ui,3.6.0.I20100603-1100,"org.eclipse.ui.edit.delete",1285175767263
+executed,command,org.eclipse.ui,3.6.0.I20100603-1100,"org.eclipse.ui.edit.delete",1285175773912
+executed,command,org.eclipse.ui,3.6.0.I20100603-1100,"org.eclipse.ui.edit.delete",1285175775057
+executed,command,org.eclipse.ui,3.6.0.I20100603-1100,"org.eclipse.ui.edit.delete",1285175775604
+deactivated,workbench,org.eclipse.ui.workbench,3.6.0.I20100603-1100,"",1285175844505
+activated,workbench,org.eclipse.ui.workbench,3.6.0.I20100603-1100,"",1285175846232
+executed,command,org.eclipse.ui,3.6.0.I20100603-1100,"org.eclipse.ui.edit.paste",1285175901783
+executed,command,org.eclipse.ui,3.6.0.I20100603-1100,"org.eclipse.ui.file.saveAll",1285175911002
+error,log,,,"Error while parsing /home/vishist/IRDConnect/schedule/IRDPeriod.cpp.",1285175911777
+executed,command,org.eclipse.ui,3.6.0.I20100603-1100,"org.eclipse.ui.file.saveAll",1285175970839
+error,log,,,"Error while parsing /home/vishist/IRDConnect/schedule/IRDPeriod.cpp.",1285175971249
+executed,command,org.eclipse.ui.ide,3.6.0.I20100601-0800,"org.eclipse.ui.project.buildAll",1285175975456
+deactivated,workbench,org.eclipse.ui.workbench,3.6.0.I20100603-1100,"",1285175975840
+error,log,,,"Error while parsing /home/vishist/IRDConnect/schedule/IRDPeriod.cpp.",1285175979102
+activated,workbench,org.eclipse.ui.workbench,3.6.0.I20100603-1100,"",1285175993407
+started,bundle,org.eclipse.debug.ui,3.6.0.v20100601-1530,"org.eclipse.debug.ui",1285176019094
+started,bundle,org.eclipse.cdt.debug.core,7.0.0.201006141710,"org.eclipse.cdt.debug.core",1285176019309
+started,bundle,org.eclipse.cdt.debug.ui,7.0.0.201006141710,"org.eclipse.cdt.debug.ui",1285176019360
+executed,command,org.eclipse.debug.ui,3.6.0.v20100601-1530,"org.eclipse.debug.ui.commands.RunLast",1285176026910
+started,bundle,org.eclipse.cdt.launch,6.1.0.201006141710,"org.eclipse.cdt.launch",1285176026929
+started,bundle,org.eclipse.cdt.debug.mi.ui,6.1.0.201006141710,"org.eclipse.cdt.debug.mi.ui",1285176029324
+started,bundle,org.eclipse.cdt.dsf,2.1.0.201006141710,"org.eclipse.cdt.dsf",1285176029413
+started,bundle,org.eclipse.cdt.dsf.gdb,3.0.0.201006141710,"org.eclipse.cdt.dsf.gdb",1285176029427
+started,bundle,org.eclipse.cdt.dsf.gdb.ui,2.1.0.201006141710,"org.eclipse.cdt.dsf.gdb.ui",1285176029436
+started,bundle,org.eclipse.cdt.debug.mi.core,7.0.0.201006141710,"org.eclipse.cdt.debug.mi.core",1285176029518
+error,log,,,"Error while parsing /home/vishist/IRDConnect/schedule/IRDPeriod.cpp.",1285176029545
+activated,view,org.eclipse.ui.console,3.5.0.v20100526,"org.eclipse.ui.console.ConsoleView",1285176034443
+started,bundle,org.eclipse.cdt.dsf.ui,2.1.0.201006141710,"org.eclipse.cdt.dsf.ui",1285176051487
+error,log,,,"Error while parsing /home/vishist/IRDConnect/schedule/IRDPeriod.cpp.",1285176051570
+started,bundle,org.eclipse.ui.externaltools,3.2.0.v20100427,"org.eclipse.ui.externaltools",1285176051814
+started,bundle,org.eclipse.core.externaltools,1.0.0.v20100505,"org.eclipse.core.externaltools",1285176051841
+deactivated,workbench,org.eclipse.ui.workbench,3.6.0.I20100603-1100,"",1285176053385
+opened,view,org.eclipse.debug.ui,3.6.0.v20100601-1530,"org.eclipse.debug.ui.VariableView",1285176061453
+opened,view,org.eclipse.cdt.dsf.ui,2.1.0.201006141710,"org.eclipse.cdt.dsf.debug.ui.disassembly.view",1285176061657
+opened,view,org.eclipse.debug.ui,3.6.0.v20100601-1530,"org.eclipse.debug.ui.DebugView",1285176061885
+activated,perspective,org.eclipse.debug.ui,3.6.0.v20100601-1530,"org.eclipse.debug.ui.DebugPerspective",1285176061949
+activated,workbench,org.eclipse.ui.workbench,3.6.0.I20100603-1100,"",1285176062028
+opened,view,org.eclipse.debug.ui,3.6.0.v20100601-1530,"org.eclipse.debug.ui.BreakpointView",1285176062980
+opened,view,org.eclipse.debug.ui,3.6.0.v20100601-1530,"org.eclipse.debug.ui.RegisterView",1285176063040
+opened,view,org.eclipse.debug.ui,3.6.0.v20100601-1530,"org.eclipse.debug.ui.ModuleView",1285176063069
+opened,editor,org.eclipse.cdt.debug.ui,7.0.0.201006141710,"org.eclipse.cdt.debug.ui.SourceNotFoundEditor",1285176063291
+activated,view,org.eclipse.debug.ui,3.6.0.v20100601-1530,"org.eclipse.debug.ui.DebugView",1285176084521
+opened,view,org.eclipse.ui.views,3.5.0.I20100527-0800,"org.eclipse.ui.views.ContentOutline",1285176091725
+error,log,,,"Error while parsing /home/vishist/IRDConnect/schedule/IRDPeriod.cpp.",1285176102283
+error,log,,,"Error while parsing /home/vishist/IRDConnect/schedule/IRDPeriod.cpp.",1285176105689
+opened,editor,org.eclipse.cdt.ui,5.2.0.201006141710,"org.eclipse.cdt.ui.editor.CEditor",1285176117544
+activated,editor,org.eclipse.cdt.ui,5.2.0.201006141710,"org.eclipse.cdt.ui.editor.CEditor",1285176117731
+opened,editor,org.eclipse.cdt.ui,5.2.0.201006141710,"org.eclipse.cdt.ui.editor.CEditor",1285176121257
+activated,editor,org.eclipse.cdt.ui,5.2.0.201006141710,"org.eclipse.cdt.ui.editor.CEditor",1285176121432
+opened,editor,org.eclipse.cdt.ui,5.2.0.201006141710,"org.eclipse.cdt.ui.editor.CEditor",1285176124292
+activated,editor,org.eclipse.cdt.ui,5.2.0.201006141710,"org.eclipse.cdt.ui.editor.CEditor",1285176124370
+activated,view,org.eclipse.debug.ui,3.6.0.v20100601-1530,"org.eclipse.debug.ui.DebugView",1285176126295
+closed,view,org.eclipse.debug.ui,3.6.0.v20100601-1530,"org.eclipse.debug.ui.RegisterView",1285176144306
+closed,view,org.eclipse.debug.ui,3.6.0.v20100601-1530,"org.eclipse.debug.ui.ModuleView",1285176144314
+opened,view,org.eclipse.debug.ui,3.6.0.v20100601-1530,"org.eclipse.debug.ui.RegisterView",1285176144369
+opened,view,org.eclipse.debug.ui,3.6.0.v20100601-1530,"org.eclipse.debug.ui.ModuleView",1285176144388
+activated,perspective,org.eclipse.cdt.ui,5.2.0.201006141710,"org.eclipse.cdt.ui.CPerspective",1285176144442
+activated,editor,org.eclipse.cdt.ui,5.2.0.201006141710,"org.eclipse.cdt.ui.editor.CEditor",1285176144471
+executed,command,org.eclipse.ui,3.6.0.I20100603-1100,"org.eclipse.ui.perspectives.showPerspective",1285176144504
+executed,command,,,"org.eclipse.cdt.ui.CPerspective",1285176144504
+error,log,,,"Error while parsing /home/vishist/IRDConnect/schedule/IRDPeriod.cpp.",1285176157772
+deactivated,workbench,org.eclipse.ui.workbench,3.6.0.I20100603-1100,"",1285176158535
+activated,workbench,org.eclipse.ui.workbench,3.6.0.I20100603-1100,"",1285176163533
+activated,view,org.eclipse.ui.ide,3.6.0.I20100601-0800,"org.eclipse.ui.views.ProblemView",1285176177338
+activated,view,org.eclipse.ui.console,3.5.0.v20100526,"org.eclipse.ui.console.ConsoleView",1285176183002
+activated,editor,org.eclipse.cdt.ui,5.2.0.201006141710,"org.eclipse.cdt.ui.editor.CEditor",1285176201608
+activated,editor,org.eclipse.cdt.ui,5.2.0.201006141710,"org.eclipse.cdt.ui.editor.CEditor",1285176202940
+activated,editor,org.eclipse.cdt.ui,5.2.0.201006141710,"org.eclipse.cdt.ui.editor.CEditor",1285176209000
+started,bundle,org.eclipse.compare,3.5.100.I20100526-0800,"org.eclipse.compare",1285176291109
+executed,command,org.eclipse.ui,3.6.0.I20100603-1100,"org.eclipse.ui.edit.copy",1285176292831
+executed,command,org.eclipse.ui,3.6.0.I20100603-1100,"org.eclipse.ui.edit.paste",1285176302947
+executed,command,org.eclipse.ui,3.6.0.I20100603-1100,"org.eclipse.ui.edit.copy",1285176314077
+executed,command,org.eclipse.ui,3.6.0.I20100603-1100,"org.eclipse.ui.edit.paste",1285176320320
+executed,command,org.eclipse.ui,3.6.0.I20100603-1100,"org.eclipse.ui.edit.copy",1285176338538
+executed,command,org.eclipse.ui,3.6.0.I20100603-1100,"org.eclipse.ui.edit.paste",1285176352050
+executed,command,org.eclipse.ui,3.6.0.I20100603-1100,"org.eclipse.ui.edit.cut",1285176365081
+executed,command,org.eclipse.ui,3.6.0.I20100603-1100,"org.eclipse.ui.edit.paste",1285176377031
+executed,command,org.eclipse.ui,3.6.0.I20100603-1100,"org.eclipse.ui.file.saveAll",1285176402013
+error,log,,,"Error while parsing /home/vishist/IRDConnect/schedule/IRDPeriod.cpp.",1285176402489
+executed,command,org.eclipse.ui.ide,3.6.0.I20100601-0800,"org.eclipse.ui.project.buildAll",1285176406234
+deactivated,workbench,org.eclipse.ui.workbench,3.6.0.I20100603-1100,"",1285176406610
+activated,workbench,org.eclipse.ui.workbench,3.6.0.I20100603-1100,"",1285176409943
+error,log,,,"Error while parsing /home/vishist/IRDConnect/schedule/IRDPeriod.cpp.",1285176410120
+executed,command,org.eclipse.ui,3.6.0.I20100603-1100,"org.eclipse.ui.file.saveAll",1285176428244
+error,log,,,"Error while parsing /home/vishist/IRDConnect/schedule/IRDPeriod.cpp.",1285176428662
+executed,command,org.eclipse.ui.ide,3.6.0.I20100601-0800,"org.eclipse.ui.project.buildAll",1285176431935
+deactivated,workbench,org.eclipse.ui.workbench,3.6.0.I20100603-1100,"",1285176432311
+activated,workbench,org.eclipse.ui.workbench,3.6.0.I20100603-1100,"",1285176435453
+error,log,,,"Error while parsing /home/vishist/IRDConnect/schedule/IRDPeriod.cpp.",1285176435641
+executed,command,org.eclipse.ui,3.6.0.I20100603-1100,"org.eclipse.ui.edit.copy",1285176469605
+executed,command,org.eclipse.ui,3.6.0.I20100603-1100,"org.eclipse.ui.edit.copy",1285176470509
+executed,command,org.eclipse.ui,3.6.0.I20100603-1100,"org.eclipse.ui.edit.delete",1285176481538
+executed,command,org.eclipse.ui,3.6.0.I20100603-1100,"org.eclipse.ui.edit.paste",1285176484101
+executed,command,org.eclipse.ui,3.6.0.I20100603-1100,"org.eclipse.ui.file.saveAll",1285176487090
+error,log,,,"Error while parsing /home/vishist/IRDConnect/schedule/IRDPeriod.cpp.",1285176487510
+executed,command,org.eclipse.ui.ide,3.6.0.I20100601-0800,"org.eclipse.ui.project.buildAll",1285176493772
+deactivated,workbench,org.eclipse.ui.workbench,3.6.0.I20100603-1100,"",1285176494133
+activated,workbench,org.eclipse.ui.workbench,3.6.0.I20100603-1100,"",1285176497328
+error,log,,,"Error while parsing /home/vishist/IRDConnect/schedule/IRDPeriod.cpp.",1285176497463
+executed,command,org.eclipse.ui,3.6.0.I20100603-1100,"org.eclipse.ui.file.saveAll",1285176545969
+error,log,,,"Error while parsing /home/vishist/IRDConnect/schedule/IRDPeriod.cpp.",1285176546415
+started,bundle,org.eclipse.cdt.mylyn.ui,1.1.2.v20100608-0100-e3x,"org.eclipse.cdt.mylyn.ui",1285176586237
+executed,command,org.eclipse.ui,3.6.0.I20100603-1100,"org.eclipse.ui.file.saveAll",1285176616243
+error,log,,,"Error while parsing /home/vishist/IRDConnect/schedule/IRDPeriod.cpp.",1285176616647
+activated,view,org.eclipse.ui.ide,3.6.0.I20100601-0800,"org.eclipse.ui.views.ProblemView",1285176619382
+executed,command,org.eclipse.ui.ide,3.6.0.I20100601-0800,"org.eclipse.ui.project.buildAll",1285176621575
+deactivated,workbench,org.eclipse.ui.workbench,3.6.0.I20100603-1100,"",1285176621924
+activated,workbench,org.eclipse.ui.workbench,3.6.0.I20100603-1100,"",1285176624892
+error,log,,,"Error while parsing /home/vishist/IRDConnect/schedule/IRDPeriod.cpp.",1285176625250
+activated,editor,org.eclipse.cdt.ui,5.2.0.201006141710,"org.eclipse.cdt.ui.editor.CEditor",1285176678089
+activated,view,org.eclipse.ui.ide,3.6.0.I20100601-0800,"org.eclipse.ui.views.ProblemView",1285176678128
+activated,editor,org.eclipse.cdt.ui,5.2.0.201006141710,"org.eclipse.cdt.ui.editor.CEditor",1285176681479
+executed,command,org.eclipse.ui,3.6.0.I20100603-1100,"org.eclipse.ui.edit.delete",1285176722115
+executed,command,org.eclipse.ui,3.6.0.I20100603-1100,"org.eclipse.ui.edit.delete",1285176727249
+executed,command,org.eclipse.ui,3.6.0.I20100603-1100,"org.eclipse.ui.file.saveAll",1285176738510
+error,log,,,"Error while parsing /home/vishist/IRDConnect/schedule/IRDPeriod.cpp.",1285176738966
+executed,command,org.eclipse.ui.ide,3.6.0.I20100601-0800,"org.eclipse.ui.project.buildAll",1285176743248
+deactivated,workbench,org.eclipse.ui.workbench,3.6.0.I20100603-1100,"",1285176743655
+error,log,,,"Error while parsing /home/vishist/IRDConnect/schedule/IRDPeriod.cpp.",1285176747251
+activated,workbench,org.eclipse.ui.workbench,3.6.0.I20100603-1100,"",1285176748087
+deactivated,workbench,org.eclipse.ui.workbench,3.6.0.I20100603-1100,"",1285176753265
+executed,command,org.eclipse.ui.ide,3.6.0.I20100601-0800,"org.eclipse.ui.project.cleanAction",1285176755526
+activated,workbench,org.eclipse.ui.workbench,3.6.0.I20100603-1100,"",1285176755705
+deactivated,workbench,org.eclipse.ui.workbench,3.6.0.I20100603-1100,"",1285176756653
+error,log,,,"Error while parsing /home/vishist/IRDConnect/schedule/IRDPeriod.cpp.",1285176759503
+activated,workbench,org.eclipse.ui.workbench,3.6.0.I20100603-1100,"",1285176777795
+activated,view,org.eclipse.ui.ide,3.6.0.I20100601-0800,"org.eclipse.ui.views.ProblemView",1285176780190
+opened,editor,org.eclipse.cdt.ui,5.2.0.201006141710,"org.eclipse.cdt.ui.editor.CEditor",1285176782415
+activated,editor,org.eclipse.cdt.ui,5.2.0.201006141710,"org.eclipse.cdt.ui.editor.CEditor",1285176782524
+activated,view,org.eclipse.ui.ide,3.6.0.I20100601-0800,"org.eclipse.ui.views.ProblemView",1285176782549
+activated,editor,org.eclipse.cdt.ui,5.2.0.201006141710,"org.eclipse.cdt.ui.editor.CEditor",1285176795303
+executed,command,org.eclipse.ui,3.6.0.I20100603-1100,"org.eclipse.ui.file.saveAll",1285176803592
+error,log,,,"Error while parsing /home/vishist/IRDConnect/schedule/IRDPeriod.cpp.",1285176804192
+activated,view,org.eclipse.ui.ide,3.6.0.I20100601-0800,"org.eclipse.ui.views.ProblemView",1285176805624
+activated,editor,org.eclipse.cdt.ui,5.2.0.201006141710,"org.eclipse.cdt.ui.editor.CEditor",1285176805732
+activated,view,org.eclipse.ui.ide,3.6.0.I20100601-0800,"org.eclipse.ui.views.ProblemView",1285176805755
+activated,editor,org.eclipse.cdt.ui,5.2.0.201006141710,"org.eclipse.cdt.ui.editor.CEditor",1285176807649
+activated,view,org.eclipse.ui.ide,3.6.0.I20100601-0800,"org.eclipse.ui.views.ProblemView",1285176807668
+opened,editor,org.eclipse.cdt.ui,5.2.0.201006141710,"org.eclipse.cdt.ui.editor.CEditor",1285176809268
+activated,editor,org.eclipse.cdt.ui,5.2.0.201006141710,"org.eclipse.cdt.ui.editor.CEditor",1285176809361
+activated,view,org.eclipse.ui.ide,3.6.0.I20100601-0800,"org.eclipse.ui.views.ProblemView",1285176809397
+executed,command,org.eclipse.ui.ide,3.6.0.I20100601-0800,"org.eclipse.ui.project.buildAll",1285176816607
+deactivated,workbench,org.eclipse.ui.workbench,3.6.0.I20100603-1100,"",1285176817002
+error,log,,,"Error while parsing /home/vishist/IRDConnect/schedule/IRDTypes.h.",1285176819608
+error,log,,,"Error while parsing /home/vishist/IRDConnect/schedule/IRDTypes.h.",1285176833051
+activated,workbench,org.eclipse.ui.workbench,3.6.0.I20100603-1100,"",1285176833362
+activated,editor,org.eclipse.cdt.ui,5.2.0.201006141710,"org.eclipse.cdt.ui.editor.CEditor",1285176835747
+activated,view,org.eclipse.ui.ide,3.6.0.I20100601-0800,"org.eclipse.ui.views.ProblemView",1285176835771
+activated,editor,org.eclipse.cdt.ui,5.2.0.201006141710,"org.eclipse.cdt.ui.editor.CEditor",1285176842503
+activated,view,org.eclipse.ui.ide,3.6.0.I20100601-0800,"org.eclipse.ui.views.ProblemView",1285176852976
+activated,editor,org.eclipse.cdt.ui,5.2.0.201006141710,"org.eclipse.cdt.ui.editor.CEditor",1285176853070
+activated,view,org.eclipse.ui.ide,3.6.0.I20100601-0800,"org.eclipse.ui.views.ProblemView",1285176853101
+executed,command,org.eclipse.ui,3.6.0.I20100603-1100,"org.eclipse.ui.file.saveAll",1285176854912
+error,log,,,"Error while parsing /home/vishist/IRDConnect/schedule/IRDTypes.h.",1285176855719
+executed,command,org.eclipse.ui.ide,3.6.0.I20100601-0800,"org.eclipse.ui.project.buildAll",1285176856823
+deactivated,workbench,org.eclipse.ui.workbench,3.6.0.I20100603-1100,"",1285176857189
+error,log,,,"Error while parsing /home/vishist/IRDConnect/schedule/IRDTypes.h.",1285176859805
+error,log,,,"Error while parsing /home/vishist/IRDConnect/schedule/IRDTypes.h.",1285176873246
+activated,workbench,org.eclipse.ui.workbench,3.6.0.I20100603-1100,"",1285176873479
+activated,editor,org.eclipse.cdt.ui,5.2.0.201006141710,"org.eclipse.cdt.ui.editor.CEditor",1285176877101
+activated,view,org.eclipse.ui.ide,3.6.0.I20100601-0800,"org.eclipse.ui.views.ProblemView",1285176877128
+activated,editor,org.eclipse.cdt.ui,5.2.0.201006141710,"org.eclipse.cdt.ui.editor.CEditor",1285176886060
+activated,view,org.eclipse.ui.ide,3.6.0.I20100601-0800,"org.eclipse.ui.views.ProblemView",1285176886080
+activated,view,org.eclipse.ui.navigator.resources,3.4.200.I20100601-0800,"org.eclipse.ui.navigator.ProjectExplorer",1285176902194
+activated,editor,org.eclipse.cdt.ui,5.2.0.201006141710,"org.eclipse.cdt.ui.editor.CEditor",1285176902430
+activated,view,org.eclipse.ui.navigator.resources,3.4.200.I20100601-0800,"org.eclipse.ui.navigator.ProjectExplorer",1285176902450
+executed,command,org.eclipse.debug.ui,3.6.0.v20100601-1530,"org.eclipse.debug.ui.commands.Resume",1285176938901
+executed,command,org.eclipse.debug.ui,3.6.0.v20100601-1530,"org.eclipse.debug.ui.commands.RunLast",1285176953293
+activated,view,org.eclipse.ui.console,3.5.0.v20100526,"org.eclipse.ui.console.ConsoleView",1285176959336
+activated,editor,org.eclipse.cdt.ui,5.2.0.201006141710,"org.eclipse.cdt.ui.editor.CEditor",1285176996078
+executed,command,org.eclipse.ui,3.6.0.I20100603-1100,"org.eclipse.ui.edit.delete",1285177002069
+executed,command,org.eclipse.ui,3.6.0.I20100603-1100,"org.eclipse.ui.edit.delete",1285177002705
+activated,view,org.eclipse.ui.ide,3.6.0.I20100601-0800,"org.eclipse.ui.views.ProblemView",1285177050400
+activated,editor,org.eclipse.cdt.ui,5.2.0.201006141710,"org.eclipse.cdt.ui.editor.CEditor",1285177053981
+activated,view,org.eclipse.ui.ide,3.6.0.I20100601-0800,"org.eclipse.ui.views.ProblemView",1285177054016
+activated,editor,org.eclipse.cdt.ui,5.2.0.201006141710,"org.eclipse.cdt.ui.editor.CEditor",1285177132796
+activated,editor,org.eclipse.cdt.ui,5.2.0.201006141710,"org.eclipse.cdt.ui.editor.CEditor",1285177149231
+executed,command,org.eclipse.ui,3.6.0.I20100603-1100,"org.eclipse.ui.edit.paste",1285177290319
+executed,command,org.eclipse.ui.workbench.texteditor,3.6.0.v20100520-0800,"org.eclipse.ui.edit.text.goto.lineEnd",1285177306569
+executed,command,org.eclipse.ui,3.6.0.I20100603-1100,"org.eclipse.ui.edit.paste",1285177355845
+executed,command,org.eclipse.ui,3.6.0.I20100603-1100,"org.eclipse.ui.edit.delete",1285177395967
+executed,command,org.eclipse.ui,3.6.0.I20100603-1100,"org.eclipse.ui.edit.delete",1285177397304
+executed,command,org.eclipse.ui,3.6.0.I20100603-1100,"org.eclipse.ui.file.saveAll",1285177399669
+error,log,,,"Error while parsing /home/vishist/IRDConnect/schedule/IRDPeriod.cpp.",1285177400067
+error,log,,,"Error while parsing /home/vishist/IRDConnect/schedule/IRDPeriod.cpp.",1285177400292
+executed,command,org.eclipse.ui.ide,3.6.0.I20100601-0800,"org.eclipse.ui.project.buildAll",1285177400636
+deactivated,workbench,org.eclipse.ui.workbench,3.6.0.I20100603-1100,"",1285177401148
+activated,workbench,org.eclipse.ui.workbench,3.6.0.I20100603-1100,"",1285177404633
+error,log,,,"Error while parsing /home/vishist/IRDConnect/schedule/IRDPeriod.cpp.",1285177404725
+activated,view,org.eclipse.ui.ide,3.6.0.I20100601-0800,"org.eclipse.ui.views.ProblemView",1285177420118
+activated,editor,org.eclipse.cdt.ui,5.2.0.201006141710,"org.eclipse.cdt.ui.editor.CEditor",1285177421319
+activated,view,org.eclipse.ui.ide,3.6.0.I20100601-0800,"org.eclipse.ui.views.ProblemView",1285177421343
+activated,editor,org.eclipse.cdt.ui,5.2.0.201006141710,"org.eclipse.cdt.ui.editor.CEditor",1285177432827
+executed,command,org.eclipse.ui,3.6.0.I20100603-1100,"org.eclipse.ui.file.saveAll",1285177435721
+error,log,,,"Error while parsing /home/vishist/IRDConnect/schedule/IRDPeriod.h.",1285177435778
+executed,command,org.eclipse.ui.ide,3.6.0.I20100601-0800,"org.eclipse.ui.project.buildAll",1285177436711
+deactivated,workbench,org.eclipse.ui.workbench,3.6.0.I20100603-1100,"",1285177437285
+error,log,,,"Error while parsing /home/vishist/IRDConnect/schedule/IRDPeriod.h.",1285177439978
+activated,workbench,org.eclipse.ui.workbench,3.6.0.I20100603-1100,"",1285177440265
+activated,view,org.eclipse.ui.ide,3.6.0.I20100601-0800,"org.eclipse.ui.views.ProblemView",1285177443162

@@ -1,0 +1,26 @@
+
+**** Build of configuration Debug for project instrument ****
+
+make all 
+Building file: ../instrumentCalssCd.cpp
+Invoking: GCC C++ Compiler
+g++ -I/home/vishist/IRDConnect/include -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"instrumentCalssCd.d" -MT"instrumentCalssCd.d" -o"instrumentCalssCd.o" "../instrumentCalssCd.cpp"
+Finished building: ../instrumentCalssCd.cpp
+ 
+Building file: ../intrumentTypeCd.cpp
+Invoking: GCC C++ Compiler
+g++ -I/home/vishist/IRDConnect/include -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"intrumentTypeCd.d" -MT"intrumentTypeCd.d" -o"intrumentTypeCd.o" "../intrumentTypeCd.cpp"
+../intrumentTypeCd.cpp: In function ‘std::ostream& IRDConnect::operator<<(std::ostream&, const IRDConnect::InstrumentTypeCd&)’:
+../intrumentTypeCd.cpp:193: warning: control reaches end of non-void function
+Finished building: ../intrumentTypeCd.cpp
+ 
+Building file: ../moneymkt.cpp
+Invoking: GCC C++ Compiler
+g++ -I/home/vishist/IRDConnect/include -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"moneymkt.d" -MT"moneymkt.d" -o"moneymkt.o" "../moneymkt.cpp"
+Finished building: ../moneymkt.cpp
+ 
+Building target: libinstrument.so
+Invoking: GCC C++ Linker
+g++ -L/home/vishist/IRDConnect/lib -shared -o"libinstrument.so"  ./instrumentCalssCd.o ./intrumentTypeCd.o ./moneymkt.o   
+Finished building target: libinstrument.so
+ 

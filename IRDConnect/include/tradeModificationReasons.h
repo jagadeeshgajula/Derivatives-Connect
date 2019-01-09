@@ -1,0 +1,51 @@
+#include<iostream>
+#include<string>
+#include "irdString.h"
+
+using namespace std;
+using namespace IRDConnect;
+
+namespace IRDConnect {
+
+class TradeModificationReasons
+{
+
+public:
+
+TradeModificationReasons(){;};
+
+TradeModificationReasons(
+
+String 		modifiedTimeStamp,
+String 		reason,
+int 		seqNo,
+String 		tradeRef)
+
+{
+_modifiedTimeStamp	=	modifiedTimeStamp;
+_reason				=	reason;
+_seqNo				=	seqNo;
+_tradeRef			=	tradeRef;
+
+}
+
+String getModifiedTimeStamp() {return _modifiedTimeStamp;}
+void setModifiedTimeStamp(String modifiedTimeStamp) { _modifiedTimeStamp =	modifiedTimeStamp; }
+
+String getReason(){return _reason;}
+void setReason(String reason){ _reason = reason; }
+ 
+int getSeqNo(){return _seqNo;}
+void setSeqNo(int seqNo){ _seqNo = seqNo;}
+
+String getTradeRef(){return _tradeRef;}
+void setTradeRef(String tradeRef){ _tradeRef = tradeRef;}
+protected:
+          
+String 		_modifiedTimeStamp;
+String 		_reason;
+int 		_seqNo;
+String 		_tradeRef;
+};
+
+}

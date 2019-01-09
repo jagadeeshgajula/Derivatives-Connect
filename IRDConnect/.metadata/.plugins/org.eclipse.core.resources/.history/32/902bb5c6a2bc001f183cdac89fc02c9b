@@ -1,0 +1,373 @@
+#include <strstream> //COSL Solaris8 upgrade - standard header
+#include <ctype.h>
+#include "stdio.h"
+#include<iostream>
+#include<map>
+#include "IRDTenor.h"
+
+
+using namespace std;
+
+
+//----------------------------------------------------------------------
+
+Tenor::Tenor(
+int                                     amount,
+const IRDPeriod            * IRDPeriod,
+const Calendar          * calendar ) :
+        _amount( amount ),
+        _IRDPeriod( IRDPeriod ),
+        _calendar( calendar ),
+        _tenorCd( "" )
+{
+        if ( IRDPeriod ) {
+                char buf[12];
+                sprintf( buf, "%d", amount );
+                _tenorCd = buf;
+                sprintf( buf, "%c", IRDPeriod->getch() );
+                _tenorCd += buf;
+        }
+}
+
+Tenor::Tenor(
+const Tenor                     & tenor ) :
+        _amount( tenor._amount ),
+        _IRDPeriod( tenor._IRDPeriod ),
+        _calendar( tenor._calendar ),
+        _tenorCd( tenor._tenorCd )
+{
+}
+
+Tenor::Tenor(
+const char                      * tenorCd,
+int                                     & valid ) :
+        _amount( 0 ),
+        _IRDPeriod( 0 ),
+        _calendar( 0 ),
+        _tenorCd( tenorCd )
+{
+        valid = 0;
+        if ( !tenorCd || strlen( tenorCd ) > 5 ) {
+                markNotOk();
+                return;
+        }
+
+        char *str = (char *)((const char *)_tenorCd);
+        for ( int idx = 0; idx < strlen( str ); idx++ )
+                str[idx] = toupper( str[idx] );
+
+        // handle the case that IRDPeriod is before number
+        if ( !isdigit( *str ) ) {
+                _IRDPeriod = IRDPeriod::find( *str );
+        	if ( !_IRDPeriod ||
+				 _IRDPeriod->getPositionInTenor() !=
+                 IRDPeriod::IRDPeriod_BEFORE_NUMBER ||
+			 (strlen(tenorCd)==5 && _IRDPeriod != IRDPeriod::find('D') ) )
+				{
+                        markNotOk();
+                        return;
+                }
+                str++;
+        }
+
+        // retrieve amount
+        for ( ; isdigit( *str ); str++ )
+                _amount = 10 * _amount + (*str - '0');
+
+
+		//CDSap19217 Begin
+		//Made changes to handle new Tenor Points: 1092, 1456, 1820
+		//If tenor code has 4 digit, assume _IRDPeriod is Day
+		//if tenor code has 5 char, _IRDPeriod should be 'D'
+		if ( _amount > 999 )
+		{
+			if ( !_IRDPeriod)
+				_IRDPeriod = IRDPeriod::find('D');
+			else
+			{
+				if ( _IRDPeriod != IRDPeriod::find('D'))
+					markNotOk();
+                    return;
+			}
+		}
+	    //CDSap19217 End
+
+        // handle the case that IRDPeriod is after number
+        if ( !_IRDPeriod ) {
+                _IRDPeriod = IRDPeriod::find( *str );
+                if ( !_IRDPeriod || _IRDPeriod->getPositionInTenor() !=
+                                                 IRDPeriod::IRDPeriod_AFTER_NUMBER ) {
+                        markNotOk();
+                        return;
+                }
+        }
+
+        valid = 1;
+}
+
+Tenor::~Tenor()
+{
+}
+
+Tenor &
+Tenor::operator=( const Tenor& tenor )
+{
+        _amount      = tenor._amount;
+        _IRDPeriod      = tenor._IRDPeriod;
+        _calendar    = tenor._calendar;
+        _tenorCd     = tenor._tenorCd;
+
+        return *this;
+}
+
+//----------------------------------------------------------------------
+
+Tenor::operator CDSString() const
+{
+        return _tenorCd;
+}
+
+//----------------------------------------------------------------------
+
+Tenor &
+Tenor::operator+=( const Tenor& tenor )
+{
+        if ( _IRDPeriod == tenor._IRDPeriod )
+                _amount += tenor._amount;
+
+        return *this;
+}
+
+Tenor &
+Tenor::operator-=( const Tenor &tenor )
+{
+        return operator+=( -tenor );
+}
+
+Tenor
+Tenor::operator-() const
+{
+        Tenor rv( *this );
+        rv._amount *= -1;
+        return rv;
+}
+
+Tenor &
+Tenor::operator*=( int m )
+{
+        _amount *= m;
+        return *this;
+}
+
+//----------------------------------------------------------------------
+
+// CDSap19265 - Begin
+
+const CDSString & Tenor::getTenorCd () const
+
+{
+        return _tenorCd ;
+}
+
+// CDSap19265 - End
+
+//----------------------------------------------------------------------
+
+int
+Tenor::compare ( const Tenor& t2 ) const
+{
+        int diff = equivCalDays() - t2.equivCalDays();
+        if ( diff != 0 )
+                return diff;
+
+        // Different tenorCd but same equivCalDays. The one with longer tenorCd
+        // is treated as smaller.
+        return - ( strlen( _tenorCd ) - strlen( t2._tenorCd ) );
+}
+
+Bool Tenor::compareEquivDays( const Tenor & tenor )
+{
+        return (equivCalDays()==tenor.equivCalDays());
+}
+
+int
+Tenor::operator <= ( const Tenor & tenor ) const
+{
+        int diff = equivCalDays() - tenor.equivCalDays();
+        if ( diff != 0 )
+                return diff < 0;
+
+        // now diff == 0
+        int lenDiff = strlen( _tenorCd ) - strlen( tenor._tenorCd );
+        if ( lenDiff == 0 )
+                return TRUE;      // tow tenors are equal
+
+        // Different tenorCd but same equivCalDays. The one with longer tenorCd
+        // is treated as smaller.
+        return lenDiff > 0;
+}
+
+int
+Tenor::operator >= ( const Tenor & tenor ) const
+{
+        int diff = equivCalDays() - tenor.equivCalDays();
+        if ( diff != 0 )
+                return diff > 0;
+
+        // now diff == 0
+        int lenDiff = strlen( _tenorCd ) - strlen( tenor._tenorCd );
+        if ( lenDiff == 0 )
+                return TRUE;      // tow tenors are equal
+
+        // Different tenorCd but same equivCalDays. The one with longer tenorCd
+        // is treated as smaller.
+        return lenDiff < 0;
+}
+
+int
+Tenor::operator < ( const Tenor & tenor ) const
+{
+        int diff = equivCalDays() - tenor.equivCalDays();
+        if ( diff != 0 )
+                return diff < 0;
+
+        // now diff == 0
+        int lenDiff = strlen( _tenorCd ) - strlen( tenor._tenorCd );
+        if ( lenDiff == 0 )
+                return FALSE;      // tow tenors are equal
+
+        // Different tenorCd but same equivCalDays. The one with longer tenorCd
+        // is treated as smaller.
+        return lenDiff > 0;
+}
+
+int
+Tenor::operator > ( const Tenor & tenor ) const
+{
+        int diff = equivCalDays() - tenor.equivCalDays();
+        if ( diff != 0 )
+                return diff > 0;
+
+        // now diff == 0
+        int lenDiff = strlen( _tenorCd ) - strlen( tenor._tenorCd );
+        if ( lenDiff == 0 )
+                return FALSE;      // tow tenors are equal
+
+        // Different tenorCd but same equivCalDays. The one with longer tenorCd
+        // is treated as smaller.
+        return lenDiff < 0;
+}
+
+int
+Tenor::operator == ( const Tenor & tenor) const
+{
+        if ( equivCalDays() != tenor.equivCalDays() )
+                return FALSE;
+
+        if ( _tenorCd != tenor._tenorCd )
+                return FALSE;
+
+        return TRUE;
+}
+
+int
+Tenor::operator != ( const Tenor & tenor) const
+{
+        if ( equivCalDays() != tenor.equivCalDays() )
+                return TRUE;
+
+        if ( _tenorCd != tenor._tenorCd )
+                return TRUE;
+
+        return FALSE;
+}
+
+//----------------------------------------------------------------------
+
+const IRDPeriod *
+Tenor::getIRDPeriod() const
+{
+        return _IRDPeriod;
+}
+
+int
+Tenor::getAmount() const
+{
+        return _amount;
+}
+
+const Calendar *
+Tenor::getCalendar() const
+{
+        return _calendar;
+}
+
+int
+Tenor::ok() const
+{
+	return 0 != getIRDPeriod() && (0 != getAmount() || *getIRDPeriod() == 'B');
+}
+
+void
+Tenor::markNotOk()
+{
+        _IRDPeriod = 0;
+        _amount = 0;
+}
+
+unsigned int
+Tenor::equivCalDays() const
+{
+        return ok() ? getAmount() * getIRDPeriod() -> getEquivCalDays() : 0;
+}
+
+double
+Tenor::equivTimeInYears() const
+{
+        return double(equivCalDays()) / 365.0;
+}
+
+//----------------------------------------------------------------------
+
+// Think we should try and get rid of these ...
+
+const Tenor Tenor::null;
+const Tenor Tenor::day     ( 1, IRDPeriod::days );
+const Tenor Tenor::week    ( 1, IRDPeriod::weeks );
+const Tenor Tenor::twoWeek ( 2, IRDPeriod::weeks );
+const Tenor Tenor::month   ( 1, IRDPeriod::months );
+const Tenor Tenor::twoMonth( 2, IRDPeriod::months );
+const Tenor Tenor::quarter ( 3, IRDPeriod::months );
+const Tenor Tenor::halfYear( 6, IRDPeriod::months );
+const Tenor Tenor::year    ( 1, IRDPeriod::years );
+
+//----------------------------------------------------------------------
+
+Date operator + ( const Date & date, const Tenor & tenor )
+{
+        const IRDPeriod *IRDPeriod = tenor.getIRDPeriod();
+        if ( IRDPeriod )
+                return IRDPeriod -> add( date, tenor.getAmount(), tenor.getCalendar() );
+
+        return date;
+}
+
+Date operator - ( const Date & date, const Tenor & tenor )
+{
+    return ::operator+( date, -tenor );
+}
+
+Date & operator += ( Date & date, const Tenor & tenor )
+{
+        return date = date + tenor;
+}
+
+Date & operator -= ( Date & date, const Tenor & tenor )
+{
+        return date = date - tenor;
+}
+
+//----------------------------------------------------------------------
+
+
+// End-Of-File ---------------------------------------------------------

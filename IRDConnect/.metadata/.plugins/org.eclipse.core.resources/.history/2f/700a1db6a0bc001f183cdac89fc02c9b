@@ -1,0 +1,108 @@
+#include "IRDTimeUnit.h"
+#include "IRDDate.h"
+#include<iostream>
+#include<map>
+#include "IRDPeriod.h"
+#include "calendar.h"
+#include "IRDFrequency.h"
+
+using namespace std;
+typedef bool Bool;
+
+class Tenor {
+public:
+
+    Tenor( int              amount = 0,
+           const IRDPeriod     * period = 0,
+           const Calendar   * calendar = 0 );
+
+    Tenor( const Tenor      & tenor );
+
+
+
+    Tenor( const char * tenorCd, int & valid );
+
+    ~Tenor();
+
+    Tenor & operator = ( const Tenor & tenor );
+    Tenor & operator += ( const Tenor & tenor );
+    Tenor & operator -= ( const Tenor & tenor );
+    Tenor & operator *= ( int m );
+
+    Tenor operator - () const;
+
+    int operator == ( const Tenor & tenor ) const;
+    int operator != ( const Tenor & tenor ) const;
+
+    //
+    // 'compare()' returns :
+    //
+    //  > 0     t2 >  '*this'
+    //  == 0    t2 == '*this'
+    //  < 0     t2 <  '*this
+    //
+
+    int compare ( const Tenor& t2 ) const;
+
+
+    Bool compareEquivDays( const Tenor & tenor );
+
+
+
+    int operator <= ( const Tenor & tenor ) const;
+    int operator >= ( const Tenor & tenor ) const;
+    int operator <  ( const Tenor & tenor ) const;
+    int operator >  ( const Tenor & tenor ) const;
+
+    int                   getAmount   () const ;
+    const IRDPeriod        * getPeriod   () const ;
+    const Calendar      * getCalendar () const ;
+
+    const std::string     & getTenorCd () const ;
+    operator              std::string  () const ;
+
+    //
+    // Returns non-zero if this is a valid tenor otherwise returns zero.
+    //
+
+    int                 ok               () const ;
+    unsigned int        equivCalDays     () const ;
+    double              equivTimeInYears () const ;
+
+    //
+    // Are these really useful??
+    //
+    static const Tenor null;
+    static const Tenor day;
+    static const Tenor week;
+    static const Tenor twoWeek;
+    static const Tenor month;
+    static const Tenor twoMonth;
+    static const Tenor quarter;
+    static const Tenor halfYear;
+    static const Tenor year;
+
+private:
+
+    int                 _amount;
+    const Period      * _period;
+    const Calendar    * _calendar;
+    std::string           _tenorCd;
+    //
+    // ensure 'Tenor::ok()' returns zero
+    //
+    void                markNotOk();
+};
+
+
+
+extern Date   operator +  ( const Date & date, const Tenor & tenor );
+extern Date   operator -  ( const Date & date, const Tenor & tenor );
+extern Date & operator += (       Date & date, const Tenor & tenor );
+extern Date & operator -= (       Date & date, const Tenor & tenor );
+
+// Declare collection class for 'Tenor' objects.  The collection
+// class is called 'LIST_NAME( Tenor )' and the associated control
+// abstraction's name is 'LIST_CTL_NAME( Tenor )'.
+
+

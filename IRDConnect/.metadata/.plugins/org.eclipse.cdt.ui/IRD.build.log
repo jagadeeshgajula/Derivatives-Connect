@@ -1,0 +1,22 @@
+
+**** Build of configuration Default for project IRD ****
+
+make all 
+for dir in Date Util Instr Curve Trade; do \
+	make -C $dir; \
+	done
+make[1]: Entering directory `/home/vishist/IRD/Date'
+make[1]: `libdate.so' is up to date.
+make[1]: Leaving directory `/home/vishist/IRD/Date'
+make[1]: Entering directory `/home/vishist/IRD/Util'
+make[1]: `libutil.so' is up to date.
+make[1]: Leaving directory `/home/vishist/IRD/Util'
+make[1]: Entering directory `/home/vishist/IRD/Instr'
+make[1]: `libinstr.so' is up to date.
+make[1]: Leaving directory `/home/vishist/IRD/Instr'
+make[1]: Entering directory `/home/vishist/IRD/Curve'
+make[1]: `libcurve.so' is up to date.
+make[1]: Leaving directory `/home/vishist/IRD/Curve'
+make[1]: Entering directory `/home/vishist/IRD/Trade'
+make[1]: `schedule' is up to date.
+make[1]: Leaving directory `/home/vishist/IRD/Trade'

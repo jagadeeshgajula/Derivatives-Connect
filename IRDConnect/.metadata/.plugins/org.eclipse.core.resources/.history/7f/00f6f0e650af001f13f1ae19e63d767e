@@ -1,0 +1,43 @@
+/*
+ * BusDayConvention.h
+ *
+ *  Created on: 24-Aug-2010
+ *      Author: vishist
+ */
+
+#ifndef BUSDAYCONVENTION_H_
+#define BUSDAYCONVENTION_H_
+
+class BusDayConvention {
+public:
+	BusDayConvention(){_busday = 'NONE';}
+
+
+	enum { NONE, FOLLOWING, MODIFIEDFOLLOWING, PRECEDING };
+
+	    static BusDayConvention * _none;
+	    static BusDayConvention * _following;
+	    static BusDayConvention * _modifiedFollowing;
+	    static BusDayConvention * _preceding;
+
+	    IRDString getBusDayConvention() { return _busdayconvention;}
+	    IRDString setBusDayConvention(IRDString busdayconvention) { _busdayconvention = busdayconvention;}
+
+	    date adjustToBusDay( const date & dateInput, const IRDCalendar & calendarInput ) const;
+
+	    date adjustToBusDay( const date & dateInput,
+	                    const IRDCalendar &primaryCalendar,
+	                    const IRDCalendar &secondaryCalendar ) const;
+
+
+	protected:
+
+	    void BusDayConvention (const IRDString & busdayconv) {_busdayconv = busdayconv;}
+	    virtual ~BusDayConvention();
+
+	private:
+
+	    IRDString _busdayconv;
+};
+
+#endif /* BUSDAYCONVENTION_H_ */

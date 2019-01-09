@@ -1,0 +1,35 @@
+
+#ifndef IRDTENOR_H_
+#define IRDTENOR_H_
+#include "IRDTimeUnit.h"
+#include "IRDDate.h"
+#include<iostream>
+#include<map>
+#include "IRDPeriod.h"
+#include "calendar.h"
+#include "IRDFrequency.h"
+
+using namespace std;
+typedef bool Bool;
+
+enum Tenor {
+		null,
+		day,
+		week,
+		twoWeek,
+		month,
+		twoMonth,
+		quarter,
+		halfYear,
+		year
+}
+
+
+
+Date   operator +  ( const Date & date, const Tenor & tenor );
+Date   operator -  ( const Date & date, const Tenor & tenor );
+Date & operator += (       Date & date, const Tenor & tenor );
+Date & operator -= (       Date & date, const Tenor & tenor );
+
+#endif
+

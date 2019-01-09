@@ -1,0 +1,51 @@
+#include<iostream>
+#include<string>
+#include "string.h"
+
+
+using namespace std;
+
+class FXResets
+{
+
+public:
+FXResets(){;};
+           
+FXResets(
+String fXResetCalendars,
+String fXResetType,
+int legNumber,
+String marketIndex,
+String tradeRef)
+{
+
+_fXResetCalendars=fXResetCalendars;
+_fXResetType=fXResetType;
+_legNumber=legNumber;
+_marketIndex=marketIndex;
+_tradeRef =tradeRef;
+}
+
+
+String getFXResetCalendars(){return _fXResetCalendars;}
+void setFXResetCalendars(String fXResetCalendars){ _fXResetCalendars = fXResetCalendars;}
+
+String getFXResetType(){return _fXResetType;}
+void setFXResetType(String fXResetType){ _fXResetType = fXResetType;}
+
+int getLegNumber(){return _legNumber;}
+void setLegNumber (int legNumber ){ _legNumber=legNumber ;}
+
+String getMarketIndex(){return _marketIndex;}
+void setMarketIndex(String marketIndex){ _marketIndex = marketIndex; }
+
+String getTradeRef() {return _tradeRef;}    
+void setTradeRef(String tradeRef) { _tradeRef =tradeRef; }
+protected:
+         
+String _fXResetCalendars;
+String _fXResetType;
+int _legNumber;
+String _marketIndex;
+String _tradeRef;
+};

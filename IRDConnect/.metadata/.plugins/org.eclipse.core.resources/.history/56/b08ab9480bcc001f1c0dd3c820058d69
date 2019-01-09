@@ -1,0 +1,120 @@
+################################################################################
+# Automatically-generated file. Do not edit!
+################################################################################
+
+# Add inputs and outputs from these tool invocations to the build variables 
+CPP_SRCS += \
+../assetSwaps.cpp \
+../busDayConv.cpp \
+../calendar.cpp \
+../calendarUtil.cpp \
+../compositeCalendar.cpp \
+../currency.cpp \
+../dataFormat.cpp \
+../date.cpp \
+../dayCountConv.cpp \
+../errors.cpp \
+../externalSystemTrades.cpp \
+../fXResets.cpp \
+../frequency.cpp \
+../immDates.cpp \
+../irdString.cpp \
+../manualPayments.cpp \
+../marchingConv.cpp \
+../money.cpp \
+../optionSchedule.cpp \
+../paySchedule.cpp \
+../period.cpp \
+../rollDayConv.cpp \
+../roundingConv.cpp \
+../schedule.cpp \
+../simpleCalendar.cpp \
+../stubResets.cpp \
+../swapLegs.cpp \
+../swapOption.cpp \
+../tenor.cpp \
+../timeUnit.cpp \
+../tradeModificationReasons.cpp \
+../tradeTicket.cpp \
+../weekDay.cpp 
+
+OBJS += \
+./assetSwaps.o \
+./busDayConv.o \
+./calendar.o \
+./calendarUtil.o \
+./compositeCalendar.o \
+./currency.o \
+./dataFormat.o \
+./date.o \
+./dayCountConv.o \
+./errors.o \
+./externalSystemTrades.o \
+./fXResets.o \
+./frequency.o \
+./immDates.o \
+./irdString.o \
+./manualPayments.o \
+./marchingConv.o \
+./money.o \
+./optionSchedule.o \
+./paySchedule.o \
+./period.o \
+./rollDayConv.o \
+./roundingConv.o \
+./schedule.o \
+./simpleCalendar.o \
+./stubResets.o \
+./swapLegs.o \
+./swapOption.o \
+./tenor.o \
+./timeUnit.o \
+./tradeModificationReasons.o \
+./tradeTicket.o \
+./weekDay.o 
+
+CPP_DEPS += \
+./assetSwaps.d \
+./busDayConv.d \
+./calendar.d \
+./calendarUtil.d \
+./compositeCalendar.d \
+./currency.d \
+./dataFormat.d \
+./date.d \
+./dayCountConv.d \
+./errors.d \
+./externalSystemTrades.d \
+./fXResets.d \
+./frequency.d \
+./immDates.d \
+./irdString.d \
+./manualPayments.d \
+./marchingConv.d \
+./money.d \
+./optionSchedule.d \
+./paySchedule.d \
+./period.d \
+./rollDayConv.d \
+./roundingConv.d \
+./schedule.d \
+./simpleCalendar.d \
+./stubResets.d \
+./swapLegs.d \
+./swapOption.d \
+./tenor.d \
+./timeUnit.d \
+./tradeModificationReasons.d \
+./tradeTicket.d \
+./weekDay.d 
+
+
+# Each subdirectory must supply rules for building sources it contributes
+%.o: ../%.cpp
+	@echo 'Building file: $<'
+	@echo 'Invoking: GCC C++ Compiler'
+	g++ -I/home/vishist/IRDConnect/include -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -o"$@" "$<"
+	@echo 'Finished building: $<'
+	@echo ' '
+
+

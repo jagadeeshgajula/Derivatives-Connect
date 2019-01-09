@@ -1,0 +1,203 @@
+
+/*
+ * swapLegs.cpp
+ *
+ *  Created on: 17-Aug-2010
+ *      Author: vishist
+ */
+
+#include "swapLeg.h"
+#include "paySchedule.h"
+#include "resetSchedule.h"
+#include "compSchedule.h"
+#include "rollDayConv.h"
+#include "calendarUtil.h"
+#include "marchingConv.h"
+
+
+
+using namespace std;
+
+using namespace IRDConnect;
+
+namespace IRDConnect {
+
+SwapLeg::SwapLeg()
+{
+	// do nothing...
+}
+
+SwapLeg::~SwapLeg()
+{
+	// do nothing...
+}
+
+SwapLeg::SwapLeg(
+const BusDayConv * accrualBusDay,
+std::set < std::string > accrualCalendars,
+Frequency accrualFreq,
+const DateMarcher * accrualMarching,
+int accrualRollDay,
+DayOfWeek accrualRollWeek,
+double amortAmount,
+Frequency amortFreq,
+double amortPercent,
+String amortType,
+String averagingMethod,
+Date backStubDate,
+double backStubManualRate,
+Frequency compFreq,
+String compoundingConv,
+const Currency * currency,
+const DayCountConv * dayCount,
+String discountCurve,
+Date endDate,
+String endDateRollFlag,
+String endOfMonthIndicator,
+double fixedQuote,
+Date frontStubDate,
+double frontStubManualRate,
+double gearFactor,
+std::set < std::string > initialQuoteCalendars,
+Date initialQuoteDate,
+int initialQuoteLag,
+int legNo,
+String legType,
+String marketIndex,
+double notional,
+String notionalExchange,
+const BusDayConv * payBusDay,
+std::set < std::string > payCalendars,
+Frequency payFreq,
+const DateMarcher * payMarching,
+String paymentConvention,
+const Currency * paymentConversionCurrency,
+String paymentConversionIndex,
+int paymentConversionLag,
+int payRollDay,
+DayOfWeek payRollWeek,
+String position,
+std::set < std::string > quoteCalendars,
+int quoteLag,
+int rateCutOff,
+String resetConvention,
+Frequency resetFreq,
+String resetType,
+int scheduleCustomFlag,
+double spread,
+Date startDate,
+String startDateRollFlag
+)
+{
+_accrualBusDay=accrualBusDay;
+_accrualCalendars=accrualCalendars;
+_accrualFreq=accrualFreq;
+_accrualMarching=accrualMarching;
+_accrualRollDay=accrualRollDay;
+_accrualRollWeek=accrualRollWeek;
+_amortAmount=amortAmount;
+_amortFreq=amortFreq;
+_amortPercent=amortPercent;
+_amortType=amortType;
+_averagingMethod=averagingMethod;
+_backStubDate=backStubDate;
+_backStubManualRate=backStubManualRate;
+_compFreq=compFreq;
+_compoundingConv=compoundingConv;
+_currency=currency;
+_dayCount=dayCount;
+_discountCurve=discountCurve;
+_endDate=endDate;
+_endDateRollFlag=endDateRollFlag;
+_endOfMonthIndicator=endOfMonthIndicator;
+_fixedQuote=fixedQuote;
+_frontStubDate=frontStubDate;
+_frontStubManualRate=frontStubManualRate;
+_gearFactor=gearFactor;
+_initialQuoteCalendars=initialQuoteCalendars;
+_initialQuoteDate=initialQuoteDate;
+_initialQuoteLag=initialQuoteLag;
+_legNo=legNo;
+_legType=legType;
+_marketIndex=marketIndex;
+_notional=notional;
+_notionalExchange=notionalExchange;
+_payBusDay=payBusDay;
+_payCalendars=payCalendars;
+_payFreq=payFreq;
+_payMarching=payMarching;
+_paymentConvention=paymentConvention;
+_paymentConversionCurrency=paymentConversionCurrency;
+_paymentConversionIndex=paymentConversionIndex;
+_paymentConversionLag=paymentConversionLag;
+_payRollDay=payRollDay;
+_payRollWeek=payRollWeek;
+_position=position;
+_quoteCalendars=quoteCalendars;
+_quoteLag=quoteLag;
+_rateCutOff=rateCutOff;
+_resetConvention=resetConvention;
+_resetFreq=resetFreq;
+_resetType=resetType;
+_scheduleCustomFlag=scheduleCustomFlag;
+_spread=spread;
+_startDate=startDate;
+_startDateRollFlag=startDateRollFlag;
+ }
+
+PayScheduleList SwapLeg::genPaySchedule()
+{
+	Date schedStartDate;
+	DateMarcherWrapper(MarchingConv::EventStream &eventStreamTmp);
+	//EventStreamWrapper( MarchingConv::EventStream & eventStream );
+	int evenFinalPeriod = 0;
+
+	BusOrCalConv busOrCalConv(CAL);
+
+	if ( getAccrualBusDay() != BusDayConv::find("NONE") )
+		{
+		 busOrCalConv = BusOrCalConv(BUS);
+		}
+
+	RollDayConv * rollDayConv = new RollDayConv( getAccrualRollWeek(),
+		getAccrualRollDay(), busOrCalConv);
+
+	Date frontStubDate = getFrontStubDate();
+	Date backStubDate = getBackStubDate();
+
+	if ( getAccrualMarching()->eventStream (
+	frontStubDate,
+	backStubDate,
+	getAccrualFreq(),
+	CalendarUtil::getCalendar(getAccrualCalendars()),
+	getAccrualBusDay(),
+	eventStreamTmp,
+	evenFinalPeriod,
+	rollDayConv  ) )
+	{
+		// success
+		cout << "Hello I could do my work";
+	}
+
+	return _payScheduleList;
+}
+
+
+ResetScheduleList SwapLeg::genResetSchedule()
+{
+
+	return _resetScheduleList;
+
+}
+
+CompScheduleList SwapLeg::genCompSchedule()
+{
+return  _compScheduleList;
+
+}
+
+}
+
+
+
+

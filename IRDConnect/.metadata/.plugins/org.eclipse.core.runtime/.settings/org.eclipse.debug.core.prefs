@@ -1,0 +1,8 @@
+//org.eclipse.debug.core.PREFERRED_DELEGATES/org.eclipse.cdt.launch.applicationLaunchType=org.eclipse.cdt.dsf.gdb.launch.localCLaunch,debug,;org.eclipse.cdt.cdi.launch.localCLaunch,run,;
+//org.eclipse.debug.core.PREFERRED_DELEGATES/org.eclipse.cdt.launch.attachLaunchType=org.eclipse.cdt.dsf.gdb.launch.attachCLaunch,debug,;
+//org.eclipse.debug.core.PREFERRED_DELEGATES/org.eclipse.cdt.launch.postmortemLaunchType=org.eclipse.cdt.dsf.gdb.launch.coreCLaunch,debug,;
+//org.eclipse.debug.core.PREFERRED_DELEGATES/org.eclipse.cdt.launch.remoteApplicationLaunchType=org.eclipse.rse.remotecdt.dsf.debug,debug,;
+eclipse.preferences.version=1
+org.eclipse.debug.core.PREF_BREAKPOINT_MANAGER_ENABLED_STATE=true
+org.eclipse.debug.core.USE_STEP_FILTERS=true
+prefWatchExpressions=<?xml version\="1.0" encoding\="UTF-8" standalone\="no"?>\r\n<watchExpressions>\r\n<expression enabled\="true" text\="xCoord"/>\r\n<expression enabled\="true" text\="eventStreamTmp.getEventList().size()"/>\r\n<expression enabled\="true" text\=" getAccrualRollWeek()"/>\r\n<expression enabled\="true" text\="xCoord"/>\r\n<expression enabled\="true" text\="getAccrualMarching()"/>\r\n<expression enabled\="true" text\="(*iterStubReset)-&gt;getStartDate()"/>\r\n<expression enabled\="true" text\=" getAccrualRollWeek()"/>\r\n</watchExpressions>\r\n

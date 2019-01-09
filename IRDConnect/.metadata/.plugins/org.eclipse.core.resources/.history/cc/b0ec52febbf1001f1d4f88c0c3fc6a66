@@ -1,0 +1,377 @@
+#	include "currency.h"
+#include "calendarUtil.h"
+#include "busDayConv.h"
+
+//#include <list>
+using namespace IRDConnect;
+
+namespace IRDConnect {
+
+static std::list <  Currency * >	_currencyList;
+
+using namespace std;
+
+/*
+Currency::Currency( String ccy)
+{
+	name_ = ccy;
+}
+*/
+static std::list<Calendar *>  calendarList ;
+
+//Calendar * CalendarUtil::getCalendar( const std::string & holidayCd )
+
+
+const Currency *
+Currency::eur = 0;
+
+void
+Currency::setDiscounterSourceFun(DiscounterSourceFun dsctrSourceFun)
+{
+	_dsctrSourceFun = dsctrSourceFun;
+}
+
+Discounter *
+Currency::defaultDiscounterSourceFun(const String&)
+{
+	//ApplDebugError err;
+	cerr  << "Internal Error: Currency class requested for a default "
+		"Discounter but no source function registered yet.\n";
+	return 0;
+}
+
+DiscounterSourceFun Currency::_dsctrSourceFun = defaultDiscounterSourceFun;
+
+
+Currency::Currency(
+const std::string name,
+const String			fundingTSIRName,
+const DayCountConv		* dcc,
+const BusDayConv		* bdc,
+const Calendar		* cal,
+const Calendar        * secondCal,
+const String		 mktType,
+const String			timeSeries,
+const RoundingConv		* roundingConv,
+const String			defaultONInstrument,
+const Frequency			defaultSwpFloatSettleFreq,
+const Frequency			defaultSwpFixSettleFreq,
+const DayCountConv		* defaultSwaFixDcc,
+unsigned int			numDecimal,
+int			        pmtMsgLag,
+int		        	pmtConfirmLag,
+int		        	valueDayLag,
+const String			emuFlg,
+double				euroConvRate,
+const Date 			euroSettleEffDate,
+
+const String                 xccyBasisTsirId
+) :
+	 name_(name),
+	_fundingTSIRName( fundingTSIRName ),
+	_fundingDiscounter( 0 ),
+	_dcc( dcc ),
+	_bdc( bdc ),
+	_cal( cal ),
+	_secondCal( secondCal ),
+	_mktType( mktType ),
+	_timeSeries( timeSeries ),
+	_roundingConv( roundingConv ),
+	_defaultONInstrument( defaultONInstrument ),
+	_defaultSwpFloatSettleFreq( defaultSwpFloatSettleFreq ),
+	_defaultSwpFixSettleFreq( defaultSwpFixSettleFreq ),
+	_defaultSwaFixDcc( defaultSwaFixDcc ),
+	_numDecimal( numDecimal ),
+	_pmtMsgLag( pmtMsgLag ),
+	_pmtConfirmLag( pmtConfirmLag ),
+	_valueDayLag( valueDayLag ),
+	_emuFlg( emuFlg ),
+	_euroConvRate( euroConvRate ),
+        _xccyBasisTsirId ( xccyBasisTsirId )
+
+{
+	if (euroSettleEffDate != Date(01,01,1901))
+		_euroSettleEffDate = euroSettleEffDate;
+	else {
+		//Year      yr = Date::ERROR_YEAR;
+        //	Month     mn = (Month) Date::ERROR_MONTH;
+        	//Day       dy = Date::ERROR_DAY;
+        	Date      dummyDate( 01, 01, 1901 );
+		_euroSettleEffDate = dummyDate;
+	}
+}
+
+Currency::~Currency()
+{
+	if (_fundingDiscounter != 0)
+		delete _fundingDiscounter;
+}
+
+//----------------------------------------------------------------------
+
+
+
+
+const String
+Currency::getFundingTSIRName() const
+{
+	return _fundingTSIRName;
+}
+
+const String
+Currency::getXccyBasisTsirId() const
+{
+	return _xccyBasisTsirId;
+}
+
+// 'getFundingDiscounter()' was added so that clients don't always have to
+// get the TSIR's name and then initiate a search in the environment.
+// This seem to make sense from a performance perspective since the
+// search is only done once.
+
+const Discounter *
+Currency::getFundingDiscounter() const
+{
+	if ( !_fundingDiscounter ) {
+
+		Currency *me = (Currency*) this;
+		me->_fundingDiscounter = (*_dsctrSourceFun) (getFundingTSIRName());
+
+	}
+
+	return _fundingDiscounter;
+}
+
+const DayCountConv *
+Currency::getDayCountConv() const
+{
+	return _dcc;
+}
+
+const BusDayConv *
+Currency::getBusDayConv() const
+{
+	return _bdc;
+}
+
+const Calendar *
+Currency::getCalendar() const
+{
+	return _cal;
+}
+
+const Calendar *
+Currency::getSecondCalendar() const
+{
+    return _secondCal;
+}
+
+const String
+Currency::getMktType() const
+{
+	return _mktType;
+}
+
+const String
+Currency::getTimeSeries() const
+{
+	return _timeSeries;
+}
+
+const RoundingConv *
+Currency::getRoundingConv() const
+{
+	return _roundingConv;
+}
+
+unsigned int
+Currency::getNumDecimal() const
+{
+	return _numDecimal;
+}
+
+int
+Currency::getPmtMsgLag() const
+{
+	return _pmtMsgLag;
+}
+
+int
+Currency::getPmtConfirmLag() const
+{
+	return _pmtConfirmLag;
+}
+
+int
+Currency::getValueDayLag() const
+{
+	return _valueDayLag;
+}
+
+double
+Currency::getEuroConvRate() const
+{
+	return _euroConvRate;
+}
+
+const Date
+Currency::getEuroSettleEffDate() const
+{
+	return _euroSettleEffDate;
+}
+
+const bool
+Currency::isEuroSettleEffDateNull() const
+{
+	//if (_euroSettleEffDate.year() == Date::ERROR_YEAR &&
+    //        _euroSettleEffDate.month() == Date::ERROR_MONTH &&
+      //      _euroSettleEffDate.dayOfMonth() == Date::ERROR_DAY )
+	if (_euroSettleEffDate.year() == 1901 &&
+	            _euroSettleEffDate.month() == 01 &&
+	            _euroSettleEffDate.dayOfMonth() == 01 )
+
+		return true;
+	return false;
+}
+
+const bool
+Currency::isInEMU() const
+{
+	return ( _emuFlg == "Y" );
+}
+
+// added by nagesh for testing currency get
+
+const std::string Currency::getCurrencyCode()
+{
+	return name_;
+}
+
+const bool
+Currency::isEur() const
+{
+	return ( "EUR" == name_);
+			//getCurrencyCode();
+}
+
+const Currency *
+Currency::find( unsigned int index )
+{
+
+	return (const Currency *)find();
+}
+
+const Currency *
+Currency::find()
+{
+
+	return (const Currency *)find( );
+}
+
+const Currency *
+Currency::find( const std::string & name )
+{
+
+	std::list<Currency *>::const_iterator ccyIter = _currencyList.begin () ;
+	         for (; ccyIter != _currencyList.end() ; ++ccyIter)
+	             if ( (*ccyIter)->getCurrencyCode () == name )
+	                 return *ccyIter ;
+return 0; // make sure you check the return value at calling time
+}
+
+const Currency *
+Currency::getEUR( )
+{
+	if (!eur)
+		eur = find(std::string("EUR"));
+	return eur;
+}
+/*int
+Currency::getNumCurrencies()
+{
+	const NameableList & nl = getList();
+	return nl.length();
+}
+
+void
+Currency::resetAllFundingDiscounters()
+{
+	const NameableList& nl = getList();
+	for (NameableListCtl ctl(nl) ; !ctl.done() ; ctl.next()) {
+		Currency * ccy = (Currency*)ctl.get();
+		if (ccy->_fundingDiscounter != 0) {
+			delete ccy->_fundingDiscounter;
+			ccy->_fundingDiscounter = 0;
+		}
+	}
+}*/
+
+//-----------Date::ERROR_DAY-----------------------------------------------------------
+void
+Currency::init()
+{
+	//RoundingConv * roundingConv = new RoundingConv::find("_nearest");
+
+	std::string ccyCode = "GBP";
+	const String fundingTSIRName="";
+	const DayCountConv *  dayCountConv = DayCountConv::find("_actAct");
+	const BusDayConv *   busDayConv = BusDayConv::find("MOD");
+	const Calendar * calendarUtil = CalendarUtil::getCalendar("LON");
+	const String mktType="";
+	const String timeSeries="";
+	const RoundingConv	* roundingConv = RoundingConv::find("_nearest");
+	const String onInstrument = "";
+	Frequency defaultSwpFloatSettleFreq(Semiannual);
+	Frequency defaultSwpFixSettleFreq(Semiannual);
+	const DayCountConv * defaultSwaFixDcc = DayCountConv::find("_actAct");
+    unsigned int		  numDecimal();
+	int			  pmtMsgLag();
+	int		  	  pmtConfirmLag();
+	int		  	  valueDayLag();
+	String	 emuFlg = "";
+	double	euroConvRate = 0.0;
+	const Date		euroSettleEffDate(15,10,2015);
+    String xccyBasisTsirId = "";
+
+	Currency * ccy = new Currency(
+	ccyCode,
+	fundingTSIRName,
+	dayCountConv,
+	busDayConv,
+	calendarUtil,
+	calendarUtil,
+	mktType,
+	timeSeries,
+	roundingConv,
+	onInstrument,
+	defaultSwpFloatSettleFreq,
+	defaultSwpFixSettleFreq,
+	defaultSwaFixDcc,
+	2,
+	2,
+	2,
+	2,
+	emuFlg,
+	euroConvRate,
+	euroSettleEffDate,
+	xccyBasisTsirId);
+
+	_currencyList.push_back(ccy);
+
+}
+
+
+
+std::istream &
+operator >> ( std::istream & is, const Currency ** currency )
+{
+    std::string name_;
+
+    is >>name_;
+
+    *currency = Currency::find( name_ );
+
+    return is;
+
+}
+}

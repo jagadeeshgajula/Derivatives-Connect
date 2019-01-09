@@ -1,0 +1,336 @@
+#include<iostream>
+#include<string>
+#include "string.h"
+
+namespace IRDConnect {
+
+
+using namespace std;
+class SwapLegs
+{
+public:
+       SwapLegs(){;};
+
+SwapLegs(
+String accrualBusDay,
+String accrualCalendars,
+String accrualFreq,
+String accrualMarching,
+int accrualRoleDay,
+String accrualRoleWeek,
+double amortAmount,
+String amortFreq,
+double amortPercent,
+String amortType,
+String averagingMethod,
+String backStubDate,
+double backStubManualRate,
+String compFreq,
+String compoundingConv,
+String currency,
+String dayCount,
+String discountCurve,
+String endDate,
+String endDateRollFlag,
+String endOfMonthIndicator,
+double fixedQuote,
+String frontStubDate,
+double frontStubManualRate,
+double gearFactor,
+String initialQuoteDate,
+int legNo,
+String legType,
+String marketIndex,
+double notional,
+String notionalExchange,
+String payBusDay,
+String payCalendars,
+String payFreq,
+String payMarching,
+String paymentConvention,
+String paymentConversionCurrency,
+String paymentConversionIndex,
+int paymentConversionLag,
+int payRoleDay,
+String payRoleWeek,
+String position,
+String quoteCalendars,
+int quoteLag,
+int rateCutOff,
+String resetConvention,
+String resetFreq,
+String resetType,
+int scheduleCustomFlag,
+double spread,
+String startDate,
+String startDateRollFlag,
+String tradeRef
+)
+{
+_accrualBusDay=accrualBusDay;
+_accrualCalendars=accrualCalendars;
+_accrualFreq=accrualFreq;
+_accrualMarching=accrualMarching;
+_accrualRoleDay=accrualRoleDay;
+_accrualRoleWeek=accrualRoleWeek;
+_amortAmount=amortAmount;
+_amortFreq=amortFreq;
+_amortPercent=amortPercent;
+_amortType=amortType;
+_averagingMethod=averagingMethod;
+_backStubDate=backStubDate;
+_backStubManualRate=backStubManualRate;
+_compFreq=compFreq;
+_compoundingConv=compoundingConv;
+_currency=currency;
+_dayCount=dayCount;
+_discountCurve=discountCurve;
+_endDate=endDate;
+_endDateRollFlag=endDateRollFlag;
+_endOfMonthIndicator=endOfMonthIndicator;
+_fixedQuote=fixedQuote;
+_frontStubDate=frontStubDate;
+_frontStubManualRate=frontStubManualRate;
+_gearFactor=gearFactor;
+_initialQuoteDate=initialQuoteDate;
+_legNo=legNo;
+_legType=legType;
+_marketIndex=marketIndex;
+_notional=notional;
+_notionalExchange=notionalExchange;
+_payBusDay=payBusDay;
+_payCalendars=payCalendars;
+_payFreq=payFreq;
+_payMarching=payMarching;
+_paymentConvention=paymentConvention;
+_paymentConversionCurrency=paymentConversionCurrency;
+_paymentConversionIndex=paymentConversionIndex;
+_paymentConversionLag=paymentConversionLag;
+_payRoleDay=payRoleDay;
+_payRoleWeek=payRoleWeek;
+_position=position;
+_quoteCalendars=quoteCalendars;
+_quoteLag=quoteLag;
+_rateCutOff=rateCutOff;
+_resetConvention=resetConvention;
+_resetFreq=resetFreq;
+_resetType=resetType;
+_scheduleCustomFlag=scheduleCustomFlag;
+_spread=spread;
+_startDate=startDate;
+_startDateRollFlag=startDateRollFlag;
+_tradeRef=tradeRef;
+ }
+String getLegType() {return _legType;}    
+void setLegType(String legType) { _legType = legType; }
+
+String getPosition(){return _position;}
+void setPosition(String position){ _position = position; }
+
+String getCurrency(){return _currency;}
+void setCurrency(String currency){ _currency = currency;}
+
+double getNotional(){return _notional;}
+void setNotional(double notional){ _notional = notional;}
+
+String getEndOfMonthIndicator(){return _endOfMonthIndicator;}
+void setEndOfMonthIndicator (String endOfMonthIndicator ){ _endOfMonthIndicator=endOfMonthIndicator ;}
+
+String getStartDate(){return _startDate;}
+void setStartDate (String startDate ){ _startDate=startDate ;}
+
+String getEndDate(){return _endDate;}
+void setEndDate(String endDate){ _endDate=endDate;}
+
+String getInitialQuoteDate(){return _initialQuoteDate;}
+void setInitialQuoteDate(String initialQuoteDate){ _initialQuoteDate =initialQuoteDate;}
+
+String getAccrualFreq(){ return  _accrualFreq;}
+void setAccrualFreq(String accrualFreq){ _accrualFreq=accrualFreq;}
+
+String getAccrualBusDay (){return _accrualBusDay ;}
+void setAccrualBusDay (String accrualBusDay ){ _accrualBusDay =accrualBusDay ;}
+
+String getAccrualMarching (){return _accrualMarching ;}
+void setAccrualMarching (String accrualMarching ){ _accrualMarching =accrualMarching ;}
+
+String getAccrualRoleWeek (){return _accrualRoleWeek ;}
+void setAccrualRoleWeek (String accrualRoleWeek ){ _accrualRoleWeek =accrualRoleWeek ;}
+
+int getAccrualRoleDay (){return _accrualRoleDay ;}
+void setAccrualRoleDay (int accrualRoleDay ){ _accrualRoleDay =accrualRoleDay ;}
+
+String getAccrualCalendars (){return _accrualCalendars ;}
+void setAccrualCalendars (String accrualCalendars ){ _accrualCalendars =accrualCalendars ;}
+
+String getPayFreq (){return _payFreq ;}
+void setPayFreq (String payFreq ){ _payFreq =payFreq ;}
+
+String getPayBusDay (){return _payBusDay ;}
+void setPayBusDay (String payBusDay ){ _payBusDay =payBusDay ;}
+
+String getPayRoleWeek (){return _payRoleWeek ;}
+void setPayRoleWeek (String payRoleWeek ){ _payRoleWeek =payRoleWeek ;}
+
+int getPayRoleDay (){return _payRoleDay ;}
+void setPayRoleDay (int payRoleDay ){ _payRoleDay =payRoleDay ;}
+
+String getPayMarching (){return _payMarching ;}
+void setPayMarching(String payMarching ){ _payMarching =payMarching ;}
+
+String getPayCalendars (){return _payCalendars ;}
+void setPayCalendars (String payCalendars ){ _payCalendars =payCalendars ;}
+
+String getDayCount (){return _dayCount ;}
+void setDayCount (String dayCount ){ _dayCount =dayCount ;}
+
+String getAmortType (){return _amortType ;}
+void setAmortType (String amortType ){ _amortType =amortType ;}
+
+double getAmortAmount (){return _amortAmount ;}
+void setAmortAmount (double amortAmount ){ _amortAmount =amortAmount ;}
+
+double getAmortPercent (){return _amortPercent ;}
+void setAmortPercent (double amortPercent ){ _amortPercent =amortPercent ;}
+
+String getAmortFreq (){return _amortFreq ;}
+void setAmortFreq (String amortFreq ){ _amortFreq =amortFreq ;}
+
+String getcompoundingConv (){return _compoundingConv ;}
+void setcompoundingConv (String compoundingConv ){ _compoundingConv =compoundingConv ;}
+
+String getcompFreq (){return _compFreq ;}
+void setcompFreq (String compFreq ){ _compFreq =compFreq ;}
+
+String getquoteCalendars (){return _quoteCalendars ;}
+void setquoteCalendars (String quoteCalendars){ _quoteCalendars =quoteCalendars ;}
+
+int getquoteLag (){return _quoteLag;}
+void setquoteLag (int quoteLag ){ _quoteLag =quoteLag ;}
+
+String getResetFreq (){return _resetFreq;}
+void setResetFreq (String resetFreq ){ _resetFreq =resetFreq ;}
+
+String getnotionalExchange (){return _notionalExchange;}
+void setnotionalExchange (String notionalExchange ){ _notionalExchange =notionalExchange ;}
+
+String getmarketIndex (){return _marketIndex;}
+void setmarketIndex (String marketIndex ){ _marketIndex =marketIndex ;}
+
+String getDiscountCurve (){return _discountCurve;}
+void setDiscountCurve (String discountCurve ){ _discountCurve =discountCurve ;}
+
+String getPaymentConvention (){return _paymentConvention;}
+void setPaymentConvention (String paymentConvention ){ _paymentConvention=paymentConvention ;}
+
+String getResetConvention(){return _resetConvention;}
+void setResetConvention (String resetConvention ){ _resetConvention =resetConvention ;}
+
+String getFrontStubDate (){return _frontStubDate;}
+void setFrontStubDate (String frontStubDate ){ _frontStubDate =frontStubDate ;}
+
+String getBackStubDate (){return _backStubDate;}
+void setBackStubDate (String backStubDate ){ _backStubDate =backStubDate ;}
+
+double getFrontStubManualRate (){return _frontStubManualRate;}
+void setFrontStubManualRate (double frontStubManualRate ){ _frontStubManualRate =frontStubManualRate ;}
+
+double getBackStubManualRate (){return _backStubManualRate;}
+void setBackStubManualRate (double backStubManualRate ){ _backStubManualRate =backStubManualRate ;}
+
+String getAveragingMethod (){return _averagingMethod;}
+void setAveragingMethod (String averagingMethod ){ _averagingMethod =averagingMethod ;}
+
+String getPaymentConversionCurrency (){return _paymentConversionCurrency;}
+void setPaymentConversionCurrency (String paymentConversionCurrency ){ _paymentConversionCurrency =paymentConversionCurrency ;}
+
+String getPaymentConversionIndex (){return _paymentConversionIndex;}
+void setPaymentConversionIndex (String paymentConversionIndex ){ _paymentConversionIndex =paymentConversionIndex ;}
+
+int getPaymentConversionLag (){return _paymentConversionLag;}
+void setPaymentConversionLag (int paymentConversionLag ){ _paymentConversionLag =paymentConversionLag ;}
+
+int getRateCutOff (){return _rateCutOff;}
+void setRateCutOff (int rateCutOff ){ _rateCutOff =rateCutOff ;}
+
+String getResetType (){return _resetType;}
+void setResetType (String resetType ){ _resetType =resetType ;}
+
+int getScheduleCustomFlag (){return _scheduleCustomFlag;}
+void setScheduleCustomFlag (int scheduleCustomFlag ){ _scheduleCustomFlag =scheduleCustomFlag ;}
+
+double getFixedQuote (){return _fixedQuote;}
+void setFixedQuote (double fixedQuote ){ _fixedQuote =fixedQuote ;}
+
+double getSpread (){return _spread;}
+void setSpread (double spread ){ _spread =spread ;}
+
+double getGearFactor (){return _gearFactor;}
+void setGearFactor (double gearFactor ){ _gearFactor =gearFactor ;}
+
+String getEndDateRollFlag (){return _endDateRollFlag;}
+void setEndDateRollFlag (String endDateRollFlag){ _endDateRollFlag =endDateRollFlag ;}
+
+String getStartDateRollFlag (){return _startDateRollFlag;}
+void setStartDateRollFlag (String startDateRollFlag){ _startDateRollFlag =startDateRollFlag ;}
+ 
+int getLegNo (){return _legNo;}
+void setLegNo (int legNo){ _legNo =legNo ;}
+String getTradeRef (){return _tradeRef;}
+void setTradeRef (String tradeRef){ _tradeRef =tradeRef ;}
+protected:
+String _accrualBusDay;
+String _accrualCalendars;
+String _accrualFreq;
+String _accrualMarching;
+int _accrualRoleDay;
+String _accrualRoleWeek;
+double _amortAmount;
+String _amortFreq;
+double _amortPercent;
+String _amortType;
+String _averagingMethod;
+String _backStubDate;
+double _backStubManualRate;
+String _compFreq;
+String _compoundingConv;
+String _currency;
+String _dayCount;
+String _discountCurve;
+String _endDate;
+String _endDateRollFlag;
+String _endOfMonthIndicator;
+double _fixedQuote;
+String _frontStubDate;
+double _frontStubManualRate;
+double _gearFactor;
+String _initialQuoteDate;
+int _legNo;
+String _legType;
+String _marketIndex;
+double _notional;
+String _notionalExchange;
+String _payBusDay;
+String _payCalendars;
+String _payFreq;
+String _payMarching;
+String _paymentConvention;
+String _paymentConversionCurrency;
+String _paymentConversionIndex;
+int _paymentConversionLag;
+int _payRoleDay;
+String _payRoleWeek;
+String _position;
+String _quoteCalendars;
+int _quoteLag;
+int _rateCutOff;
+String _resetConvention;
+String _resetFreq;
+String _resetType;
+int _scheduleCustomFlag;
+double _spread;
+String _startDate;
+String _startDateRollFlag;
+String _tradeRef;
+};
+}

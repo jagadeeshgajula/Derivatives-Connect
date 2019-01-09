@@ -1,0 +1,85 @@
+/*
+ * swapDeal.cpp
+ *
+ *  Created on: 02-Oct-2010
+ *      Author: vishist
+ */
+
+#include "swapDeal.h"
+
+using namespace IRDConnect;
+
+namespace IRDConnect {
+
+SwapDeal::SwapDeal (
+String   alternateRef,
+String  bookingType,
+String  customerAccount,
+Date  earlyTermDate,
+String  earlyTermReason,
+String  externalSystem,
+String  externalRef,
+String  firmAccount,
+String  flowStatus,
+String  lastModifiedBy,
+String  lastVerifiedBy,
+String  legalEntity,
+String  location,
+String  matchingStatus,
+Date  maturityDate,
+String  modifiedTimeStamp,
+String  operationsRef,
+String  originalTradeRef,
+String  productType,
+String  salesPerson,
+Date  startDate,
+String  subType,
+Date  tradeDate,
+String  trader,
+String  tradeRef,
+String  tradeType,
+String  tradeStatus,
+double  tradeVersion,
+String  verifiedTimeStamp,
+String  washAccount)
+ : TradeTicket (
+		 alternateRef,
+		 bookingType,
+		 customerAccount,
+		earlyTermDate,
+		 earlyTermReason,
+		 externalSystem,
+		 externalRef,
+		firmAccount,
+		 flowStatus,
+		 lastModifiedBy,
+		lastVerifiedBy,
+		  legalEntity,
+		  location,
+		 matchingStatus,
+		 maturityDate,
+		 modifiedTimeStamp,
+		 operationsRef,
+		  originalTradeRef,
+		  productType,
+		   salesPerson,
+		 startDate,
+		   subType,
+	 tradeDate,
+		   trader,
+		  tradeRef,
+		  tradeType,
+		  tradeStatus,
+		  tradeVersion,
+		 verifiedTimeStamp,
+		 washAccount	)
+
+{
+
+	// nothing to be done : SwapLeg will be set later.
+
+}
+
+
+
+}

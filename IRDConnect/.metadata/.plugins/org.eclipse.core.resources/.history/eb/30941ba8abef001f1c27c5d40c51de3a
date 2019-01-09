@@ -1,0 +1,477 @@
+
+/*
+ * swapLegs.cpp
+ *
+ *  Created on: 17-Aug-2010
+ *      Author: vishist
+ */
+#include <string>
+#include "swapLeg.h"
+#include "paySchedule.h"
+#include "resetSchedule.h"
+#include "compSchedule.h"
+#include "rollDayConv.h"
+#include "calendarUtil.h"
+#include "marchingConv.h"
+#include <set>
+#include <list>
+
+
+using namespace std;
+
+using namespace IRDConnect;
+using namespace IRDdetail;
+
+namespace IRDConnect {
+
+SwapLeg::SwapLeg()
+{
+	// do nothing...
+}
+
+SwapLeg::~SwapLeg()
+{
+	// do nothing...
+}
+
+SwapLeg::SwapLeg(
+const BusDayConv * 			accrualBusDay,
+std::set < std::string > 	accrualCalendars,
+Frequency 					accrualFreq,
+const DateMarcher * 		accrualMarching,
+int 						accrualRollDay,
+DayOfWeek 					accrualRollWeek,
+double 						amortAmount,
+const BusDayConv * 			amortBusDay,
+Date 						amortEndDate,
+Frequency 					amortFreq,
+double 						amortPercent,
+Date 						amortStartDate,
+String 						amortType,
+String 						averagingMethod,
+Date 						backStubDate,
+double 						backStubManualRate,
+Frequency 					compFreq,
+String 						compoundingConv,
+const Currency * 			currency,
+DayCountConv * 				dayCount,
+String 						discountCurve,
+Date 						endDate,
+String 						endDateRollFlag,
+String 						endOfMonthIndicator,
+double 						fixedQuote,
+Date 						frontStubDate,
+double 						frontStubManualRate,
+double 						gearFactor,
+std::set < std::string > 	initialQuoteCalendars,
+Date 						initialQuoteDate,
+int 						initialQuoteLag,
+int 						legNo,
+String 						legType,
+String 						marketIndex,
+double 						notional,
+String 						notionalExchange,
+const BusDayConv * 			payBusDay,
+std::set < std::string > 	payCalendars,
+Frequency 					payFreq,
+const DateMarcher * 		payMarching,
+String 						paymentConvention,
+const Currency * 			paymentConversionCurrency,
+String 						paymentConversionIndex,
+int 						paymentConversionLag,
+int 						payRollDay,
+DayOfWeek 					payRollWeek,
+String 						position,
+std::set < std::string > 	quoteCalendars,
+int 						quoteLag,
+int 						rateCutOff,
+String 						resetConvention,
+Frequency 					resetFreq,
+String 						resetType,
+int 						scheduleCustomFlag,
+double 						spread,
+Date 						startDate,
+String 						startDateRollFlag
+)
+{
+_accrualBusDay 			= accrualBusDay;
+_accrualCalendars 		= accrualCalendars;
+_accrualFreq			= accrualFreq;
+_accrualMarching		= accrualMarching;
+_accrualRollDay			= accrualRollDay;
+_accrualRollWeek		= accrualRollWeek;
+_amortAmount			= amortAmount;
+_amortBusDay 			= amortBusDay;
+_amortEndDate 			= amortEndDate;
+_amortFreq				= amortFreq;
+_amortPercent			= amortPercent;
+_amortStartDate 		= amortEndDate;
+_amortType				= amortType;
+_averagingMethod		= averagingMethod;
+_backStubDate			= backStubDate;
+_backStubManualRate		= backStubManualRate;
+_compFreq				= compFreq;
+_compoundingConv		= compoundingConv;
+_currency				= currency;
+_dayCount				= dayCount;
+_discountCurve			= discountCurve;
+_endDate				= endDate;
+_endDateRollFlag		= endDateRollFlag;
+_endOfMonthIndicator	= endOfMonthIndicator;
+_fixedQuote				= fixedQuote;
+_frontStubDate			= frontStubDate;
+_frontStubManualRate	= frontStubManualRate;
+_gearFactor				= gearFactor;
+_initialQuoteCalendars	= initialQuoteCalendars;
+_initialQuoteDate		= initialQuoteDate;
+_initialQuoteLag		= initialQuoteLag;
+_legNo					= legNo;
+_legType				= legType;
+_marketIndex			= marketIndex;
+_notional				= notional;
+_notionalExchange		= notionalExchange;
+_payBusDay				= payBusDay;
+_payCalendars			= payCalendars;
+_payFreq				= payFreq;
+_payMarching			= payMarching;
+_paymentConvention		= paymentConvention;
+_paymentConversionCurrency	=	paymentConversionCurrency;
+_paymentConversionIndex	= paymentConversionIndex;
+_paymentConversionLag	= paymentConversionLag;
+_payRollDay				= payRollDay;
+_payRollWeek			= payRollWeek;
+_position				= position;
+_quoteCalendars			= quoteCalendars;
+_quoteLag				= quoteLag;
+_rateCutOff				= rateCutOff;
+_resetConvention		= resetConvention;
+_resetFreq				= resetFreq;
+_resetType				= resetType;
+_scheduleCustomFlag		= scheduleCustomFlag;
+_spread					= spread;
+_startDate				= startDate;
+_startDateRollFlag		= startDateRollFlag;
+ }
+
+
+/* generate payment schedule here */
+
+bool SwapLeg::genPaySchedule()
+{
+
+	DateMarcher::EventStream  eventStreamPay;
+
+	BusOrCalConv busOrCalConv(CAL);
+
+	if ( getAccrualBusDay() != BusDayConv::find("NONE") )
+		{
+		 busOrCalConv = BusOrCalConv(BUS);
+		}
+
+	RollDayConv  rollDayConv(getAccrualRollWeek(),
+		getAccrualRollDay(), busOrCalConv);
+
+	Date frontStubDateTmp = getFrontStubDate();
+	Date frontStubDate = frontStubDateTmp;
+
+	Date backStubDateTmp = getBackStubDate();
+	Date backStubDate = backStubDateTmp;
+
+	if ( getStartDateRollFlag() == "Yes" )
+	{
+		frontStubDate = getAccrualBusDay()->adjustToBusDay(frontStubDateTmp,*CalendarUtil::getCalendar(getAccrualCalendars()));
+	}
+
+	if ( getEndDateRollFlag() == "Yes" )
+	{
+		backStubDate = getAccrualBusDay()->adjustToBusDay(backStubDateTmp,*CalendarUtil::getCalendar(getAccrualCalendars()));
+	}
+
+	if ( getAccrualMarching()->eventStream (
+	frontStubDate,
+	backStubDate,
+	getAccrualFreq(),
+	*CalendarUtil::getCalendar(getAccrualCalendars()),
+	getAccrualBusDay(),
+	eventStreamPay,
+	0,  //evenFinalPeriod,
+	&rollDayConv  ) )
+	{
+		// success
+		cout << "Hello I could do my work \n";
+
+		 if ( getAccrualMarching() != DateMarcher::find("_backward") )
+		 {
+
+
+			 std::list<Date>::const_iterator iterEvent = eventStreamPay.getEventList().begin () ;
+
+				int noOfEvents = eventStreamPay.getEventList().size();
+				cout << "No of Elements are front :" << noOfEvents;
+				int cnt = 0;
+
+		         for ( ; iterEvent != eventStreamPay.getEventList().end () ; ++iterEvent )
+		         {
+		        	 shared_ptr <PaySchedule> paySchedule( new PaySchedule());
+
+		        	 cnt++;
+
+		        	 if ( cnt != noOfEvents )
+		        	 {
+
+		        		paySchedule->setCouponStartDate(*iterEvent);
+		        		paySchedule->setCouponEndDate(*(++iterEvent));
+		        		paySchedule->setPaymentDate(getPayBusDay()->adjustToBusDay(paySchedule->getCouponEndDate(), *CalendarUtil::getCalendar(getPayCalendars())) );
+		        		paySchedule->setPaymentType("Coupon");
+		        		paySchedule->setNotional(getNotional());
+		        		 --iterEvent;
+		        		 _payScheduleList.push_back(paySchedule);
+		        	 }
+
+		         }
+
+		         if ( getFrontStubDate() != eventStreamPay.getESMinDate() )
+		         {
+		        	cout << "\nFront Stub Date is : ";
+		            cout << eventStreamPay.getESMinDate();
+		            setFrontStubDate(eventStreamPay.getESMinDate());
+		         }
+
+		         if ( backStubDate != eventStreamPay.getESMaxDate() )
+		         {
+
+		      	   	cout << "\nBack Stub Date is : ";
+		      	    cout << eventStreamPay.getESMaxDate();
+		      	    setBackStubDate(eventStreamPay.getESMaxDate());
+
+		         }
+
+
+		         PayScheduleList::const_iterator iterPay = displayPaySchedule().begin() ;
+
+		         		         for ( ; iterPay != displayPaySchedule().end() ; ++iterPay )
+		         		         {
+
+		         		        	 //cout << " \n PaySchedule list " << endl;
+		         		        	 cout <<"\nStart Date : ";
+		         		        	 cout << (*iterPay)->getCouponStartDate();
+		         		        	 cout << "\nEnd Date : ";
+		         		        	 cout << (*iterPay)->getCouponEndDate();
+		         		        	 cout << " \nDcf : ";
+		         		        	double dcf = getDayCount()->getFraction((*iterPay)->getCouponStartDate(),
+		         		        			(*iterPay)->getCouponEndDate(), true,true,0);
+		         		        	cout << dcf;
+		         		        	cout << "\nPayment Date is : ";
+		         		        	cout << (*iterPay)->getPaymentDate();
+		         		        	cout << "\nPayment Type : ";
+		         		       		cout << (*iterPay)->getPaymentType() << endl;
+		         		       		cout << "Notional Used : ";
+		         		       		cout << (*iterPay)->getNotional() << endl;
+		         		        	cout << "CashFlow for the coupon : ";
+		         		        	double couponCashFlow = getNotional() * dcf * getFixedQuote()/100;
+		         		        	cout << couponCashFlow << endl;
+
+		         		         }
+
+		 }
+		 else
+		 {
+
+			 std::list<Date>::const_iterator iterEvent = eventStreamPay.getEventList().end() ;
+
+			 				int noOfEvents = eventStreamPay.getEventList().size();
+			 				cout << "No of Elements are back :" << noOfEvents;
+			 				int cnt = 0;
+
+			 				--iterEvent;
+
+			 		         for ( ; iterEvent != eventStreamPay.getEventList().begin () ; --iterEvent )
+			 		         {
+			 		        	 shared_ptr <PaySchedule> paySchedule( new PaySchedule());
+
+			 		        	 cnt++;
+
+			 		        	 if ( cnt != noOfEvents )
+			 		        	 {
+
+			 		        			 paySchedule->setCouponStartDate(*iterEvent);
+			 		        			 paySchedule->setCouponEndDate(*(--iterEvent));
+			 		        			 paySchedule->setPaymentDate(getPayBusDay()->adjustToBusDay(paySchedule->getCouponEndDate(), *CalendarUtil::getCalendar(getPayCalendars())) );
+			 		        			 paySchedule->setPaymentType("Coupon");
+			 		        			 paySchedule->setNotional(getNotional());
+
+			 		        		 ++iterEvent;
+			 		        		 _payScheduleList.push_back(paySchedule);
+			 		        	 }
+
+
+
+			 		         }
+
+			 		        if ( getFrontStubDate() != eventStreamPay.getESMinDate() )
+			 		       		{
+			 		        		cout << "\nFront Stub Date is : ";
+			 		        		cout << eventStreamPay.getESMinDate();
+			 		        		setFrontStubDate(eventStreamPay.getESMinDate());
+			 		       		}
+
+
+			 		        if ( backStubDate != eventStreamPay.getESMaxDate() )
+			 		        	{
+
+			 		        		cout << "\nBack Stub Date is : ";
+			 		        		cout << eventStreamPay.getESMaxDate();
+			 		        		setBackStubDate(eventStreamPay.getESMaxDate());
+
+			 		        	}
+
+
+			 		         PayScheduleList::const_iterator iterPay = displayPaySchedule().begin() ;
+
+			 		         		         for ( ; iterPay != displayPaySchedule().end() ; ++iterPay )
+			 		         		         {
+
+
+			 		         		        	 cout <<"\nStart Date : ";
+			 		         		        	 cout << (*iterPay)->getCouponStartDate();
+			 		         		        	 cout << "\nEnd Date : ";
+			 		         		        	 cout << (*iterPay)->getCouponEndDate();
+			 		         		        	 cout << " \nDcf : ";
+
+			 		         		        	double dcf = getDayCount()->getFraction((*iterPay)->getCouponStartDate(),
+			 		         		        			(*iterPay)->getCouponEndDate(), true,true,0);
+
+			 		         		        	cout << dcf;
+			 		         		        	cout << "\nPayment Date is : ";
+			 		         		        	cout << (*iterPay)->getPaymentDate();
+			 		         		        	cout << "\nPayment Type : ";
+			 		         		        	cout << (*iterPay)->getPaymentType() << endl;
+			 		         		        	cout << "Notional Used : ";
+			 		         		        	cout << (*iterPay)->getNotional() << endl;
+			 		         		        	cout << "CashFlow for the coupon : ";
+			 		         		        	double couponCashFlow = getNotional() * dcf * getFixedQuote()/100;
+			 		         		        	cout << couponCashFlow << endl;
+
+			 		         		         }
+
+
+
+
+		 }
+	}
+
+	if ( isFloatLeg() )
+		if ( genResetSchedule() )
+			cout << "\nReset Schedule generated ..." << endl;
+
+	return true;
+}
+
+
+bool SwapLeg::genResetSchedule()
+{
+
+
+	DateMarcher::EventStream  eventStreamReset;
+
+		BusOrCalConv busOrCalConv(CAL);
+
+		if ( getAccrualBusDay() != BusDayConv::find("NONE") )
+			{
+			 busOrCalConv = BusOrCalConv(BUS);
+			}
+
+		RollDayConv  rollDayConv(getAccrualRollWeek(),
+			getAccrualRollDay(), busOrCalConv);
+
+
+		if ( getAccrualMarching()->eventStream (getFrontStubDate(),getBackStubDate(),	getResetFreq(),
+				*CalendarUtil::getCalendar(getAccrualCalendars()),	getAccrualBusDay(),		eventStreamReset,		0, 		&rollDayConv  ) )
+		{
+
+			if ( getAccrualMarching() != DateMarcher::find("_backward") )
+				 {
+
+
+						 std::list<Date>::const_iterator iterEventReset = eventStreamReset.getEventList().begin () ;
+
+							int noOfEvents = eventStreamReset.getEventList().size();
+							cout << "No of Elements are front :" << noOfEvents;
+
+							int lagSign = getQuoteLag() > 0 ? 1 : -1;
+							cout << "lag sign is : " << lagSign << endl;
+							const BusDayConv * resetBusDay = lagSign > 0 ? BusDayConv::find("FOL") : BusDayConv::find("PRE") ;
+							int lag = getQuoteLag() * lagSign;
+							cout << "lag is : " << lag << endl;
+
+					         for ( ; iterEventReset != eventStreamReset.getEventList().end () ; ++iterEventReset )
+					         {
+					        	 shared_ptr <ResetSchedule> resetSchedule( new ResetSchedule());
+
+
+					        		resetSchedule->setResetStartDate(*iterEventReset);
+
+					        		Date quoteDate = resetSchedule->getResetStartDate();
+
+					        		int cntReset = lag;
+
+					        		while ( cntReset > 0 )
+					        		{
+					        			Period period(lagSign * 1,Days);
+					        			quoteDate = quoteDate + period;
+					        			quoteDate = resetBusDay->adjustToBusDay(quoteDate,*CalendarUtil::getCalendar(getQuoteCalendars()) );
+					        			cntReset--;
+
+					        		}
+
+					        		resetSchedule->setQuoteDate( quoteDate );
+					        		_resetScheduleList.push_back(resetSchedule);
+					        	 }
+
+
+
+
+
+					         ResetScheduleList::const_iterator iterReset = displayResetSchedule().begin() ;
+
+					         		         for ( ; iterReset != displayResetSchedule().end() ; ++iterReset )
+					         		         {
+
+					         		        	 cout <<"\nReset Start Date : ";
+					         		        	 cout << (*iterReset)->getResetStartDate();
+
+					         		        	cout <<"\nQuote Date : ";
+					         		        	cout << (*iterReset)->getQuoteDate();
+
+
+					         		         }
+
+					 }
+
+
+
+		}
+
+
+	return true;
+
+}
+
+bool SwapLeg::genCompSchedule()
+{
+
+return  true;
+
+}
+
+bool SwapLeg::genAmortSchedule()
+{
+return  true;
+
+}
+
+}
+
+
+
+

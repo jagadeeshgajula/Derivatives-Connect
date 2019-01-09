@@ -1,0 +1,9 @@
+
+**** Build of configuration Debug for project errors ****
+
+make all 
+Building file: ../errors.cpp
+Invoking: GCC C++ Compiler
+g++ -I/home/vishist/IRDConnect/include -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"errors.d" -MT"errors.d" -o"errors.o" "../errors.cpp"
+/bin/sh: g++: command not found
+make: *** [errors.o] Error 127

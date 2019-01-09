@@ -1,0 +1,253 @@
+/*
+ * swapDeal.cpp
+ *
+ *  Created on: 02-Oct-2010
+ *      Author: vishist
+ */
+
+#include "swapDeal.h"
+#include "swapLeg.h"
+
+static String _PAY = "LONG";
+static String _RECV = "SHORT";
+static String _FIXLEG = "FIXED";
+static String _FLTLEG = "FLOAT";
+
+using namespace IRDConnect;
+
+namespace IRDConnect {
+
+
+SwapDeal::SwapDeal()
+{
+	// do nothing
+}
+
+SwapDeal::~SwapDeal()
+{
+	// do nothing
+}
+
+/*
+ *
+
+SwapDeal::SwapDeal(TradeTicket *tt, SwapLegList * swapLegList)
+{
+	SwapDeal(
+			tt.getAlternateRef(),
+			tt.getBookingType(),
+			tt.getCustomerAccount(),
+		    tt.getEarlyTermDate(),
+			tt.getEarlyTermReason(),
+		    tt.getExternalSystem(),
+			tt.getExternalRef(),
+			tt.getFirmAccount(),
+			tt.getFlowStatus(),
+			tt.getLastModifiedBy(),
+			tt.getLastVerifiedBy(),
+			tt.getLegalEntity(),
+			tt.getLocation(),
+		    tt.getMatchingStatus(),
+			tt.getMaturityDate(),
+			tt.getModifiedTimeStamp(),
+			tt.getOperationsRef(),
+			tt.getOriginalTradeRef(),
+			tt.getProductType(),
+			tt.getSalesPerson(),
+			tt.getStartDate(),
+			tt.getSubType(),
+			tt.getSwapStatus(),
+			tt.getSwaptionRef(),
+			tt.getTradeDate(),
+			tt.getTrader(),
+			tt.getTradeRef(),
+			tt.getTradeStatus(),
+			tt.getTradeType(),
+			tt.getTradeVersion(),
+			tt.getVerifiedTimeStamp(),
+			tt.getWashAccount()
+
+	);
+
+	_swapLegList = swapLegList;
+
+}
+
+*/
+
+
+SwapDeal::SwapDeal (
+String   	alternateRef,
+String  	bookingType,
+String  	customerAccount,
+Date  		earlyTermDate,
+String  	earlyTermReason,
+String  	externalRef,
+String  	externalSystem,
+String  	firmAccount,
+String  	flowStatus,
+String  	lastModifiedBy,
+String  	lastVerifiedBy,
+String  	legalEntity,
+String  	location,
+String  	matchingStatus,
+Date  		maturityDate,
+String  	modifiedTimeStamp,
+String  	operationsRef,
+String  	originalTradeRef,
+String  	productType,
+String  	salesPerson,
+Date  		startDate,
+String  	subType,
+String  	swapStatus,
+String  	swaptionRef,
+Date  		tradeDate,
+String  	trader,
+String  	tradeRef,
+String  	tradeStatus,
+String  	tradeType,
+double  	tradeVersion,
+String  	verifiedTimeStamp,
+String  	washAccount
+)
+: TradeTicket (
+
+				alternateRef,
+				bookingType,
+				customerAccount,
+				earlyTermDate,
+				earlyTermReason,
+				externalSystem,
+				externalRef,
+				firmAccount,
+				flowStatus,
+		 	 	lastModifiedBy,
+		 	 	lastVerifiedBy,
+		 	 	legalEntity,
+		 	 	location,
+		 	 	matchingStatus,
+		 	 	maturityDate,
+		 	 	modifiedTimeStamp,
+		 	 	operationsRef,
+		 	 	originalTradeRef,
+		 	 	productType,
+		 	 	salesPerson,
+		 	 	startDate,
+		 	 	subType,
+		 	 	swapStatus,
+		 	 	swaptionRef,
+		 	 	tradeDate,
+		 	 	trader,
+		 	 	tradeRef,
+		 	 	tradeStatus,
+		 	 	tradeType,
+		 	 	tradeVersion,
+		 	 	verifiedTimeStamp,
+		 	 	washAccount )
+
+{
+
+	// nothing to be done : SwapLeg will be set later.
+
+}
+
+SwapLeg * SwapDeal::getFirstPayLeg()
+{
+
+	SwapLegList::const_iterator swplegIter = _swapLegList.begin () ;
+	         for (; swplegIter != _swapLegList.end() ; ++swplegIter)
+	             if ( (*swplegIter)->getPosition() == _PAY)
+	                 return *swplegIter ;
+
+	         return 0;
+
+}
+
+SwapLeg * SwapDeal::getFirstReceiveLeg()
+{
+
+	SwapLegList::const_iterator swplegIter = _swapLegList.begin () ;
+	         for (; swplegIter != _swapLegList.end() ; ++swplegIter)
+	             if ( (*swplegIter)->getPosition() == _RECV )
+	                 return *swplegIter ;
+
+	         return 0;
+
+}
+
+SwapLeg * SwapDeal::getFirstFloatLeg()
+{
+
+	SwapLegList::const_iterator swplegIter = _swapLegList.begin () ;
+	         for (; swplegIter != _swapLegList.end() ; ++swplegIter)
+	             if ( (*swplegIter)->getLegType() == _FLTLEG )
+	                 return *swplegIter ;
+
+	         return 0;
+
+}
+
+SwapLeg * SwapDeal::getFirstFixedLeg()
+{
+
+	SwapLegList::const_iterator  swplegIter = _swapLegList.begin () ;
+	         for (; swplegIter != _swapLegList.end() ; ++swplegIter)
+	             if ( (*swplegIter)->getLegType() == _FIXLEG )
+	                 return *swplegIter ;
+
+	         return 0;
+
+}
+
+void SwapDeal::setSwapPayLeg(SwapLeg * swapLeg)
+{
+
+	_swapLegList.push_back(swapLeg);
+
+}
+
+void SwapDeal::setSwapRecvLeg(SwapLeg * swapLeg)
+{
+
+	_swapLegList.push_back(swapLeg);
+
+}
+
+SwapLeg * SwapDeal::getFXResetLeg()
+{
+
+	SwapLegList::const_iterator  swplegIter = _swapLegList.begin () ;
+	         for (; swplegIter != _swapLegList.end() ; ++swplegIter)
+	             if ( (*swplegIter)->getLegNo() == getFXReset()->getFXResetLegNo() )
+	                 return *swplegIter ;
+
+	         return 0;
+
+}
+
+bool SwapDeal::genFXResetSchedule()
+{
+	if ( getFXReset() )
+	{
+		SwapLeg * fxResetLeg = getFXResetLeg();
+
+		if ( fxResetLeg )
+		{
+			ResetScheduleList::const_iterator iterReset = fxResetLeg->displayResetSchedule().begin() ;
+
+			for ( ; iterReset != fxResetLeg->displayResetSchedule().end() ; ++iterReset )
+			{
+
+
+			}
+
+
+		}
+
+
+
+	}
+
+}
+
+}

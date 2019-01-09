@@ -1,0 +1,217 @@
+/*
+ * Currency.h
+ *
+ *  Created on: 18-Sep-2010
+ *      Author: vishist
+ */
+
+#ifndef IRDCURRENCY_H_
+#define IRDCURRENCY_H_
+/*
+ * Currency.h
+ *
+ *  Created on: 07-Sep-2010
+ *      Author: vishist
+ */
+
+#include "IRDString.h"
+#include "IRDFrequency.h"
+#include "calendar.h"
+#include "IRDDate.h"
+#include "busDayConv.h"
+#include "dayCountConv.h"
+
+using namespace std;
+
+typedef int RetCode;
+
+
+
+
+// class Date;
+/*
+class DayCountConv;
+class Calendar;
+class BusDayConv;
+class MktType;
+class RoundingConv;
+class Frequency;
+*/
+//
+// Discounter:
+//	This class was introduced to eliminate the direct dependency between
+//	the CashFlow (moved to the finutil library, where it should have been
+//	all along) and the market and ts libraries.
+//	Discounter is pure virtual; whatever code is providing the discounter
+//	features must subclass.
+//
+class Discounter {
+public:
+	virtual RetCode getZcdf(const Date& date, double &zcdf) const = 0;
+	virtual ~Discounter()	{}
+
+	virtual bool checkCurve() const { return true; };
+
+protected:
+	Discounter()	{}
+private:
+	Discounter(const Discounter&);
+	Discounter& operator=(const Discounter&);
+};
+
+
+
+typedef Discounter *(*DiscounterSourceFun) (const IRDString& tsId);
+
+
+class Currency  {
+public:
+
+	static const Currency	* eur;
+
+	static void setDiscounterSourceFun( DiscounterSourceFun dsctrSourceFun );
+
+
+	static void				  resetAllFundingDiscounters();
+
+	// added by nagesh for currency code
+
+//	const IRDString  &  getCurrencyCode();
+
+	// Get the name of the funding curve associated with the currency.
+
+	const IRDString				& getFundingTSIRName() const;
+	const IRDString				& getXccyBasisTsirId() const;
+    //const IRDString             & getCurrencyCode() const;
+	// Get the the funding curve associated with the currency.
+
+	const Discounter			* getFundingDiscounter() const;
+
+  	// Find maximum Payment Message Lag
+  	static RetCode			getMaxPmtMsgLag (int *maxPmtMsgLag);
+
+
+
+	//
+	// Some attributes associated with the currency.
+	//
+
+	const DayCountConv			* getDayCountConv() const;
+	const DayCountConv			* getDefaultSwpFixDcc() const
+		{ return _defaultSwaFixDcc; }
+	const Calendar			* getCalendar() const;
+	const Calendar            * getSecondCalendar() const;
+	const BusDayConv			* getBusDayConv() const;
+	const IRDString				* getMktType() const;
+	const IRDString				& getTimeSeries() const;
+	const IRDString				& getDefaultONInstrument() const
+		{ return _defaultONInstrument; }
+	const IRDString			* getRoundingConv() const;
+	unsigned int			 	  getNumDecimal() const;
+
+	const IRDFrequency				* getDefaultSwpFloatSettleFreq() const
+		{ return _defaultSwpFloatSettleFreq; }
+	const IRDFrequency				* getDefaultSwpFixSettleFreq() const
+		{ return _defaultSwpFixSettleFreq; }
+  	int   					  getPmtMsgLag() const;
+	int				 	  getPmtConfirmLag() const;
+	int				 	  getValueDayLag() const;
+
+
+
+	double					  getEuroConvRate() const;
+	const Date			& getEuroSettleEffDate() const;
+
+
+	const bool 				  isInEMU() const;
+	const bool 				  isEur() const;
+	const bool				  isEuroSettleEffDateNull() const;
+
+
+	static const Currency		* find( unsigned index );
+	static const Currency		* find();
+
+
+	static const Currency		* find( const std::string & name_ );
+
+
+	static const Currency		* getEUR();
+
+	static int					getNumCurrencies();
+	//added nagesh for currency
+    const IRDString   getCurrencyCode();
+
+private:
+
+	static Discounter *defaultDiscounterSourceFun(const IRDString& tsId);
+	static DiscounterSourceFun _dsctrSourceFun;
+
+	IRDString			  	_fundingTSIRName;
+    IRDString               _xccyBasisTsirId ;
+	Discounter				* _fundingDiscounter;
+	const DayCountConv		* _dcc;
+	const DayCountConv		* _dccSwpFixLeg;
+	const BusDayConv		* _bdc;
+	const Calendar	* _cal;
+	const Calendar    * _secondCal;
+	const IRDString			* _mktType;
+	const IRDString			  _timeSeries;
+	const IRDString			_defaultONInstrument;
+	const IRDFrequency			* _defaultSwpFloatSettleFreq;
+	const IRDFrequency			* _defaultSwpFixSettleFreq;
+	const DayCountConv		* _defaultSwaFixDcc;
+	const IRDString		* _roundingConv;
+	const unsigned int		  _numDecimal;
+
+
+	int   				  _pmtMsgLag;
+ 	int  				  _pmtConfirmLag;
+ 	int  				  _valueDayLag;
+
+
+	const IRDString		  _emuFlg;
+	double  _euroConvRate;
+	Date	_euroSettleEffDate;
+	IRDString name_;
+
+
+	Currency(
+		  const IRDString name,
+		  const IRDString	& fundingTSIRName,
+		  const DayCountConv	* dcc,
+		  const BusDayConv	* bdc,
+		  const Calendar	* cal,
+		  const Calendar  * secondCal,
+		  const IRDString		* mktType,
+		  const IRDString	& timeSeries,
+		  const IRDString	* roundingConv,
+		  const IRDString		& defaultONInstrument,
+		  const IRDFrequency		* defaultSwpFloatSettleFreq,
+		  const IRDFrequency		* defaultSwpFixSettleFreq,
+		  const DayCountConv	* defaultSwaFixDcc,
+		  unsigned int		  numDecimal,
+		  int			  pmtMsgLag,
+		  int		  	  pmtConfirmLag,
+		  int		  	  valueDayLag,
+          const IRDString	& emuFlg = "N",
+		  double		  euroConvRate = 0.0,
+		  const Date		* euroSettleEffDate=0,
+          const IRDString & xccyBasisTsirId = "" );
+         // const IRDString &getCureencyCode,
+
+	~Currency();
+
+	static void					init();
+
+	Currency( const Currency & );
+	void operator = ( const Currency & );
+};
+
+
+
+
+std::istream & operator >> ( std::istream & is, const Currency ** currency );
+
+
+#endif /* IRDCURRENCY_H_ */
+

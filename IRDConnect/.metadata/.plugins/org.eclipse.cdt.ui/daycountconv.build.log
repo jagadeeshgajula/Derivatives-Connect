@@ -1,0 +1,14 @@
+
+**** Build of configuration Debug for project daycountconv ****
+
+make all 
+Building file: ../dayCountConv.cpp
+Invoking: GCC C++ Compiler
+g++ -I/home/vishist/IRDConnect/include -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"dayCountConv.d" -MT"dayCountConv.d" -o"dayCountConv.o" "../dayCountConv.cpp"
+Finished building: ../dayCountConv.cpp
+ 
+Building target: libdaycountconv.so
+Invoking: GCC C++ Linker
+g++ -L/home/vishist/IRDConnect/lib -shared -o"libdaycountconv.so"  ./dayCountConv.o   -lcalendar
+Finished building target: libdaycountconv.so
+ 

@@ -1,0 +1,569 @@
+/*
+ * fraTicket.cpp
+ *
+ *  Created on: 26-Sep-2010
+ *      Author: vishist
+ */
+
+#include <iostream>
+#include "fraTicket.h"
+#include "rollDayConv.h"
+#include "calendarUtil.h"
+#include "frequency.h"
+#include "marchingConv.h"
+#include "fixingRates.h"
+#include "paySchedule.h"
+#include <set>
+#include <list>
+#include  <boost/shared_ptr.hpp>
+#include <boost/lexical_cast.hpp>
+#include <stdlib.h>
+#include "util.h"
+
+#include "irdXML.h" //SwapOption
+using namespace std ;
+using namespace boost;
+using namespace IRDConnect;
+using namespace IRDdetail;
+
+
+FraTicket::FraTicket()
+{
+	// do nothing
+}
+
+FraTicket::FraTicket (
+		String   		alternateRef,
+		String  		bookingType,
+		String  		customerAccount,
+		Date  			earlyTermDate,
+		String  		earlyTermReason,
+		String  		externalSystem,
+		String  		externalRef,
+		String  		firmAccount,
+		String  		flowStatus,
+		String  		lastModifiedBy,
+		String  		lastVerifiedBy,
+		String  		legalEntity,
+		String  		location,
+		String  		matchingStatus,
+		Date  			maturityDate,
+		String  		modifiedTimeStamp,
+		String  		operationsRef,
+		String  		originalTradeRef,
+		String  		productType,
+		String  		salesPerson,
+		Date  			startDate,
+		String  		subType,
+		Date  			tradeDate,
+		String  		trader,
+		String  		tradeRef,
+		String			tradeRemarks,
+		String  		tradeStatus,
+		String  		tradeType,
+		double  		tradeVersion,
+		String  		verifiedTimeStamp,
+		String  		washAccount, // trade ticket until here
+const Currency * 			currency,
+String buySell, // BUY or SELL
+double 			notional, // fra specific starts here
+Date 			settlementDate,
+int 			quoteLag,
+Date 			quoteDate,
+std::set < std::string > 			payCalendars,
+const BusDayConv * 	busDayConv,
+double 			agreedRate,
+String 			resetType,
+String 			rateType,
+double 			manualRate,
+String 			marketIndex,
+DayCountConv * 	dayCount,
+std::set < std::string > 			quoteCalendars,
+String 			discountCurve,
+String 			paymentConvention,
+int				precision,
+String 			resetConvention)
+
+	: TradeTicket	  (		alternateRef,
+							bookingType,
+							customerAccount,
+							earlyTermDate,
+							earlyTermReason,
+							externalSystem,
+							externalRef,
+							firmAccount,
+							flowStatus,
+					 	 	lastModifiedBy,
+					 	 	lastVerifiedBy,
+					 	 	legalEntity,
+					 	 	location,
+					 	 	matchingStatus,
+					 	 	maturityDate,
+					 	 	modifiedTimeStamp,
+					 	 	operationsRef,
+					 	 	originalTradeRef,
+					 	 	productType,
+					 	 	salesPerson,
+					 	 	startDate,
+					 	 	subType,
+					 	 	tradeDate,
+					 	 	trader,
+					 	 	tradeRef,
+					 	 	tradeRemarks,
+					 	 	tradeStatus,
+					 	 	tradeType,
+					 	 	tradeVersion,
+					 	 	verifiedTimeStamp,
+					 	 	washAccount )
+{
+_currency			=	currency;
+_buySell			=	buySell;
+_notional			=	notional;
+_settlementDate		=	settlementDate;
+_quoteLag			=	quoteLag;
+_quoteDate			=	quoteDate;
+_payCalendars		=	payCalendars;
+_busDayConv			=	busDayConv;
+_agreedRate			=	agreedRate;
+_resetType			=	resetType;
+_rateType			=	rateType;
+_manualRate			=	manualRate;
+_marketIndex		=	marketIndex;
+_dayCount			=	dayCount;
+_quoteCalendars		=	quoteCalendars;
+_discountCurve		=	discountCurve;
+_paymentConvention	=	paymentConvention;
+_precision			=	precision;
+_resetConvention	=	resetConvention;
+}
+
+FraTicket::~FraTicket()
+{
+	// do nothing
+}
+
+
+bool FraTicket::genPaySchedule()
+{
+
+	// let us calculate Quote Date
+
+		int lagSign = getQuoteLag() >= 0 ? 1 : -1;
+		logFile << "lag sign is : " << lagSign << endl;
+		const BusDayConv * resetBusDay = lagSign > 0 ? BusDayConv::find("FOL") : BusDayConv::find("PRE") ;
+		int lag = getQuoteLag() * lagSign;
+		logFile << "lag is : " << lag << endl;
+
+
+		Date quoteDate = getStartDate();
+
+
+		if ( getResetConvention() != "IN_ADVANCE")
+			quoteDate = getMaturityDate();
+
+		int cntReset = lag;
+
+		while ( cntReset > 0 )
+		{
+			Period period(lagSign * 1,Days);
+			quoteDate = quoteDate + period;
+			quoteDate = resetBusDay->adjustToBusDay(quoteDate,*CalendarUtil::getCalendar(getQuoteCalendars()) );
+			cntReset--;
+
+		}
+
+		if (  cntReset == 0 )
+			quoteDate = resetBusDay->adjustToBusDay(quoteDate,*CalendarUtil::getCalendar(getQuoteCalendars()) );
+
+		logFile << "Quote Date is : " << quoteDate << endl;
+
+		setQuoteDate(quoteDate);
+
+		shared_ptr <ResetSchedule> resetSchedule( new ResetSchedule());
+
+		resetSchedule->setResetStartDate(getStartDate());
+		resetSchedule->setResetEndDate(getMaturityDate());
+		resetSchedule->setQuoteDate(quoteDate);
+
+		if ( getResetConvention() != "IN_ADVANCE" )
+		{
+
+
+			if ( getManualRate() != -1 )
+				resetSchedule->setRateSettingType("MANUAL"); // rate is manually set
+			else if ( FixingRates::getFixingRate(quoteDate, resetSchedule->getResetEndDate(), getMarketIndex()) == 0.0
+					&& quoteDate < Date::todaysDate() )
+				resetSchedule->setRateSettingType("HISTORIC");
+			else if ( FixingRates::getFixingRate(quoteDate, resetSchedule->getResetEndDate(), getMarketIndex()) != 0.0
+					&& quoteDate <= Date::todaysDate() )
+				resetSchedule->setRateSettingType("RATESET");
+			else if ( quoteDate >= Date::todaysDate() )
+				resetSchedule->setRateSettingType("PROJECTED");
+
+			if ( getManualRate() == -1 )
+				resetSchedule->setRate(getCurrency()->getRoundingConv()->round(FixingRates::getFixingRate(quoteDate,
+						resetSchedule->getResetEndDate(), getMarketIndex()), getPrecision()));
+				else
+					resetSchedule->setRate(getManualRate()/100 );
+
+		}
+		else
+		{
+
+			if ( getManualRate() != -1 )
+					resetSchedule->setRateSettingType("MANUAL"); // rate is manually set
+				else if ( FixingRates::getFixingRate(quoteDate, resetSchedule->getResetStartDate(), getMarketIndex()) == 0.0
+						&& quoteDate < Date::todaysDate() )
+					resetSchedule->setRateSettingType("HISTORIC");
+				else if ( FixingRates::getFixingRate(quoteDate, resetSchedule->getResetStartDate(), getMarketIndex()) != 0.0
+						&& quoteDate <= Date::todaysDate() )
+					resetSchedule->setRateSettingType("RATESET");
+				else if ( quoteDate >= Date::todaysDate() )
+					resetSchedule->setRateSettingType("PROJECTED");
+
+				if ( getManualRate() == -1 )
+					resetSchedule->setRate(getCurrency()->getRoundingConv()->round(FixingRates::getFixingRate(quoteDate,resetSchedule->getResetStartDate(), getMarketIndex()), getPrecision()));
+					else
+						resetSchedule->setRate(getManualRate()/100 );
+
+
+		}
+
+		resetSchedule->setRateIndexType("IRRATE"); // FRAs are with only IRD rate - no FX
+
+		_fraResetScheduleList.push_back(resetSchedule);
+
+		RollDayConv  * rollDayConv = new RollDayConv();
+
+
+		DateMarcher::GenSchedule  genScheduleFra;
+
+		const DateMarcher * fraMarcher = DateMarcher::find("_forward");
+
+		logFile << "Start and End Dates " << getStartDate() << " : " << getMaturityDate() << " : " << getBusDayConv() << endl;
+
+			if ( fraMarcher->genSchedule (
+			getStartDate(),
+			getMaturityDate(),
+			Frequency(Annual), // FRA has got only one coupon - let us set it to 1 year thinking fra never goes beyond this.
+			*CalendarUtil::getCalendar(getPayCalendars()),
+			getBusDayConv(),
+			genScheduleFra,
+			0,  //evenFinalPeriod,
+			rollDayConv  ) )
+			{
+
+				 genScheduleFra.getEventList().sort(); // for backward dates come in reverse order, so need to order ascending order.
+
+				 std::list<Date>::const_iterator iterEvent = genScheduleFra.getEventList().begin () ;
+
+					int noOfEvents = genScheduleFra.getEventList().size();
+					logFile << "No of Elements are front :" << noOfEvents << endl;
+					int cnt = 0;
+
+				    for ( ; iterEvent != genScheduleFra.getEventList().end () ; ++iterEvent )
+				      {
+				        shared_ptr <PaySchedule> paySchedule( new PaySchedule());
+
+				        cnt++;
+
+				        if ( cnt != noOfEvents )
+				        {
+
+				        	paySchedule->setCouponStartDate(*iterEvent);
+				        	paySchedule->setCouponEndDate(*(++iterEvent));
+
+
+				        	if ( getPaymentConvention() != "IN_ADVANCE" )
+				        		paySchedule->setPaymentDate(getBusDayConv()->adjustToBusDay(paySchedule->getCouponEndDate(), *CalendarUtil::getCalendar(getPayCalendars())) );
+				        	else
+				        		paySchedule->setPaymentDate(getBusDayConv()->adjustToBusDay(paySchedule->getCouponStartDate(), *CalendarUtil::getCalendar(getPayCalendars())) );
+
+				        	//paySchedule->setPaymentType("Coupon");
+				        	paySchedule->setNotional(getNotional());
+				        	 --iterEvent;
+
+				        	double amount = 0.0 ;
+
+				        	if ( getRateType() == "ADD_ON" )
+				        	{
+
+				        		amount = getNotional() * getDayCount()->getFraction(paySchedule->getCouponStartDate() ,
+				        				paySchedule->getCouponEndDate(), false,false,(int) Frequency(Annual)  )  * (getPeriodRate() - getAgreedRate()/100 );
+
+				        		if ( getPaymentConvention() == "IN_ADVANCE" )
+				        		{
+				        			double pcfraction =  1 / (1 + getPeriodRate() *
+				        				getDayCount()->getFraction( paySchedule->getCouponStartDate(),
+				        			paySchedule->getCouponEndDate(), false,false,(int) Frequency(Annual)  ) );
+
+				        			amount = amount * pcfraction ;
+				        		}
+
+				        		//cout << getQuoteDate() << getAgreedRate()/100 << getDayCount()->getFraction( paySchedule->getCouponStartDate(),
+				        			//paySchedule->getCouponEndDate(), false,false,(int) Frequency(Quarterly) ) << getMarketIndex()
+				        			//<< getPeriodRate()  << endl;
+				        	}
+				        	else if ( getRateType() == "SIMPLE" )
+				        	{
+				        		amount = getNotional() * getDayCount()->getFraction( paySchedule->getCouponStartDate(),
+				        			paySchedule->getCouponEndDate(), false,false,(int) Frequency(Annual) ) *
+				        			( getPeriodRate() - getAgreedRate()/100);
+
+				        	}
+				        	else if ( getRateType() == "DISCOUNT" )
+				        	{
+				        		double pcfractionAgreed = 	1 / (1 + ( getAgreedRate()/100 *
+				        				getDayCount()->getFraction( paySchedule->getCouponStartDate(),
+				        				paySchedule->getCouponEndDate(), false,false,(int) Frequency(Annual) ) ));
+
+
+				        		double pcfractionSettle = 	 1 / (1 + getPeriodRate() *
+				        				getDayCount()->getFraction( paySchedule->getCouponStartDate(),
+				        				paySchedule->getCouponEndDate(), false,false,(int) Frequency(Annual) ) );
+
+				        		amount = getNotional() * ( pcfractionAgreed - pcfractionSettle );
+
+
+				        	}
+
+
+				        		paySchedule->setAmount( getBuySell() == "BUY" ? amount : -1 * amount);
+
+				        		_fraPayScheduleList.push_back(paySchedule);
+				        }
+
+				       }
+			}
+
+					PayScheduleList::const_iterator iterFra = getPayScheduleList().begin();
+
+					         for ( ; iterFra != getPayScheduleList().end() ; ++iterFra )
+					         {
+
+					        	 logFile << "PaySchedule list " << endl;
+					        	 logFile <<"Start Date : " << (*iterFra)->getCouponStartDate() << endl;
+					        	 logFile << "End Date : " << (*iterFra)->getCouponEndDate() << endl;
+					        	 logFile << "Payment Date : " << (*iterFra)->getPaymentDate() << endl;
+					        	 logFile << "Payment Amount : " << (*iterFra)->getAmount() << endl;
+					        	 logFile << endl;
+					         }
+
+	return true;
+
+}
+
+double FraTicket::getPeriodRate()
+{
+		if ( getManualRate() != -1 ) // if manual - send that rate as it should be same in resetSchedule
+			return getManualRate()/100;
+		else
+		{
+			ResetScheduleList::const_iterator Resets = getResetScheduleList().begin();
+
+			for (; Resets != getResetScheduleList().end(); ++Resets )
+			{
+
+
+
+				double rate = (*Resets)->getRate();
+
+				logFile << "Period Rate is : " << getCurrency()->getRoundingConv()->round(rate,getPrecision()) << endl;
+
+				return getCurrency()->getRoundingConv()->round(rate,getPrecision());
+			}
+
+
+		}
+		return 0.0; // never should come here
+}
+
+
+
+
+std::string FraTicket::fraResetScheduleSerialize()
+{
+
+	 CMarkup xml;
+		 // xml.Load(xmlFileName);
+		  xml.AddElem( "ResetScheduleList" );
+		 // xml.SetAttrib( "classtype", "CXyz" ); // not needed now as we don't have attributes
+		  xml.IntoElem();
+
+
+				ResetScheduleList::const_iterator iterReset = getResetScheduleList().begin() ;
+
+				for ( ; iterReset != getResetScheduleList().end() ; ++iterReset )
+				{
+
+		 					  xml.AddElem("ResetSchedule");
+		 				 	  xml.IntoElem();
+
+		 				 	 xml.AddElem("QuoteDate", (*iterReset)->getQuoteDate().string());
+		 				 	 xml.AddElem("Rate", String::doubleToFourDecString((*iterReset)->getRate(),getPrecision()));
+		 				 	 xml.AddElem("RateIndexType", (*iterReset)->getRateIndexType().getStr());
+		 				 	xml.AddElem("RateSettingType", (*iterReset)->getRateSettingType().getStr()); // PROJECTED OR RATESET OR HISTORIC OR MANUAL
+		 				 	 xml.AddElem("ResetStartDate", (*iterReset)->getResetStartDate().string());
+		 				 	 xml.AddElem("ResetEndDate", (*iterReset)->getResetEndDate().string());
+		 				    xml.OutOfElem();  // come out from Reset schedule
+
+		 				//    logFile << "Reset Dates : " << (*iterReset)->getResetStartDate() << " : " << (*iterReset)->getResetEndDate() << endl;
+		 			}
+
+		 				xml.OutOfElem(); //reset end
+
+		 				return xml.GetDoc();
+}
+
+
+double FraTicket::calculateTotalPV()
+{
+
+	double pv = 0.0;
+
+		//Date curveDate(05,11,2012) ;
+		//CurveCache & c = CurveCache::instance() ;
+		boost::shared_ptr<IRDConnect::Curve>  curvePtr = CurveCache::instance().find(Util::getCurveDate(), "GBPSWPTSIR") ;
+
+		AdditionalPaymentsList::const_iterator iterEvent = getAdditionalPayments().begin () ;
+		for ( ; iterEvent != getAdditionalPayments().end () ; ++iterEvent )
+		{
+			if ( (*iterEvent)->getPaymentDate() > Date::todaysDate() )
+				pv += (*iterEvent)->getAmount() * curvePtr->getZcdf((*iterEvent)->getPaymentDate());
+
+		}
+
+		PayScheduleList::const_iterator iterFra = getPayScheduleList().begin();
+
+		for ( ; iterFra != getPayScheduleList().end() ; ++iterFra )
+		{
+			if ( (*iterFra)->getPaymentDate() > Date::todaysDate() )
+				pv +=  curvePtr->getZcdf((*iterFra)->getPaymentDate()) *  (*iterFra)->getAmount();
+		}
+
+	return pv;
+}
+
+std::string FraTicket::fraSerialize()
+{
+
+	  CMarkup xml;
+	 // xml.Load(xmlFileName);
+	  xml.AddElem( "TradeTicket" );
+	 // xml.SetAttrib( "classtype", "CXyz" ); // not needed now as we don't have attributes
+	  xml.IntoElem();
+
+	  //std::string alternateRef = getAlternateRef().str();
+	  	 xml.AddElem("ModificationReason", "Assignment");
+	  	 xml.AddElem("Tenor", "2");
+	  	 xml.AddElem("RiskPartyA", "NA");
+	  	 xml.AddElem("BrokerAccount", "HBGCINT");
+	  	 xml.AddElem("Comments", "Hello SwapTicket");
+	  	 xml.AddElem("AlternateRef", getAlternateRef().getStr());
+	     	 xml.AddElem("BookingType", getBookingType().getStr());
+	     	 xml.AddElem("CustomerAccount", getCustomerAccount().getStr());
+	     	 xml.AddElem("EarlyTermDate", getEarlyTermDate().string());
+	     	 xml.AddElem("EarlyTermReason", getEarlyTermReason().getStr());
+	     	 xml.AddElem("ExternalSystem", getExternalSystem().getStr());
+	     	 xml.AddElem("ExternalRef", getExternalRef().getStr());
+	     	 xml.AddElem("FirmAccount", getFirmAccount().getStr());
+	     	 xml.AddElem("FlowStatus", getFlowStatus().getStr());
+	     	 xml.AddElem("LastModifiedBy", getLastModifiedBy().getStr());
+	     	 xml.AddElem("LastVerifiedBy", getLastVerifiedBy().getStr());
+	     	 xml.AddElem("LegalEntity", getLegalEntity().getStr());
+	     	 xml.AddElem("Location", getLocation().getStr());
+	     	 xml.AddElem("MatchingStatus", getMatchingStatus().getStr());
+	     	 xml.AddElem("MaturityDate", getMaturityDate().string());
+	     	 xml.AddElem("ModifiedTimeStamp", getModifiedTimeStamp().getStr());
+	     	 xml.AddElem("OperationsRef", getOperationsRef().getStr());
+	     	 xml.AddElem("OriginalTradeRef", getOriginalTradeRef().getStr());
+	     	 xml.AddElem("ProductType", getProductType().getStr());
+	     	 xml.AddElem("SalesPerson", getSalesPerson().getStr());
+	     	 xml.AddElem("StartDate", getStartDate().string());
+	     	 xml.AddElem("SubType", getSubType().getStr());
+	     	 xml.AddElem("TradeDate", getTradeDate().string());
+	     	 xml.AddElem("Trader", getTrader().getStr());
+	     	 xml.AddElem("TradeRef", getTradeRef().getStr());
+	     	 xml.AddElem("TradeStatus", getTradeStatus().getStr());
+	     	 xml.AddElem("TradeType", getTradeType().getStr());
+	     	 xml.AddElem("VerifiedTimeStamp", getVerifiedTimeStamp().getStr());
+	     	 xml.AddElem("WashAccount", getWashAccount().getStr());
+
+	     	  xml.AddElem( "FraTicket" );
+	          xml.IntoElem();
+
+	          xml.AddElem("Notional", getNotional());
+	          xml.AddElem("SettlementDate", getSettlementDate().string());
+	          xml.AddElem("Currency", getCurrency()->getCurrencyCode());
+	          xml.AddElem("BuySell", getBuySell().getStr());
+	          xml.AddElem("QuoteDate", getQuoteDate().string());
+	          xml.AddElem("QuoteLag", getQuoteLag());
+	          xml.AddElem("StartDate", getStartDate().string());
+	          xml.AddElem("MaturityDate", getMaturityDate().string());
+
+	      	std::string payCalendars = "";
+	      			int payCalSize = getPayCalendars().size ();
+	      			int payCal = 1;
+
+	      			std::set<std::string>::const_iterator payCalIter = getPayCalendars().begin () ;
+
+	      			for (; payCalIter != getPayCalendars().end() ; ++payCalIter)
+	      			{
+	      				if ( payCal > payCalSize )
+	      					break;
+	      						if ( payCal > 1 )
+	      					{
+	      							payCalendars += ",";
+	      							payCalendars += *payCalIter;
+	      					}
+	      					else
+	      							payCalendars = *payCalIter;
+
+	      					payCal ++;
+	      			}
+	      	xml.AddElem("PayCalendars", payCalendars);
+
+	      	xml.AddElem("BusDayConv", getBusDayConv()->getStr());
+	      	xml.AddElem("AgreedRate", getAgreedRate());
+	      	xml.AddElem("ResetType", getResetType().getStr());
+	      	xml.AddElem("RateType", getRateType().getStr());
+	      	xml.AddElem("ManualRate", getManualRate());
+	      	xml.AddElem("MarketIndex", getMarketIndex().getStr());
+	      	xml.AddElem("DayCount", getDayCount()->getStr());
+
+	       	std::string quoteCalendars = "";
+	    		      			int quoteCalSize = getQuoteCalendars().size ();
+	    		      			int quoteCal = 1;
+
+	    		      			std::set<std::string>::const_iterator quoteCalIter = getQuoteCalendars().begin () ;
+
+	    		      			for (; quoteCalIter != getQuoteCalendars().end() ; ++quoteCalIter)
+	    		      			{
+	    		      				if ( quoteCal > quoteCalSize )
+	    		      					break;
+	    		      						if ( quoteCal > 1 )
+	    		      					{
+	    		      							quoteCalendars += ",";
+	    		      							quoteCalendars += *quoteCalIter;
+	    		      					}
+	    		      					else
+	    		      							quoteCalendars = *quoteCalIter;
+
+	    		      					quoteCal ++;
+	    		      			}
+	        xml.AddElem("QuoteCalendars", quoteCalendars);
+	      	xml.AddElem("DiscountCurve", getDiscountCurve().getStr());
+	      	xml.AddElem("PaymentConvention", getPaymentConvention().getStr());
+	      	xml.AddElem("ResetConvention", getResetConvention().getStr());
+
+
+
+
+            xml.OutOfElem();
+	        xml.OutOfElem();
+	        // you may need gointo as many times you have inner loops like pay schedulelist etc.
+	        // xml.AddElem( "SwapLegFields", getFirstPayLeg()->get swapleg fields  ); this is needed check later
+	      //  cout << xml.GetDoc() << endl; // check this print out every time you change some code
+	        return xml.GetDoc();
+}
+

@@ -1,0 +1,189 @@
+09:56:44 **** Build of configuration Debug for project busdayconv ****
+make all 
+Building file: ../busDayConv.cpp
+Invoking: GCC C++ Compiler
+g++ -I/home/vishist/IRDConnect/include -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"busDayConv.d" -MT"busDayConv.o" -o "busDayConv.o" "../busDayConv.cpp"
+/bin/sh: g++: command not found
+make: *** [busDayConv.o] Error 127
+09:56:52 **** Build of configuration Debug for project calendar ****
+make all 
+Building file: ../calendar.cpp
+Invoking: GCC C++ Compiler
+g++ -I/home/vishist/IRDConnect/include -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"calendar.d" -MT"calendar.o" -o "calendar.o" "../calendar.cpp"
+/bin/sh: g++: command not found
+make: *** [calendar.o] Error 127
+09:56:56 **** Build of configuration Debug for project currency ****
+make all 
+Building file: ../currency.cpp
+Invoking: GCC C++ Compiler
+g++ -I/home/vishist/IRDConnect/include -I/home/vishist/boost/boost_1_46_1 -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"currency.d" -MT"currency.o" -o "currency.o" "../currency.cpp"
+/bin/sh: g++: command not found
+make: *** [currency.o] Error 127
+10:01:35 **** Build of configuration Debug for project curve ****
+make all 
+Building file: ../buildCurveFromMarketRates.cpp
+Invoking: GCC C++ Compiler
+g++ -I/home/vishist/IRDConnect/include -I/home/vishist/boost/boost_1_46_1 -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"buildCurveFromMarketRates.d" -MT"buildCurveFromMarketRates.o" -o "buildCurveFromMarketRates.o" "../buildCurveFromMarketRates.cpp"
+/bin/sh: g++: command not found
+make: *** [buildCurveFromMarketRates.o] Error 127
+10:06:13 **** Build of configuration Debug for project dataformat ****
+make all 
+Building file: ../dataFormat.cpp
+Invoking: GCC C++ Compiler
+g++ -I/home/vishist/IRDConnect/include -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"dataFormat.d" -MT"dataFormat.o" -o "dataFormat.o" "../dataFormat.cpp"
+/bin/sh: g++: command not found
+make: *** [dataFormat.o] Error 127
+10:06:15 **** Build of configuration Debug for project date ****
+make all 
+Building file: ../date.cpp
+Invoking: GCC C++ Compiler
+g++ -I/home/vishist/IRDConnect/include -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"date.d" -MT"date.o" -o "date.o" "../date.cpp"
+/bin/sh: g++: command not found
+make: *** [date.o] Error 127
+10:06:17 **** Build of configuration Debug for project errors ****
+make all 
+Building file: ../errors.cpp
+Invoking: GCC C++ Compiler
+g++ -I/home/vishist/IRDConnect/include -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"errors.d" -MT"errors.o" -o "errors.o" "../errors.cpp"
+/bin/sh: g++: command not found
+make: *** [errors.o] Error 127
+10:06:20 **** Build of configuration Debug for project frequency ****
+make all 
+Building file: ../frequency.cpp
+Invoking: GCC C++ Compiler
+g++ -I/home/vishist/IRDConnect/include -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"frequency.d" -MT"frequency.o" -o "frequency.o" "../frequency.cpp"
+/bin/sh: g++: command not found
+make: *** [frequency.o] Error 127
+10:06:23 **** Build of configuration Debug for project marchingconv ****
+make all 
+Building file: ../immDates.cpp
+Invoking: GCC C++ Compiler
+g++ -I/home/vishist/IRDConnect/include -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"immDates.d" -MT"immDates.o" -o "immDates.o" "../immDates.cpp"
+/bin/sh: g++: command not found
+make: *** [immDates.o] Error 127
+10:06:25 **** Build of configuration Debug for project money ****
+make all 
+Building file: ../money.cpp
+Invoking: GCC C++ Compiler
+g++ -I/home/vishist/IRDConnect/include -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"money.d" -MT"money.o" -o "money.o" "../money.cpp"
+/bin/sh: g++: command not found
+make: *** [money.o] Error 127
+10:06:28 **** Build of configuration Debug for project moneymkt ****
+make all 
+Building file: ../instrumentClassCd.cpp
+Invoking: GCC C++ Compiler
+g++ -I/home/vishist/IRDConnect/include -I/home/vishist/boost/boost_1_46_1 -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"instrumentClassCd.d" -MT"instrumentClassCd.o" -o "instrumentClassCd.o" "../instrumentClassCd.cpp"
+/bin/sh: g++: command not found
+make: *** [instrumentClassCd.o] Error 127
+10:11:01 **** Build of configuration Debug for project period ****
+make all 
+Building file: ../period.cpp
+Invoking: GCC C++ Compiler
+g++ -I/home/vishist/IRDConnect/include -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"period.d" -MT"period.o" -o "period.o" "../period.cpp"
+/bin/sh: g++: command not found
+make: *** [period.o] Error 127
+10:11:04 **** Build of configuration Debug for project rolldayconv ****
+make all 
+Building file: ../rollDayConv.cpp
+Invoking: GCC C++ Compiler
+g++ -I/home/vishist/IRDConnect/include -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"rollDayConv.d" -MT"rollDayConv.o" -o "rollDayConv.o" "../rollDayConv.cpp"
+/bin/sh: g++: command not found
+make: *** [rollDayConv.o] Error 127
+10:11:06 **** Build of configuration Debug for project roundingconv ****
+make all 
+Building file: ../roundingConv.cpp
+Invoking: GCC C++ Compiler
+g++ -I/home/vishist/IRDConnect/include -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"roundingConv.d" -MT"roundingConv.o" -o "roundingConv.o" "../roundingConv.cpp"
+/bin/sh: g++: command not found
+make: *** [roundingConv.o] Error 127
+10:11:09 **** Build of configuration Debug for project string ****
+make all 
+Building file: ../irdString.cpp
+Invoking: GCC C++ Compiler
+g++ -I/home/vishist/IRDConnect/include -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"irdString.d" -MT"irdString.o" -o "irdString.o" "../irdString.cpp"
+/bin/sh: g++: command not found
+make: *** [irdString.o] Error 127
+10:11:11 **** Build of configuration Debug for project timeunit ****
+make all 
+Building file: ../timeUnit.cpp
+Invoking: GCC C++ Compiler
+g++ -I/home/vishist/IRDConnect/include -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"timeUnit.d" -MT"timeUnit.o" -o "timeUnit.o" "../timeUnit.cpp"
+/bin/sh: g++: command not found
+make: *** [timeUnit.o] Error 127
+10:11:13 **** Build of configuration Debug for project tradeticket ****
+make all 
+Building file: ../SwapTicket.cpp
+Invoking: GCC C++ Compiler
+g++ -I/home/vishist/IRDConnect/include -I/home/vishist/boost/boost_1_46_1 -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"SwapTicket.d" -MT"SwapTicket.o" -o "SwapTicket.o" "../SwapTicket.cpp"
+/bin/sh: g++: command not found
+make: *** [SwapTicket.o] Error 127
+10:15:38 **** Build of configuration Debug for project genSchedule ****
+make all 
+Building file: ../schedule.cpp
+Invoking: GCC C++ Compiler
+g++ -I/home/vishist/boost/boost_1_46_1 -I/home/vishist/IRDConnect/include -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"schedule.d" -MT"schedule.o" -o "schedule.o" "../schedule.cpp"
+/bin/sh: g++: command not found
+make: *** [schedule.o] Error 127
+10:20:12 **** Build of configuration Debug for project util ****
+make all 
+Building file: ../irdXML.cpp
+Invoking: GCC C++ Compiler
+g++ -I/home/vishist/IRDConnect/include -I/home/vishist/boost/boost_1_46_1 -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"irdXML.d" -MT"irdXML.o" -o "irdXML.o" "../irdXML.cpp"
+/bin/sh: g++: command not found
+make: *** [irdXML.o] Error 127
+10:24:37 **** Build of configuration Debug for project vol ****
+make all 
+Building file: ../BlackPricer.cpp
+Invoking: GCC C++ Compiler
+g++ -I/home/vishist/IRDConnect/include -I/home/vishist/boost/boost_1_46_1 -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"BlackPricer.d" -MT"BlackPricer.o" -o "BlackPricer.o" "../BlackPricer.cpp"
+/bin/sh: g++: command not found
+make: *** [BlackPricer.o] Error 127
+10:24:40 **** Build of configuration Debug for project weekday ****
+make all 
+Building file: ../weekDay.cpp
+Invoking: GCC C++ Compiler
+g++ -I/home/vishist/IRDConnect/include -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"weekDay.d" -MT"weekDay.o" -o "weekDay.o" "../weekDay.cpp"
+/bin/sh: g++: command not found
+make: *** [weekDay.o] Error 127
+11:34:38 **** Build of configuration Debug for project busdayconv ****
+make all 
+Building file: ../busDayConv.cpp
+Invoking: GCC C++ Compiler
+g++ -I/home/vishist/IRDConnect/include -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"busDayConv.d" -MT"busDayConv.o" -o "busDayConv.o" "../busDayConv.cpp"
+/bin/sh: g++: command not found
+make: *** [busDayConv.o] Error 127
+11:34:40 **** Build of configuration Debug for project calendar ****
+make all 
+Building file: ../calendar.cpp
+Invoking: GCC C++ Compiler
+g++ -I/home/vishist/IRDConnect/include -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"calendar.d" -MT"calendar.o" -o "calendar.o" "../calendar.cpp"
+/bin/sh: g++: command not found
+make: *** [calendar.o] Error 127
+11:34:42 **** Build of configuration Debug for project currency ****
+make all 
+Building file: ../currency.cpp
+Invoking: GCC C++ Compiler
+g++ -I/home/vishist/IRDConnect/include -I/home/vishist/boost/boost_1_46_1 -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"currency.d" -MT"currency.o" -o "currency.o" "../currency.cpp"
+/bin/sh: g++: command not found
+make: *** [currency.o] Error 127
+11:34:43 **** Build of configuration Debug for project curve ****
+make all 
+Building file: ../buildCurveFromMarketRates.cpp
+Invoking: GCC C++ Compiler
+g++ -I/home/vishist/IRDConnect/include -I/home/vishist/boost/boost_1_46_1 -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"buildCurveFromMarketRates.d" -MT"buildCurveFromMarketRates.o" -o "buildCurveFromMarketRates.o" "../buildCurveFromMarketRates.cpp"
+/bin/sh: g++: command not found
+make: *** [buildCurveFromMarketRates.o] Error 127
+11:34:45 **** Build of configuration Debug for project dataformat ****
+make all 
+Building file: ../dataFormat.cpp
+Invoking: GCC C++ Compiler
+g++ -I/home/vishist/IRDConnect/include -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"dataFormat.d" -MT"dataFormat.o" -o "dataFormat.o" "../dataFormat.cpp"
+/bin/sh: g++: command not found
+make: *** [dataFormat.o] Error 127
+11:34:46 **** Build of configuration Debug for project date ****
+make all 
+Building file: ../date.cpp
+Invoking: GCC C++ Compiler
+g++ -I/home/vishist/IRDConnect/include -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"date.d" -MT"date.o" -o "date.o" "../date.cpp"
+/bin/sh: g++: command not found
+make: *** [date.o] Error 127

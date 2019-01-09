@@ -1,0 +1,43 @@
+/*
+ * BusDayConvention.h
+ *
+ *  Created on: 24-Aug-2010
+ *      Author: vishist
+ */
+#include "IRDString.h"
+#include "calendar.h"
+#include "boost/date_time/gregorian/greg_date.hpp"
+using namespace boost::gregorian;
+
+#ifndef BUSDAYCONVENTION_H_
+#define BUSDAYCONVENTION_H_
+
+class BusDayConvention {
+public:
+	BusDayConvention(){_busdayconv = "_none";}
+
+	    boost::gregorian::date adjustToBusDay( const   boost::gregorian::date & dateInput, const Calendar & calendarInput ) const;
+
+	    boost::gregorian::date adjustToBusDay( const   boost::gregorian::date & dateInput,
+	                    const Calendar &primaryCalendar,
+	                    const Calendar &secondaryCalendar ) const;
+
+	    boost::gregorian::date adjustDate ( const   boost::gregorian::date     & dateInput,
+	    	                             const Calendar & primaryCalendar ) const ;
+
+	    boost::gregorian::date adjustDate ( const   boost::gregorian::date     & dateInput,
+	    	                             const Calendar & primaryCalendar,
+	    	                             const Calendar & secondaryCalendar ) const ;
+
+	    BusDayConvention (const IRDString & busdayconv) {_busdayconv = busdayconv;}
+	    virtual ~BusDayConvention();
+
+	     IRDString getBusDayConvention() { return _busdayconv;}
+	     void setBusDayConvention(IRDString busdayconv) { _busdayconv = busdayconv;}
+
+	private:
+
+	    IRDString _busdayconv;
+};
+
+#endif /* BUSDAYCONVENTION_H_ */

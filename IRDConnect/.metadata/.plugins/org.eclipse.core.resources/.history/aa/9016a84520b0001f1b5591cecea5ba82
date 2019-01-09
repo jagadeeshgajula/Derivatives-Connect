@@ -1,0 +1,63 @@
+################################################################################
+# Automatically-generated file. Do not edit!
+################################################################################
+
+# Add inputs and outputs from these tool invocations to the build variables 
+CPP_SRCS += \
+../IRDString.cpp \
+../assetSwaps.cpp \
+../busDayConvention.cpp \
+../externalSystemTrades.cpp \
+../fXResets.cpp \
+../manualPayments.cpp \
+../optionSchedule.cpp \
+../paySchedule.cpp \
+../schedule.cpp \
+../stubResets.cpp \
+../swapLegs.cpp \
+../swapOption.cpp \
+../tradeModificationReasons.cpp \
+../tradeTicket.cpp 
+
+OBJS += \
+./IRDString.o \
+./assetSwaps.o \
+./busDayConvention.o \
+./externalSystemTrades.o \
+./fXResets.o \
+./manualPayments.o \
+./optionSchedule.o \
+./paySchedule.o \
+./schedule.o \
+./stubResets.o \
+./swapLegs.o \
+./swapOption.o \
+./tradeModificationReasons.o \
+./tradeTicket.o 
+
+CPP_DEPS += \
+./IRDString.d \
+./assetSwaps.d \
+./busDayConvention.d \
+./externalSystemTrades.d \
+./fXResets.d \
+./manualPayments.d \
+./optionSchedule.d \
+./paySchedule.d \
+./schedule.d \
+./stubResets.d \
+./swapLegs.d \
+./swapOption.d \
+./tradeModificationReasons.d \
+./tradeTicket.d 
+
+
+# Each subdirectory must supply rules for building sources it contributes
+%.o: ../%.cpp
+	@echo 'Building file: $<'
+	@echo 'Invoking: GCC C++ Compiler'
+	g++ -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -o"$@" "$<"
+	@echo 'Finished building: $<'
+	@echo ' '
+
+

@@ -1,0 +1,72 @@
+#include<iostream>
+#include<string>
+#include "irdString.h"
+
+namespace IRDConnect {
+ 
+using namespace std;
+class ManualPayments
+{
+public:
+ManualPayments(){;};
+ManualPayments(
+
+double amount,
+String conversionCurrency,
+String conversionIndex,
+int conversionLag,
+String currency,
+String paymentDate,
+String payReceive,
+String paymentType,
+String tradeRef)
+{
+_amount =amount;
+_conversionCurrency=conversionCurrency;
+_conversionIndex=conversionIndex;
+_conversionLag=conversionLag;
+_currency=currency;
+_paymentDate=paymentDate;
+_payReceive=payReceive;
+_paymentType=paymentType;
+_tradeRef=tradeRef;
+}
+double getAmount (){return _amount;}     
+void setAmount(double amount) { _amount =amount; }
+
+String getCurrency(){return _currency;}
+void setCurrency(String currency){ _currency = currency;}
+
+String getConversionIndex(){return _conversionIndex;}
+void setConversionIndex (String conversionIndex){ _conversionIndex=conversionIndex ;}
+
+String getConversionCurrency() {return _conversionCurrency;}     
+void setConversionCurrency(String conversionCurrency) { _conversionCurrency =conversionCurrency; }
+
+int getConversionLag(){return _conversionLag;}
+void setConversionLag(int conversionLag){ _conversionLag = conversionLag; }
+
+String getPaymentType(){return _paymentType;}
+void setPaymentType(String paymentType){ _paymentType= paymentType;}
+
+String getPaymentDate(){return _paymentDate;}
+void setPaymentDate(String paymentDate){ _paymentDate = paymentDate; }
+
+String getPayReceive(){return _payReceive;}
+void setPayReceive(String payReceive){ _payReceive = payReceive;}
+
+String getTradeRef(){return _tradeRef;}
+void setTradeRef(String tradeRef){ _tradeRef =tradeRef;}
+protected:
+double _amount;
+String _conversionCurrency;
+String _conversionIndex ;
+int _conversionLag;
+String _currency;
+String _paymentDate;
+String _payReceive;
+String _paymentType;
+String _tradeRef; 
+};
+      
+}

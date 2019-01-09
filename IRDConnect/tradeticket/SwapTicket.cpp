@@ -1,0 +1,811 @@
+/*
+ * swapTicket.cpp
+ *
+ *  Created on: 02-Oct-2010
+ *      Author: vishist
+ */
+
+#include "swapTicket.h"
+#include "swapLeg.h"
+#include "calendarUtil.h"
+#include "fixingRates.h"
+#include "util.h"
+#include "irdXML.h"
+
+
+
+using namespace IRDConnect;
+
+namespace IRDConnect {
+
+
+SwapTicket::SwapTicket()
+{
+	// do nothing
+}
+
+SwapTicket::~SwapTicket()
+{
+	// do nothing
+}
+
+/*
+ *
+
+SwapTicket::SwapTicket(TradeTicket *tt, SwapLegList * swapLegList)
+{
+	SwapTicket(
+			tt.getAlternateRef(),
+			tt.getBookingType(),
+			tt.getCustomerAccount(),
+		    tt.getEarlyTermDate(),
+			tt.getEarlyTermReason(),
+		    tt.getExternalSystem(),
+			tt.getExternalRef(),
+			tt.getFirmAccount(),
+			tt.getFlowStatus(),
+			tt.getLastModifiedBy(),
+			tt.getLastVerifiedBy(),
+			tt.getLegalEntity(),
+			tt.getLocation(),
+		    tt.getMatchingStatus(),
+			tt.getMaturityDate(),
+			tt.getModifiedTimeStamp(),
+			tt.getOperationsRef(),
+			tt.getOriginalTradeRef(),
+			tt.getProductType(),
+			tt.getSalesPerson(),
+			tt.getStartDate(),
+			tt.getSubType(),
+			tt.getSwapStatus(),
+			tt.getSwaptionRef(),
+			tt.getTradeDate(),
+			tt.getTrader(),
+			tt.getTradeRef(),
+			tt.getTradeStatus(),
+			tt.getTradeType(),
+			tt.getTradeVersion(),
+			tt.getVerifiedTimeStamp(),
+			tt.getWashAccount()
+
+	);
+
+	_swapLegList = swapLegList;
+}
+*/
+
+SwapTicket::SwapTicket (
+String   	alternateRef,
+String  	bookingType,
+String  	customerAccount,
+Date  		earlyTermDate,
+String  	earlyTermReason,
+String  	externalRef,
+String  	externalSystem,
+String  	firmAccount,
+String  	flowStatus,
+String  	lastModifiedBy,
+String  	lastVerifiedBy,
+String  	legalEntity,
+String  	location,
+String  	matchingStatus,
+Date  		terminationDate,
+String  	modifiedTimeStamp,
+String  	operationsRef,
+String  	originalTradeRef,
+String  	productType,
+String  	salesPerson,
+Date  		effectiveDate,
+String  	subType,
+Date  		tradeDate,
+String  	trader,
+String  	tradeRef,
+String		tradeRemarks,
+String  	tradeStatus,
+String  	tradeType,
+double  	tradeVersion,
+String  	verifiedTimeStamp,
+String  	washAccount
+)
+: TradeTicket (
+
+				alternateRef,
+				bookingType,
+				customerAccount,
+				earlyTermDate,
+				earlyTermReason,
+				externalSystem,
+				externalRef,
+				firmAccount,
+				flowStatus,
+		 	 	lastModifiedBy,
+		 	 	lastVerifiedBy,
+		 	 	legalEntity,
+		 	 	location,
+		 	 	matchingStatus,
+		 	 	terminationDate,
+		 	 	modifiedTimeStamp,
+		 	 	operationsRef,
+		 	 	originalTradeRef,
+		 	 	productType,
+		 	 	salesPerson,
+		 	 	effectiveDate,
+		 	 	subType,
+		 	 	tradeDate,
+		 	 	trader,
+		 	 	tradeRef,
+		 	 	tradeRemarks,
+		 	 	tradeStatus,
+		 	 	tradeType,
+		 	 	tradeVersion,
+		 	 	verifiedTimeStamp,
+		 	 	washAccount )
+
+{
+
+	// nothing to be done : SwapLeg will be set later.
+
+}
+
+SwapLeg * SwapTicket::getFirstPayLeg()
+{
+
+	SwapLegList::const_iterator swplegIter = _swapLegList.begin () ;
+	         for (; swplegIter != _swapLegList.end() ; ++swplegIter)
+	             if ( (*swplegIter)->getPosition() == _PAY)
+	                 return *swplegIter ;
+
+	         return 0;
+
+}
+
+SwapLeg * SwapTicket::getFirstReceiveLeg()
+{
+
+	SwapLegList::const_iterator swplegIter = _swapLegList.begin () ;
+	         for (; swplegIter != _swapLegList.end() ; ++swplegIter)
+	             if ( (*swplegIter)->getPosition() == _RECV )
+	                 return *swplegIter ;
+
+	         return 0;
+
+}
+
+SwapLeg * SwapTicket::getFirstFloatLeg()
+{
+
+	SwapLegList::const_iterator swplegIter = _swapLegList.begin () ;
+	         for (; swplegIter != _swapLegList.end() ; ++swplegIter)
+	             if ( (*swplegIter)->getLegType() == _FLTLEG )
+	                 return *swplegIter ;
+
+	         return 0;
+
+}
+
+SwapLeg * SwapTicket::getFirstFixedLeg()
+{
+
+	SwapLegList::const_iterator  swplegIter = _swapLegList.begin () ;
+	         for (; swplegIter != _swapLegList.end() ; ++swplegIter)
+	             if ( (*swplegIter)->getLegType() == _FIXLEG )
+	                 return *swplegIter ;
+
+	         return 0;
+
+}
+
+void SwapTicket::setSwapPayLeg(SwapLeg * swapLeg)
+{
+
+	_swapLegList.push_back(swapLeg);
+
+}
+
+void SwapTicket::setSwapRecvLeg(SwapLeg * swapLeg)
+{
+
+	_swapLegList.push_back(swapLeg);
+
+}
+
+SwapLeg * SwapTicket::getFXResetLeg()
+{
+
+	SwapLegList::const_iterator  swplegIter = _swapLegList.begin () ;
+	         for (; swplegIter != _swapLegList.end() ; ++swplegIter)
+	             if ( (*swplegIter)->getLegNo() == getFXReset()->getFXResetLegNo() )
+	                 return *swplegIter ;
+
+	         return 0;
+
+}
+
+bool SwapTicket::genFXResetSchedule()
+{
+	if ( getFXReset() )
+	{
+		SwapLeg * fxResetLeg = getFXResetLeg();
+
+
+		if ( fxResetLeg )
+		{
+
+			int lagSign = getFXReset()->getFXResetQuoteLag() >= 0 ? 1 : -1;
+				logFile << "FX lag sign is : " << lagSign << endl;
+				const BusDayConv * resetBusDay = lagSign > 0 ? BusDayConv::find("FOL") : BusDayConv::find("PRE") ;
+				int lag = getFXReset()->getFXResetQuoteLag() * lagSign;
+				logFile << "FX lag is : " << lag << endl;
+
+
+			ResetScheduleList::const_iterator iterFXReset = fxResetLeg->displayResetSchedule().begin() ;
+
+			for ( ; iterFXReset != fxResetLeg->displayResetSchedule().end() ; ++iterFXReset )
+			{
+				if ( (*iterFXReset)->getRateIndexType() == "IRRATE" )
+				{
+					shared_ptr <ResetSchedule> fxResetSchedule( new ResetSchedule());
+
+					fxResetSchedule->setResetStartDate((*iterFXReset)->getResetStartDate());
+
+					Date quoteDate = fxResetSchedule->getResetStartDate();
+
+					int cntReset = lag;
+
+					while ( cntReset > 0 )
+					{
+						Period period(lagSign * 1,Days);
+						quoteDate = quoteDate + period;
+						quoteDate = resetBusDay->adjustToBusDay(quoteDate,*CalendarUtil::getCalendar(getFXReset()->getFXQuoteCalendars()) );
+						cntReset--;
+
+					}
+
+					if (  cntReset == 0 )
+						quoteDate = resetBusDay->adjustToBusDay(quoteDate,*CalendarUtil::getCalendar(getFXReset()->getFXQuoteCalendars()) );
+
+					fxResetSchedule->setQuoteDate( quoteDate );
+					fxResetSchedule->setRate(fxResetLeg->getPeriodRate(FixingRates::getFixingRate(quoteDate, quoteDate, getFXReset()->getFXMarketIndex())));
+
+					fxResetSchedule->setRateIndexType("FXRATE");
+
+					fxResetLeg->displayResetSchedule().push_front(fxResetSchedule);
+
+					shared_ptr <AmortSchedule> amortSchedule( new AmortSchedule());
+
+					amortSchedule->setStartDate(fxResetSchedule->getResetStartDate());
+					amortSchedule->setEndDate(fxResetSchedule->getResetStartDate());
+					amortSchedule->setAmortNotional(fxResetLeg->getNotional() * fxResetSchedule->getRate());
+
+					fxResetLeg->displayAmortSchedule().push_back(amortSchedule);
+
+
+				}
+
+			}
+
+			fxResetLeg->displayAmortSchedule().sort();
+			AmortScheduleList::const_iterator iterResetTmp = fxResetLeg->displayAmortSchedule().begin() ;
+
+					for ( ; iterResetTmp != fxResetLeg->displayAmortSchedule().end() ; ++iterResetTmp )
+					{
+						cout << "Resets and FX Resets Amort " << (*iterResetTmp)->getStartDate() << ":" <<  (*iterResetTmp)->getAmortNotional() << endl;
+					}
+
+
+		}
+
+
+	  }
+		return true;
+	}
+
+
+bool SwapTicket::genAllCashFlows()
+{
+
+	if ( ! getFirstReceiveLeg()->genLegCashFlows() )
+		{
+			cerr << "failed in generating cashflows " << endl;
+		}
+
+	if ( ! getFirstPayLeg()->genLegCashFlows() )
+		{
+			cerr << "failed in generating cashflows " << endl;
+		}
+
+
+	// let us print fee here
+
+	AdditionalPaymentsList::const_iterator iterEvent = getAdditionalPayments().begin () ;
+
+		int noOfEvents = getAdditionalPayments().size();
+		cout << "No of Elements in fee :" << noOfEvents << endl;
+		cout << "Let us PRINT FEE HERE " << endl;
+
+
+		for ( ; iterEvent != getAdditionalPayments().end () ; ++iterEvent )
+		{
+
+			cout << (*iterEvent)->getPaymentType()
+					<< ":" << (*iterEvent)->getFirmAccount() << ":"
+					<< (*iterEvent)->getCustomerAccount() << ":"
+					<<  (*iterEvent)->getPaymentDate() << ":" <<
+					(*iterEvent)->getAmount() << ":" << endl;
+		}
+
+	return true;
+
+}
+
+double SwapTicket::calcAdjustmentPV()
+{
+	double pv = 0.0;
+
+	//Date curveDate(05,11,2012) ;
+	//CurveCache & c = CurveCache::instance() ;
+
+
+
+	AdditionalPaymentsList::const_iterator iterEvent = getAdditionalPayments().begin () ;
+	for ( ; iterEvent != getAdditionalPayments().end () ; ++iterEvent )
+	{
+		boost::shared_ptr<IRDConnect::Curve>  curvePtr = CurveCache::instance().find(Util::getCurveDate(), std::string((*iterEvent)->getCurrency()->getDefaultDiscountCurve())) ;
+		pv += (*iterEvent)->getAmount() * curvePtr->getZcdf((*iterEvent)->getPaymentDate());
+
+	}
+
+	PremiumsList::const_iterator iterEventPrem = getPremiums().begin () ;
+		for ( ; iterEventPrem != getPremiums().end () ; ++iterEventPrem )
+		{
+			boost::shared_ptr<IRDConnect::Curve>  curvePtr = CurveCache::instance().find(Util::getCurveDate(),std::string( (*iterEventPrem)->getCurrency()->getDefaultDiscountCurve())) ;
+			pv += (*iterEventPrem)->getPremiumBP() * curvePtr->getZcdf((*iterEventPrem)->getPaymentDate());
+
+		}
+
+	return pv;
+}
+
+double SwapTicket::calculateNetPV()
+{
+	return ( getFirstReceiveLeg()->calculatePV() + getFirstPayLeg()->calculatePV() );
+}
+
+
+double SwapTicket::calculateTotalPV()
+{
+	return ( getFirstReceiveLeg()->calculatePV() + getFirstPayLeg()->calculatePV() + calcAdjustmentPV() );
+}
+
+}
+
+double SwapTicket::calculateBERate()
+{
+
+		return abs(getFirstFloatLeg()->calculatePV() / (2 * getFirstFixedLeg()->calculatePV())); //semi annual payments on the curve.
+
+}
+
+std::string SwapTicket::serialize()
+{
+
+	  CMarkup xml;
+	 // xml.Load(xmlFileName);
+	  xml.AddElem( "TradeTicket" );
+	 // xml.SetAttrib( "classtype", "CXyz" ); // not needed now as we don't have attributes
+	  xml.IntoElem();
+
+	  //std::string alternateRef = getAlternateRef().str();
+	  	 xml.AddElem("ModificationReason", "Assignment");
+	  	 xml.AddElem("Tenor", "2");
+	  	 xml.AddElem("RiskPartyA", "NA");
+	  	 xml.AddElem("BrokerAccount", "HBGCINT");
+	  	 xml.AddElem("Comments", "Hello SwapTicket");
+	  	 xml.AddElem("AlternateRef", getAlternateRef().getStr());
+	     	 xml.AddElem("BookingType", getBookingType().getStr());
+	     	 xml.AddElem("CustomerAccount", getCustomerAccount().getStr());
+	     	 xml.AddElem("EarlyTermDate", getEarlyTermDate().string());
+	     	 xml.AddElem("EarlyTermReason", getEarlyTermReason().getStr());
+	     	 xml.AddElem("ExternalSystem", getExternalSystem().getStr());
+	     	 xml.AddElem("ExternalRef", getExternalRef().getStr());
+	     	 xml.AddElem("FirmAccount", getFirmAccount().getStr());
+	     	 xml.AddElem("FlowStatus", getFlowStatus().getStr());
+	     	 xml.AddElem("LastModifiedBy", getLastModifiedBy().getStr());
+	     	 xml.AddElem("LastVerifiedBy", getLastVerifiedBy().getStr());
+	     	 xml.AddElem("LegalEntity", getLegalEntity().getStr());
+	     	 xml.AddElem("Location", getLocation().getStr());
+	     	 xml.AddElem("MatchingStatus", getMatchingStatus().getStr());
+	     	 xml.AddElem("TerminationDate", getTerminationDate().string());
+	     	 xml.AddElem("ModifiedTimeStamp", getModifiedTimeStamp().getStr());
+	     	 xml.AddElem("OperationsRef", getOperationsRef().getStr());
+	     	 xml.AddElem("OriginalTradeRef", getOriginalTradeRef().getStr());
+	     	 xml.AddElem("ProductType", getProductType().getStr());
+	     	 xml.AddElem("SalesPerson", getSalesPerson().getStr());
+	     	 xml.AddElem("EffectiveDate", getEffectiveDate().string());
+	     	 xml.AddElem("SubType", getSubType().getStr());
+	     	 xml.AddElem("TradeDate", getTradeDate().string());
+	     	 xml.AddElem("Trader", getTrader().getStr());
+	     	 xml.AddElem("TradeRef", getTradeRef().getStr());
+	     	 xml.AddElem("TradeStatus", getTradeStatus().getStr());
+	     	 xml.AddElem("TradeType", getTradeType().getStr());
+	     	 xml.AddElem("VerifiedTimeStamp", getVerifiedTimeStamp().getStr());
+	     	 xml.AddElem("WashAccount", getWashAccount().getStr());
+	     	 xml.AddElem( "SwapLegList");
+	     	 xml.IntoElem();
+	     	 xml.AddElem( "SwapLeg");
+	     	 xml.IntoElem();
+
+			xml.AddElem("AccrualBusDay", getFirstPayLeg()->getAccrualBusDay()->getStr());
+			std::string accrualCalendars = "";
+			int accrualCalSize = getFirstPayLeg()->getAccrualCalendars().size ();
+			int accrualCal = 1;
+			std::set<std::string>::const_iterator accrualCalIter = getFirstPayLeg()->getAccrualCalendars().begin () ;
+
+			for (; accrualCalIter != getFirstPayLeg()->getAccrualCalendars().end() ; ++accrualCalIter)
+			{
+				if ( accrualCal > accrualCalSize )
+					break;
+
+				if ( accrualCal > 1 )
+				{
+					accrualCalendars += ",";
+					accrualCalendars += *accrualCalIter;
+				}
+				else
+					accrualCalendars = *accrualCalIter;
+
+				accrualCal ++;
+			}
+			xml.AddElem("AccrualCalendars", accrualCalendars);
+			xml.AddElem("AccrualFreq", getFirstPayLeg()->getAccrualFreq());
+			xml.AddElem("AccrualMarching", getFirstPayLeg()->getAccrualMarching()->getStr());
+			xml.AddElem("AccrualRollDay", getFirstPayLeg()->getAccrualRollDay());
+			xml.AddElem("AccrualRollWeek", getFirstPayLeg()->getAccrualRollWeek());
+			xml.AddElem("AmortRollDay", getFirstPayLeg()->getAmortRollDay());
+			xml.AddElem("AmortRollWeek", getFirstPayLeg()->getAmortRollWeek());
+			xml.AddElem("AmortAmount", getFirstPayLeg()->getAmortAmount());
+			xml.AddElem("AmortBusDay", getFirstPayLeg()->getAmortBusDay()->getStr());
+		    int amortCalSize = getFirstPayLeg()->getAmortCalendars().size ();
+			std::string amortCalendars = "";
+			int amortCal = 1;
+
+			std::set<std::string>::const_iterator amortCalIter = getFirstPayLeg()->getAmortCalendars().begin () ;
+
+			for (; amortCalIter != getFirstPayLeg()->getAmortCalendars().end() ; ++amortCalIter)
+			{
+				if ( amortCal > amortCalSize )
+					break;
+
+				if ( amortCal > 1 )
+				{
+					amortCalendars += ",";
+					amortCalendars += *amortCalIter;
+						}
+					else
+						amortCalendars = *amortCalIter;
+
+					amortCal ++;
+				}
+			xml.AddElem("AmortCalendars", amortCalendars);
+			// xml.AddElem("AmortCalendars", getFirstPayLeg()->getAmortCalendars().getStr());
+			xml.AddElem("AmortEndDate", getFirstPayLeg()->getAmortEndDate().string());
+			xml.AddElem("AmortFreq", getFirstPayLeg()->getAmortFreq());
+			xml.AddElem("AmortMarching", getFirstPayLeg()->getAmortMarching()->getStr());
+			xml.AddElem("AmortStartDate", getFirstPayLeg()->getAmortStartDate().string());
+			xml.AddElem("AmortType", getFirstPayLeg()->getAmortType().getStr());
+			xml.AddElem("AveragingMethod", getFirstPayLeg()->getAveragingMethod().getStr());
+			xml.AddElem("BackStubDate", getFirstPayLeg()->getBackStubDate().string());
+			xml.AddElem("BackStubManualRate", getFirstPayLeg()->getBackStubManualRate());
+			xml.AddElem("CompFreq", getFirstPayLeg()->getCompFreq());
+			xml.AddElem("CompoundingConv", getFirstPayLeg()->getCompoundingConv().getStr());
+		    //xml.AddElem("Currency", getFirstPayLeg()->getCurrency()->getCurrencyCode());
+			xml.AddElem("Currency", getFirstPayLeg()->getCurrency()->getCurrencyCode());
+			//xml.AddElem("Currency", getFirstPayLeg()->getCurrency().getStr());
+			xml.AddElem("DayCount", getFirstPayLeg()->getDayCount()->getStr());
+			xml.AddElem("DiscountCurve", getFirstPayLeg()->getDiscountCurve().getStr());
+			xml.AddElem("EndDate", getFirstPayLeg()->getEndDate().string());
+			xml.AddElem("EndDateRollFlag", getFirstPayLeg()->getEndDateRollFlag().getStr());
+			xml.AddElem("EndOfMonthIndicator", getFirstPayLeg()->getEndOfMonthIndicator().getStr());
+			xml.AddElem("FixedQuote", getFirstPayLeg()->getFixedQuote());
+			xml.AddElem("FrontStubDate", getFirstPayLeg()->getFrontStubDate().string());
+			xml.AddElem("FrontStubManualRate", getFirstPayLeg()->getFrontStubManualRate());
+			xml.AddElem("GearFactor", getFirstPayLeg()->getGearFactor());
+
+			std::string initialQuoteCalendars = "";
+			int initialCalSize = getFirstPayLeg()->getInitialQuoteCalendars().size ();
+			int initialCal = 1;
+
+			std::set<std::string>::const_iterator initialCalIter = getFirstPayLeg()->getInitialQuoteCalendars().begin () ;
+
+			for (; initialCalIter != getFirstPayLeg()->getInitialQuoteCalendars().end() ; ++initialCalIter)
+			{
+				if ( initialCal > initialCalSize )
+					break;
+						if ( initialCal > 1 )
+					{
+							initialQuoteCalendars += ",";
+							initialQuoteCalendars += *initialCalIter;
+					}
+					else
+							initialQuoteCalendars = *initialCalIter;
+
+					initialCal ++;
+			}
+			xml.AddElem("InitialQuoteCalendars", initialQuoteCalendars);
+			xml.AddElem("InitialQuoteDate", getFirstPayLeg()->getInitialQuoteDate().string());
+			xml.AddElem("InitialQuoteLag", getFirstPayLeg()->getInitialQuoteLag());
+			xml.AddElem("LegNo", getFirstPayLeg()->getLegNo());
+			xml.AddElem("LegType", getFirstPayLeg()->getLegType().getStr());
+			xml.AddElem("MarketIndex", getFirstPayLeg()->getMarketIndex().getStr());
+			xml.AddElem("Notional", getFirstPayLeg()->getNotional());
+			xml.AddElem("NotionalExchange", getFirstPayLeg()->getNotionalExchange().getStr() );
+          	xml.AddElem("PayBusDay", getFirstPayLeg()->getPayBusDay()->getStr());
+            std::string payCalendars = "";
+            int payCalSize = getFirstPayLeg()->getPayCalendars().size ();
+            int payCal = 1;
+
+            std::set<std::string>::const_iterator payCalIter = getFirstPayLeg()->getPayCalendars().begin () ;
+
+            for (; payCalIter != getFirstPayLeg()->getPayCalendars().end() ; ++payCalIter)
+            {
+            	if ( payCal > payCalSize )
+            		break;
+            	if ( payCal > 1 )
+            	{
+            		payCalendars += ",";
+            		payCalendars += *payCalIter;
+            	}
+            	else
+            		payCalendars = *payCalIter;
+
+            	payCal ++;
+            }
+            xml.AddElem("PayCalendars", payCalendars);
+
+            // xml.AddElem("PayCalendars", getFirstPayLeg()->getPayCalendars().getStr());
+
+          	xml.AddElem("PayFreq", getFirstPayLeg()->getPayFreq());
+          	xml.AddElem("PayLag", getFirstPayLeg()->getPayLag());
+          	xml.AddElem("PayMarching", getFirstPayLeg()->getPayMarching()->getStr());
+          	xml.AddElem("PaymentConvention", getFirstPayLeg()->getPaymentConvention().getStr());
+         	xml.AddElem("PaymentConversionCurrency", getFirstPayLeg()->getPaymentConversionCurrency()->getCurrencyCode());
+          	//xml.AddElem("PaymentConversionCurrency", getFirstPayLeg()->getPaymentConversionCurrency());
+          	xml.AddElem("PaymentConversionIndex", getFirstPayLeg()->getPaymentConversionIndex().getStr());
+          	xml.AddElem("PaymentConversionLag", getFirstPayLeg()->getPaymentConversionLag());
+          	xml.AddElem("PayRollDay", getFirstPayLeg()->getPayRollDay());
+          	xml.AddElem("PayRollWeek", getFirstPayLeg()->getPayRollWeek());
+          	xml.AddElem("Position", getFirstPayLeg()->getPosition().getStr());
+
+          	std::string quoteCalendars = "";
+          	int quotecalSize = getFirstPayLeg()->getQuoteCalendars().size ();
+          	int quotecal = 1;
+          	std::set<std::string>::const_iterator quotecalIter = getFirstPayLeg()->getQuoteCalendars().begin () ;
+
+          	for (; quotecalIter != getFirstPayLeg()->getQuoteCalendars().end() ; ++quotecalIter)
+          	{
+          		if ( quotecal > quotecalSize )
+          			break;
+          		if ( quotecal > 1 )
+          		{
+          			quoteCalendars += ",";
+          			quoteCalendars += *quotecalIter;
+          		}
+          		else
+          			quoteCalendars = *quotecalIter;
+
+          		quotecal ++;
+          	}
+		   xml.AddElem("QuoteCalendars", quoteCalendars);
+		   //xml.AddElem("QuoteCalendars", getFirstPayLeg()->getQuoteCalendars().getStr());
+		   xml.AddElem("QuoteLag", getFirstPayLeg()->getQuoteLag());
+		   xml.AddElem("RateCutOff", getFirstPayLeg()->getRateCutOff());
+		   xml.AddElem("ResetAveraging", getFirstPayLeg()->getResetAveraging().getStr());
+		   xml.AddElem("ResetBusDay", getFirstPayLeg()->getResetBusDay()->getStr());
+		   // xml.AddElem("ResetBusDay", getFirstPayLeg()->getResetBusDay().getStr());
+		   xml.AddElem("ResetConvention", getFirstPayLeg()->getResetConvention().getStr());
+		   xml.AddElem("ResetFreq", getFirstPayLeg()->getResetFreq());
+		   xml.AddElem("ResetMarching", getFirstPayLeg()->getResetMarching()->getStr());
+		   xml.AddElem("ResetRollDay", getFirstPayLeg()->getResetRollDay());
+		   xml.AddElem("ResetRollWeek", getFirstPayLeg()->getResetRollWeek());
+		   xml.AddElem("ResetType", getFirstPayLeg()->getResetType().getStr());
+		   xml.AddElem("ScheduleCustomFlag", getFirstPayLeg()->getScheduleCustomFlag());
+		   xml.AddElem("Spread", getFirstPayLeg()->getSpread());
+		   xml.AddElem("StartDate", getFirstPayLeg()->getStartDate().string());
+		   xml.AddElem("StartDateRollFlag", getFirstPayLeg()->getStartDateRollFlag().getStr());
+		   xml.OutOfElem();
+
+		   xml.AddElem( "SwapLeg");
+		   xml.IntoElem();
+
+		   xml.AddElem("AccrualBusDay", getFirstReceiveLeg()->getAccrualBusDay()->getStr());
+
+		   std::string accrualCalendarsRec = "";
+		   int accrualCalSizeRec = getFirstPayLeg()->getAccrualCalendars().size ();
+		   int accrualCalRec = 1;
+
+		   std::set<std::string>::const_iterator accrualCalIterRec = getFirstReceiveLeg()->getAccrualCalendars().begin () ;
+
+		   for (; accrualCalIterRec != getFirstReceiveLeg()->getAccrualCalendars().end() ; ++accrualCalIterRec)
+		   {
+			   if ( accrualCalRec > accrualCalSizeRec )
+				   break;
+			   if ( accrualCalRec > 1 )
+			   {
+				   accrualCalendarsRec += ",";
+				   accrualCalendarsRec += *accrualCalIterRec;
+			   }
+			   else
+				   accrualCalendarsRec = *accrualCalIterRec;
+
+			   accrualCalRec ++;
+		   }
+		   	xml.AddElem("AccrualCalendars", accrualCalendarsRec);
+
+		   	xml.AddElem("AccrualFreq", getFirstReceiveLeg()->getAccrualFreq());
+     		xml.AddElem("AccrualMarching", getFirstReceiveLeg()->getAccrualMarching()->getStr());
+        	xml.AddElem("AccrualRollDay", getFirstReceiveLeg()->getAccrualRollDay());
+     		xml.AddElem("AccrualRollWeek", getFirstReceiveLeg()->getAccrualRollWeek());
+     		xml.AddElem("AmortRollDay", getFirstReceiveLeg()->getAmortRollDay());
+     		xml.AddElem("AmortRollWeek", getFirstReceiveLeg()->getAmortRollWeek());
+     		xml.AddElem("AmortAmount", getFirstReceiveLeg()->getAmortAmount());
+     		xml.AddElem("AmortBusDay", getFirstReceiveLeg()->getAmortBusDay()->getStr());
+     		//xml.AddElem("AmortBusDay", getFirstReceiveLeg()->getAmortBusDay().getStr());
+
+
+     		std::string amortCalendarsRec = "";
+     		int amortCalSizeRec = getFirstPayLeg()->getAmortCalendars().size ();
+     		int amortCalRec = 1;
+
+     		std::set<std::string>::const_iterator amortCalIterRec = getFirstPayLeg()->getAmortCalendars().begin () ;
+
+     		for (; amortCalIterRec != getFirstPayLeg()->getAmortCalendars().end() ; ++amortCalIterRec)
+     		{
+     			if ( amortCalRec > amortCalSizeRec )
+     				break;
+						if ( amortCalRec > 1 )
+					{
+							amortCalendarsRec += ",";
+							amortCalendarsRec += *amortCalIterRec;
+					}
+					else
+							amortCalendarsRec = *amortCalIterRec;
+
+					amortCalRec ++;
+			}
+     		xml.AddElem("AmortCalendars", amortCalendarsRec);
+     		// xml.AddElem("AmortCalendars", getFirstReceiveLeg()->getAmortCalendars().getStr());
+     		xml.AddElem("AmortEndDate", getFirstReceiveLeg()->getAmortEndDate().string());
+     		xml.AddElem("AmortFreq", getFirstReceiveLeg()->getAmortFreq());
+     		xml.AddElem("AmortMarching", getFirstReceiveLeg()->getAmortMarching()->getStr());
+     		xml.AddElem("AmortStartDate", getFirstReceiveLeg()->getAmortStartDate().string());
+     		xml.AddElem("AmortType", getFirstReceiveLeg()->getAmortType().getStr());
+     		xml.AddElem("AveragingMethod", getFirstReceiveLeg()->getAveragingMethod().getStr());
+     		xml.AddElem("BackStubDate", getFirstReceiveLeg()->getBackStubDate().string());
+     		xml.AddElem("BackStubManualRate", getFirstReceiveLeg()->getBackStubManualRate());
+     		xml.AddElem("CompFreq", getFirstReceiveLeg()->getCompFreq());
+     		xml.AddElem("CompoundingConv", getFirstReceiveLeg()->getCompoundingConv().getStr());
+     		xml.AddElem("Currency", getFirstPayLeg()->getCurrency()->getCurrencyCode());
+     		//xml.AddElem("Currency", getFirstReceiveLeg()->getCurrency().getStr());
+     		xml.AddElem("DayCount", getFirstReceiveLeg()->getDayCount()->getStr());
+     		xml.AddElem("DiscountCurve", getFirstReceiveLeg()->getDiscountCurve().getStr());
+     		xml.AddElem("EndDate", getFirstReceiveLeg()->getEndDate().string());
+     		xml.AddElem("EndDateRollFlag", getFirstReceiveLeg()->getEndDateRollFlag().getStr());
+     		xml.AddElem("EndOfMonthIndicator", getFirstReceiveLeg()->getEndOfMonthIndicator().getStr());
+     		xml.AddElem("FixedQuote", getFirstReceiveLeg()->getFixedQuote());
+     		xml.AddElem("FrontStubDate", getFirstReceiveLeg()->getFrontStubDate().string());
+     		xml.AddElem("FrontStubManualRate", getFirstReceiveLeg()->getFrontStubManualRate());
+     		xml.AddElem("GearFactor", getFirstReceiveLeg()->getGearFactor());
+
+     		std::string initialQuoteCalendarsRec = "";
+     		int initialQuoteCalSizeRec = getFirstPayLeg()->getInitialQuoteCalendars().size ();
+     		int initialCalRec = 1;
+
+     		std::set<std::string>::const_iterator initialCalIterRec = getFirstReceiveLeg()->getInitialQuoteCalendars().begin () ;
+
+     		for (; initialCalIterRec != getFirstReceiveLeg()->getAmortCalendars().end() ; ++initialCalIterRec)
+     		{
+     			if ( initialCalRec > initialQuoteCalSizeRec )
+     				break;
+     			if ( initialCalRec > 1 )
+     			{
+     				initialQuoteCalendarsRec += ",";
+     				initialQuoteCalendarsRec += *initialCalIterRec;
+     			}
+     			else
+     				initialQuoteCalendarsRec = *initialCalIterRec;
+
+     			initialCalRec ++;
+     		}
+     	    xml.AddElem("InitialQuoteCalendars", initialQuoteCalendarsRec);
+
+     	    xml.AddElem("InitialQuoteDate", getFirstReceiveLeg()->getInitialQuoteDate().string());
+     	    xml.AddElem("InitialQuoteLag", getFirstReceiveLeg()->getInitialQuoteLag());
+     	    xml.AddElem("LegNo", getFirstReceiveLeg()->getLegNo());
+     	    xml.AddElem("LegType", getFirstReceiveLeg()->getLegType().getStr());
+     	    xml.AddElem("MarketIndex", getFirstReceiveLeg()->getMarketIndex().getStr());
+     	    xml.AddElem("Notional", getFirstReceiveLeg()->getNotional());
+     	    xml.AddElem("NotionalExchange", getFirstReceiveLeg()->getNotionalExchange().getStr() );
+     	    xml.AddElem("PayBusDay", getFirstReceiveLeg()->getPayBusDay()->getStr());
+
+     	    std::string payCalendarsRec = "";
+     	    int payCalSizeRec = getFirstPayLeg()->getPayCalendars().size ();
+     	    int payCalRec = 1;
+
+     	    std::set<std::string>::const_iterator payCalIterRec = getFirstReceiveLeg()->getPayCalendars().begin () ;
+
+     	    for (; payCalIterRec != getFirstReceiveLeg()->getPayCalendars().end() ; ++payCalIterRec)
+     	    {
+     	    	if ( payCalRec > payCalSizeRec )
+     	    		break;
+     	    			if ( payCalRec > 1 )
+     	    				{
+     	    					payCalendarsRec += ",";
+     	    					payCalendarsRec += *payCalIterRec;
+     	    				}
+     	    		else
+     	    				payCalendarsRec = *payCalIterRec;
+
+     	    		payCalRec ++;
+     	    }
+     	    xml.AddElem("PayCalendars", payCalendarsRec);
+
+     	    // xml.AddElem("PayCalendars", getFirstReceiveLeg()->getPayCalendars().getStr());
+     	    xml.AddElem("PayFreq", getFirstReceiveLeg()->getPayFreq());
+     	    xml.AddElem("PayLag", getFirstReceiveLeg()->getPayLag());
+     	    xml.AddElem("PayMarching", getFirstReceiveLeg()->getPayMarching()->getStr());
+     	    xml.AddElem("PaymentConvention", getFirstReceiveLeg()->getPaymentConvention().getStr());
+     	    xml.AddElem("PaymentConversionCurrency", getFirstPayLeg()->getPaymentConversionCurrency()->getCurrencyCode());
+     	    // xml.AddElem("PaymentConversionCurrency", getFirstReceiveLeg()->getPaymentConversionCurrency()->getStr());
+     	    xml.AddElem("PaymentConversionIndex", getFirstReceiveLeg()->getPaymentConversionIndex().getStr());
+     	    xml.AddElem("PaymentConversionLag", getFirstReceiveLeg()->getPaymentConversionLag());
+     	    xml.AddElem("PayRollDay", getFirstReceiveLeg()->getPayRollDay());
+     	    xml.AddElem("PayRollWeek", getFirstReceiveLeg()->getPayRollWeek());
+     	    xml.AddElem("Position", getFirstReceiveLeg()->getPosition().getStr());
+
+     	    std::string quoteCalendarsRec = "";
+     	    int quoteCalSizeRec = getFirstPayLeg()->getQuoteCalendars().size ();
+     	    int quoteCalRec = 1;
+     	    std::set<std::string>::const_iterator quoteCalIterRec = getFirstReceiveLeg()->getQuoteCalendars().begin () ;
+
+     	    for (; quoteCalIterRec != getFirstReceiveLeg()->getQuoteCalendars().end() ; ++quoteCalIterRec)
+     	    {
+     	    	if ( quoteCalRec > quoteCalSizeRec )
+     	    		break;
+     	    	if ( quoteCalRec > 1 )
+     	    	{
+     	    		quoteCalendarsRec += ",";
+     	    		quoteCalendarsRec += *quoteCalIterRec;
+     	    	}
+     	    	else
+     	    		quoteCalendarsRec = *quoteCalIterRec;
+
+     	    	quoteCalRec ++;
+     	    }
+     	    xml.AddElem("QuoteCalendars", quoteCalendarsRec);
+     	    // xml.AddElem("QuoteCalendars", getFirstReceiveLeg()->getQuoteCalendars().getStr());
+     	    xml.AddElem("QuoteLag", getFirstReceiveLeg()->getQuoteLag());
+     	    xml.AddElem("RateCutOff", getFirstReceiveLeg()->getRateCutOff());
+     	    xml.AddElem("ResetAveraging", getFirstReceiveLeg()->getResetAveraging().getStr());
+     	    xml.AddElem("ResetBusDay", getFirstReceiveLeg()->getResetBusDay()->getStr());
+     	    // xml.AddElem("ResetBusDay", getFirstReceiveLeg()->getResetBusDay().getStr());
+     	    xml.AddElem("ResetConvention", getFirstReceiveLeg()->getResetConvention().getStr());
+     	    xml.AddElem("ResetFreq", getFirstReceiveLeg()->getResetFreq());
+     	    xml.AddElem("ResetMarching", getFirstReceiveLeg()->getResetMarching()->getStr());
+     	    xml.AddElem("ResetRollDay", getFirstReceiveLeg()->getResetRollDay());
+     	    xml.AddElem("ResetRollWeek", getFirstReceiveLeg()->getResetRollWeek());
+     	    xml.AddElem("ResetType", getFirstReceiveLeg()->getResetType().getStr());
+     	    xml.AddElem("ScheduleCustomFlag", getFirstReceiveLeg()->getScheduleCustomFlag());
+     	    xml.AddElem("Spread", getFirstReceiveLeg()->getSpread());
+     	    xml.AddElem("StartDate", getFirstReceiveLeg()->getStartDate().string());
+     	    xml.AddElem("StartDateRollFlag", getFirstReceiveLeg()->getStartDateRollFlag().getStr());
+     	    xml.OutOfElem();
+	        xml.OutOfElem();
+	        xml.OutOfElem();
+	        // you may need gointo as many times you have inner loops like pay schedulelist etc.
+	        // xml.AddElem( "SwapLegFields", getFirstPayLeg()->get swapleg fields  ); this is needed check later
+	      //  cout << xml.GetDoc() << endl; // check this print out every time you change some code
+	        return xml.GetDoc();
+}
+
+
+

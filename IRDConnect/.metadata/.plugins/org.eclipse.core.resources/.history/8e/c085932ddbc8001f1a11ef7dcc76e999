@@ -1,0 +1,92 @@
+#include<iostream>
+#include<string>
+#include "string.h"
+
+namespace IRDConnect {
+
+
+using namespace std;
+
+class SwapOption
+{
+public:
+SwapOption(){;};
+
+SwapOption(
+
+int buyFlag,
+String exerciseType,
+String expiryDate,
+String optionStyle,
+String optionType,
+String position,
+String swapEndDate,
+int swapLag,
+String swapRef,
+String swapStartDate,
+String tradeRef)
+
+{ _buyFlag=buyFlag;
+_exerciseType=exerciseType;
+ _expiryDate=expiryDate;
+ _optionStyle=optionStyle;
+ _optionType=optionType;
+ _position=position;
+ _swapEndDate=swapEndDate;
+ _swapLag=swapLag;
+ _swapRef=swapRef;
+  _swapStartDate=swapStartDate;
+ _tradeRef=tradeRef;
+       }
+int getBuyFlag (){return _buyFlag;}    
+void setBuyFlag(int buyFlag) { _buyFlag =buyFlag; }
+      
+String getExerciseType (){return _exerciseType;}    
+void setExerciseType(String exerciseType) { _exerciseType =exerciseType; }
+
+String getExpiryDate(){return _expiryDate;}
+void setExpiryDate(String expiryDate){ _expiryDate = expiryDate;}
+
+String getOptionStyle(){return _optionStyle;}
+void setOptionStyle(String optionStyle){ _optionStyle= optionStyle;}
+
+String getOptionType(){return _optionType;}
+void setOptionType(String optionType){ _optionType= optionType;}
+
+String getPosition(){return _position;}
+void setPosition(String position){ _position = position; }
+
+String getSwapStartDate(){return _swapStartDate;}
+void setSwapStartDate(String swapStartDate){ _swapStartDate = swapStartDate;}
+
+String getSwapEndDate(){return _swapEndDate;}
+void setSwapEndDate(String swapEndDate){ _swapEndDate =swapEndDate;}
+
+int getSwapLag(){return _swapLag;}
+void setSwapLag(int swapLag){ _swapLag =swapLag;}
+
+String getSwapRef(){return _swapRef;}
+void setSwapRef(String swapRef){ _swapRef =swapRef;}
+
+String getTradeRef(){return _tradeRef;}
+void setTradeRef(String tradeRef){ _tradeRef =tradeRef;}
+
+ 
+
+ 
+
+protected:
+int _buyFlag;
+String _exerciseType;
+String _expiryDate;
+String _optionStyle;
+String _optionType;
+String _position;
+String _swapEndDate;
+int _swapLag;
+String _swapRef;
+String _swapStartDate;
+String _tradeRef;
+};
+
+}

@@ -1,0 +1,74 @@
+#include<iostream>
+#include<string>
+#include "tradeTicket.h"
+
+using namespace std;
+
+namespace IRDConnect {
+
+
+TradeTicket::TradeTicket(String   alternateRef,
+String  bookingType,
+String  customerAccount,
+Date  earlyTermDate,
+String  earlyTermReason,
+String  externalSystem,
+String  externalRef,
+String  firmAccount,
+String  flowStatus,
+String  lastModifiedBy,
+String  lastVerifiedBy,
+String  legalEntity,
+String  location,
+String  matchingStatus,
+Date  maturityDate,
+String  modifiedTimeStamp,
+String  operationsRef,
+String  originalTradeRef,
+String  productType,
+String  salesPerson,
+Date  startDate,
+String  subType,
+Date  tradeDate,
+String  trader,
+String  tradeRef,
+String  tradeType,
+String  tradeStatus,
+String  verifiedTimeStamp,
+String  washAccount
+)
+{
+
+ _alternateRef=alternateRef;
+ _bookingType=bookingType;
+ _customerAccount=customerAccount;
+_externalSystem=externalSystem;
+ _externalRef=externalRef;
+ _earlyTermDate=earlyTermDate;
+  _earlyTermReason=earlyTermReason;
+ _firmAccount=firmAccount;
+ _flowStatus=flowStatus;
+ _location=location;
+ _legalEntity=legalEntity;
+ _lastModifiedBy=lastModifiedBy;
+ _lastVerifiedBy=lastVerifiedBy;
+ _modifiedTimeStamp=modifiedTimeStamp;
+ _matchingStatus=matchingStatus;
+ _maturityDate=maturityDate;
+ _operationsRef=operationsRef;
+ _originalTradeRef=originalTradeRef;
+ _productType=productType;
+ _subType=subType;
+ _salesPerson=salesPerson;
+ _startDate=startDate;
+ _trader=trader;
+ _tradeType=tradeType;
+ _tradeStatus=tradeStatus;
+ _tradeRef=tradeRef;
+ _tradeDate=tradeDate;
+ _verifiedTimeStamp=verifiedTimeStamp;
+ _washAccount=washAccount;
+
+}
+
+}

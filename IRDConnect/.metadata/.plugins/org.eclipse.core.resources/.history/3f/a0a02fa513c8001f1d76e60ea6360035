@@ -1,0 +1,97 @@
+/*
+ * Errors.cpp
+ *
+ *  Created on: 05-Sep-2010
+ *      Author: vishist
+ */
+
+#include "errors.h"
+#include <stdexcept>
+
+
+namespace IRDConnect {
+
+
+using namespace std;
+
+
+    std::string trim(const std::string& file) {
+        // find last path separator
+        std::string::size_type n = file.find_last_of("/\\");
+        if (n == std::string::npos)
+            // return the whole thing--it's a naked file name anyway
+            return file;
+        else
+            // keep the file name only
+            return file.substr(n+1);
+    }
+
+    #if defined(_MSC_VER) || defined(__BORLANDC__)
+    // allow Visual Studio integration
+    std::string format(
+                       #ifdef QL_ERROR_LINES
+                       const std::string& file, long line,
+                       #else
+                       const std::string&, long,
+                       #endif
+                       #ifdef QL_ERROR_FUNCTIONS
+                       const std::string& function,
+                       #else
+                       const std::string&,
+                       #endif
+                       const std::string& message) {
+        std::ostringstream msg;
+        #ifdef QL_ERROR_FUNCTIONS
+        if (function != "(unknown)")
+            msg << function << ": ";
+        #endif
+        #ifdef QL_ERROR_LINES
+        msg << "\n  " << file << "(" << line << "): \n";
+        #endif
+        msg << message;
+        return msg.str();
+    }
+    #else
+    // use gcc format (e.g. for integration with Emacs)
+    std::string format(const std::string& file, long line,
+                       const std::string& function,
+                       const std::string& message) {
+        std::ostringstream msg;
+        #ifdef QL_ERROR_LINES
+        msg << "\n" << file << ":" << line << ": ";
+        #endif
+        #ifdef QL_ERROR_FUNCTIONS
+        if (function != "(unknown)")
+            msg << "In function `" << function << "': \n";
+        #endif
+        msg << message;
+        return msg.str();
+    }
+    #endif
+
+}
+
+
+
+    // must be defined by the user
+    void assertion_failed(char const * expr, char const * function,
+                          char const * file, long line) {
+        throw std::runtime_error(IRDConnect::format(file, line, function,
+                                        "Boost assertion failed: " +
+                                        std::string(expr)));
+
+
+}
+
+    IRDConnect::Error::Error(const std::string& file, long line,
+                 const std::string& function,
+                 const std::string& message) {
+        message_ = boost::shared_ptr<std::string>(new std::string(
+                                      format(file, line, function, message)));
+    }
+    const char* IRDConnect::Error::what() const throw () {
+        return message_->c_str();
+    }
+
+
+

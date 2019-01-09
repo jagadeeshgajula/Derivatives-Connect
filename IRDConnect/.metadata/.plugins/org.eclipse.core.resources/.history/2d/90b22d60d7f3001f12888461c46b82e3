@@ -1,0 +1,26 @@
+#include  "bond.h"
+
+using  namespace  IRDConnect;
+
+Bond::Bond (
+String   bond,
+String   currency,
+String   issuer,
+String   market,
+Date       maturityDate,
+double        yield )
+
+{
+   _bond		= bond;
+   _currency	=	currency;
+   _issuer		=	issuer;
+   _market		=	market;
+   _maturityDate =	maturityDate;
+   _yield		=	yield;
+
+}
+
+Bond::~Bond()
+{
+	// do nothing
+}

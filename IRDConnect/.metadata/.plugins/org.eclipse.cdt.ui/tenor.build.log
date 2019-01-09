@@ -1,0 +1,9 @@
+
+**** Build of configuration Debug for project tenor ****
+
+make all 
+Building file: ../tenor.cpp
+Invoking: GCC C++ Compiler
+g++ -I/home/vishist/IRDConnect/include -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"tenor.d" -MT"tenor.d" -o"tenor.o" "../tenor.cpp"
+../tenor.cpp:1:19: error: tenor.h: No such file or directory
+make: *** [tenor.o] Error 1

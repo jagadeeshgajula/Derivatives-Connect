@@ -1,0 +1,24 @@
+/*
+ * IRDTimeUnit.cpp
+ *
+ *  Created on: 05-Sep-2010
+ *      Author: vishist
+ */
+#include "IRDTimeUnit.h"
+#include "IRDTypes.h"
+#include "errors.h"
+
+ std::ostream& operator<<(std::ostream& out, const TimeUnit& timeunit) {
+        switch (timeunit) {
+            case Years:
+                return out << "Years";
+            case Months:
+                return out << "Months";
+            case Weeks:
+                return out << "Weeks";
+            case Days:
+                return out << "Days";
+            default:
+                QL_FAIL("unknown TimeUnit");
+        }
+    }

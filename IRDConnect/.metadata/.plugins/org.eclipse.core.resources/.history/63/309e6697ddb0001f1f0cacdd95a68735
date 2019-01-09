@@ -1,0 +1,17 @@
+/*
+ * DayCountConvention.cpp
+ *
+ *  Created on: 26-Aug-2010
+ *      Author: vishist
+ */
+
+#include "DayCountConvention.h"
+
+DayCountConvention::DayCountConvention() {
+	// TODO Auto-generated constructor stub
+
+}
+
+DayCountConvention::~DayCountConvention() {
+	// TODO Auto-generated destructor stub
+}

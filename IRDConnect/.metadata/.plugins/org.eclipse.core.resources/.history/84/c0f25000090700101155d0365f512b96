@@ -1,0 +1,32 @@
+/*
+ * amortSchedule.cpp
+ *
+ *  Created on: 08-Nov-2010
+ *      Author: vishist
+ */
+
+#include "amortSchedule.h"
+
+using namespace IRDConnect;
+
+AmortSchedule::AmortSchedule()
+{
+	// nothing to be done
+}
+
+AmortSchedule::AmortSchedule (
+
+Date 		startDate,
+Date 		endDate,
+double 		amortNotional )
+{
+_startDate 		= startDate;
+_endDate 		= endDate;
+_amortNotional 	= amortNotional;
+
+}
+
+AmortSchedule::~AmortSchedule()
+{
+	// do nothing
+}

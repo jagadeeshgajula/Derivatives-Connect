@@ -1,0 +1,10 @@
+11:34:38 **** Build of configuration Debug for project busdayconv ****
+make all 
+Building file: ../busDayConv.cpp
+Invoking: GCC C++ Compiler
+g++ -I/home/vishist/IRDConnect/include -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"busDayConv.d" -MT"busDayConv.o" -o "busDayConv.o" "../busDayConv.cpp"
+/bin/sh: g++: command not found
+make: *** [busDayConv.o] Error 127
+
+11:34:39 Build Failed. 2 errors, 0 warnings. (took 1s.512ms)
+

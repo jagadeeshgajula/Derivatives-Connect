@@ -1,0 +1,45 @@
+/*
+ * revalRates.cpp
+ *
+ *  Created on: 12-Nov-2010
+ *      Author: vishist
+ */
+
+#include <iostream>
+#include "revalRates.h"
+using namespace std;
+
+using namespace IRDConnect;
+
+RevalRates::RevalRates(
+String quoteId,
+Date quoteDate,
+String quoteType,
+double rate,
+String makerId,
+Date makerTimestamp,
+String checkerId,
+Date checkerTimestamp,
+Date currentDate,
+String ratesetMode,
+double tolerance )
+{
+
+_quoteId			=	quoteId;
+_quoteDate			=	quoteDate;
+_quoteType			=	quoteType;
+_rate				=	rate;
+_makerId			=	makerId;
+_makerTimestamp		=	makerTimestamp;
+_checkerId			=	checkerId;
+_checkerTimestamp	=	checkerTimestamp;
+_currentDate		=	currentDate;
+_ratesetMode		=	ratesetMode;
+_tolerance			=	tolerance;
+}
+
+RevalRates::~RevalRates()
+{
+	//do nothing
+}
+

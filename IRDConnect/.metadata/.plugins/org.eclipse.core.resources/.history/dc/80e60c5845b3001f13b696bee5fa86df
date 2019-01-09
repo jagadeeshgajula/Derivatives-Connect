@@ -1,0 +1,87 @@
+/*
+ * IRDPeriod.h
+ *
+ *  Created on: 28-Aug-2010
+ *      Author: vishist
+ */
+
+#ifndef IRDPERIOD_H_
+#define IRDPERIOD_H_
+
+class IRDPeriod {
+public:
+	IRDPeriod();
+	virtual ~IRDPeriod();
+
+
+	    static const IRDPeriod * busdays;
+	    static const IRDPeriod * days;
+	    static const IRDPeriod * months;
+
+	    static const IRDPeriod * monthsForceToEnd;
+	    static const IRDPeriod * weeks;
+	    static const IRDPeriod * years;
+
+
+
+	    static const IRDPeriod  * futures;
+
+	    static const IRDPeriod  * basis[100];
+
+
+	    static const IRDPeriod   * jump;
+
+
+	    virtual Date add( const date  & date,
+	                                     int    amount,
+	                                     const Calendar * cal = 0 ) const = 0;
+
+
+
+	    char   getch() const;
+
+
+
+	    int    operator == ( const char ch ) const;
+
+
+
+	    unsigned int                getEquivCalDays() const;
+
+
+	    typedef enum { PERIOD_BEFORE_NUMBER, PERIOD_AFTER_NUMBER } PositionInTenor;
+
+	    PositionInTenor getPositionInTenor() const;
+
+
+	    static const IRDPeriod   * find( const char ch );
+
+	    static void getBasisSpreadSeries (char * basisSpreadSeries);
+
+	protected:
+
+	    IRDPeriod( char    ch,
+	            unsigned int        equivCalDays,
+	            PositionInTenor     positionInTenor );
+
+	    virtual ~IRDPeriod();
+
+	private:
+
+	    const char   _ch;
+	    const unsigned int _equivCalDays;
+	    const PositionInTenor   _positionInTenor;
+
+	    static void    init();
+	    static void    cleanup();
+
+	    friend class   PeriodInit;
+
+
+
+	    IRDPeriod( const IRDPeriod & );
+	    void operator = ( const IRDPeriod & );
+
+};
+
+#endif /* IRDPERIOD_H_ */

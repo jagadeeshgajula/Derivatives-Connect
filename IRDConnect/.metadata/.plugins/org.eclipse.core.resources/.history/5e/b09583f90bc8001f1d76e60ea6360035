@@ -1,0 +1,68 @@
+#include<iostream>
+#include<string>
+#include "String.h"
+
+
+
+using namespace std;
+
+
+class PaySchedule
+{
+      public:
+PaySchedule(){;};
+
+PaySchedule(
+double amount,
+double convertedAmount,
+String couponEndDate,
+String couponStartDate,
+int legNumber,
+double notional,
+String paymentDate,
+String paymentType)
+{
+_amount=amount;
+_convertedAmount=convertedAmount;
+_couponStartDate =couponStartDate;
+_couponEndDate =couponEndDate;
+_legNumber=legNumber;
+_notional=notional;
+_paymentDate =paymentDate;
+_paymentType=paymentType;
+}
+
+String getCouponStartDate(){return _couponStartDate;}
+void setCouponStartDate(String couponStartDate){ _couponStartDate=couponStartDate;}
+
+String getCouponEndDate() { return  _couponEndDate;}
+void setCouponEndDate(String couponEndDate) { _couponEndDate = couponEndDate; }
+
+String getPaymentDate(){return _paymentDate;}
+void setPaymentDate(String paymentDate){ _paymentDate = paymentDate; }
+
+double getAmount(){return _amount;}
+void setAmount(float amount){ _amount=amount;}
+
+int getLegNumber(){return _legNumber;}
+void setLegNumber(int legNumber){ _legNumber = legNumber; }
+
+double getNotional(){return _notional;}
+void setNotional(float notional){ _notional = notional;}
+
+double getConvertedAmount(){return _convertedAmount;}
+void setConvertedAmount(float convertedAmount){ _convertedAmount=convertedAmount;}
+
+String getPaymentType(){return _paymentType;}
+void setPaymentType (String paymentType){ _paymentType=paymentType;}
+
+protected:
+double _amount;
+double _convertedAmount;
+String _couponStartDate;
+String _couponEndDate;
+int _legNumber;
+double _notional;
+String _paymentDate;
+String _paymentType;
+};

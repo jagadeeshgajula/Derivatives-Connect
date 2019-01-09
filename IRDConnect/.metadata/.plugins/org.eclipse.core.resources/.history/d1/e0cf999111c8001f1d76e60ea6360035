@@ -1,0 +1,370 @@
+#include <cstdio>
+#include <stdio.h>
+#include <memory.h>
+#include <iostream> 
+#include "string.h"
+
+using namespace std; 
+
+
+static char *
+freshCopy( const char *str )
+{
+    return str ? strcpy( new char[strlen( str ) + 1], str ) : 0;
+}
+
+static int
+cmpStringPtr( const char *str1, const char *str2 )
+{
+    if ( (str1 && !str2) || (!str1 && str2) )
+        return 0;
+
+    if ( !str1 && !str2 )
+        return 1;
+
+    return !strcmp( str1, str2 );
+}
+
+String&
+String::operator=( const char *str )
+{
+    if ( str != 0 )
+    {
+         if ( _str != 0 )
+         {
+              if ( str != _str ) 
+              {
+                   if ( strlen ( str ) > strlen ( _str ) )
+                   { 
+                        delete [] _str;
+                        _str = freshCopy ( str ) ;
+                   }
+                   else
+                        strcpy ( _str, str ) ;
+              }
+         }
+         else
+              _str = freshCopy ( str ) ;
+    }
+    else
+    {
+         if ( _str != 0 )  
+              delete [] _str;
+         _str = 0 ;
+    }
+
+    return *this;
+}
+
+String&
+String::operator=( const String  &str )
+{
+    if ( str._str != 0 )
+    {
+         if ( _str != 0 )
+         {
+              if ( this != &str ) 
+              {
+                   if ( strlen ( str._str ) > strlen ( _str ) )
+                   { 
+                        delete [] _str;
+                        _str = freshCopy( str._str );
+                   }
+                   else
+                        strcpy ( _str, str._str ) ;
+              }
+         }
+         else
+              _str = freshCopy ( str._str ) ;
+    }
+    else
+    {
+         if ( _str != 0 )
+              delete [] _str;
+         _str = 0 ;          
+    }
+
+    return *this;
+}
+
+String&
+String::operator+=( const char c )
+{
+    if ( !_str ) {
+        char str[2];  str[0] = c;  str[1] = '\0';
+        _str = freshCopy( str );
+    } else {
+        int len = strlen( _str ) + 1 + 1;
+        char *temp = new char[len];
+        strcpy( temp, _str );
+        temp[len-2] = c;
+        temp[len-1] = '\0';
+        delete _str;
+        _str = temp;
+    }
+    return *this;
+}
+
+String&
+String::operator+=( const char *str )
+{
+    if (!str)
+        return *this;
+    if ( !_str ) {
+        _str = freshCopy( str );
+    } else {
+        int len = strlen( _str ) + strlen( str ) + 1;
+        char *temp = new char[len];
+        strcpy( temp, _str );
+        strcat( temp, str );
+        delete [] _str;
+        _str = temp;
+    }
+    return *this;
+}
+
+String&
+String::operator+=( const String  &str )
+{
+    *this += str._str;
+    return *this;
+}
+
+int
+String::operator!() const
+{
+    return !_str;
+}
+
+int
+String::operator==( const char *str ) const
+{
+    return cmpStringPtr( _str, str );
+}
+
+int
+String::operator==( const String  &str ) const
+{
+    return cmpStringPtr( _str, str._str );
+}
+
+
+int
+String::strcmp(const char *str1, const char *str2)
+{
+    if (str1) {
+        if (str2)
+            return ::strcmp(str1, str2);
+        else
+            return 1;
+    }
+    else {
+        if (str2)
+            return -1;
+        else
+            return 0;
+    }
+}
+
+
+String::String( const char *str ) :
+    _str( freshCopy( str ) )
+{
+}
+
+String::String( const char * str, const int len ) :
+    _str( str ? (char *)memcpy( new char[len + 1], str, len ) : 0 )
+{
+    if ( _str )
+        _str[len] = '\0';
+}
+
+String::String( const String  &str ) :
+    _str( freshCopy( str._str ) )
+{
+}
+
+String::~String()
+{
+    delete [] _str;
+}
+
+String::operator const char *() const
+{
+    return _str;
+}
+
+char* String::getStr() const
+{
+    return _str;
+}
+
+int
+String::operator!=( const char *str ) const
+{
+    return !(*this == str);
+}
+
+int
+String::operator!=( const String  &str ) const
+{
+    return !(*this == str);
+}
+
+
+char &
+String::operator[]( const unsigned index ) const
+{
+    unsigned i = ( strlen( _str ) <= index ) ? ( strlen( _str ) - 1 ) : index;
+    return _str[i];
+}
+
+int
+operator==( const char *spStr, const String  &str )
+{
+    return str == spStr;
+}
+
+int
+operator!=( const char *spStr, const String  &str )
+{
+    return str != spStr;
+}
+
+ostream &
+operator <<( ostream &os, const String  &str )
+    {
+        if (str==NULL)       
+       return os << "";
+      else
+                                        
+     return os << (const char *)str; }
+
+void String::trimRight()
+{
+    
+    if (! _str || _str[0] == '\0')
+       return;
+
+    int len = strlen(_str);
+  
+    char *ptr = _str + len - 1;
+    
+    do
+    {
+        if (*ptr != ' ')
+            break;
+
+        ptr--;
+
+    } while (_str - ptr <= 0);
+
+    ptr++;
+  
+    if (ptr - _str == len)
+        return;
+
+    *ptr = '\0';
+
+    char *str_old = _str;
+    _str = freshCopy( _str );
+    delete [] str_old;    
+}
+void String::trimLeft()
+{
+        if (! _str)
+       return;
+
+    char *str_old = _str;
+   
+    for ( ; *_str == ' '; _str++ );
+       
+    if (_str == str_old)
+       return;
+
+    _str = freshCopy( _str );
+    delete [] str_old;   
+}
+
+
+ 
+String  insertCharInStr
+    ( 
+    const String  & str,      
+    char cExisting,             
+    char cIns                  
+    )
+{
+    
+    char * buf= new char[ 2 * strlen( str ) + 1 ];
+
+    
+    const char * pOld = str;
+    char * pNew = buf;
+    
+    while ( *pOld )
+    {
+        if ( cExisting == *pOld ) *pNew++ = cIns;
+        *pNew++ = *pOld++;
+    }
+    *pNew = '\0';
+
+    String  strNew(buf);
+    delete buf;
+
+    return String(strNew);
+}
+
+
+ String  operator + (const char *a, const String  &b )
+{
+ String  x(a);
+ x += b;
+ return String(x._str);
+}
+
+
+void String::toUpper ()
+
+{
+if ( _str != 0 )
+{
+int Len = strlen ( _str ) ;
+       for ( int i = 0; i < Len ; i++ )
+       {
+            _str[i] = ( char ) toupper ( ( int ) _str[i] ) ;
+       }
+   }
+} 
+
+void String::toLower ()
+
+{
+   if ( _str != 0 )
+   {
+       int Len = strlen ( _str ) ;
+       for ( int i = 0; i < Len ; i++ )
+       {
+            _str[i] = ( char ) tolower ( ( int ) _str[i] ) ;
+       }
+   }
+} 
+
+
+String  String:: operator + ( const String  &b)
+{
+String  x(_str);
+ x += b;
+ return String(x._str);
+}
+
+
+String  String:: operator + ( const char *b)
+{
+String  x(_str);
+ x += b;
+ return String(x._str);
+
+
+}
+

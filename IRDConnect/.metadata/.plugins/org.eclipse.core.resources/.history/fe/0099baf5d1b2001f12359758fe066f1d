@@ -1,0 +1,71 @@
+/*
+ * DayCountConvention.h
+ *
+ *  Created on: 26-Aug-2010
+ *      Author: vishist
+ */
+
+#include "calendar.h"
+#include<iostream>
+
+using namespace std;
+using namespace boost::gregorian;
+
+#ifndef DAYCOUNTCONVENTION_H_
+#define DAYCOUNTCONVENTION_H_
+
+
+class DayCountConvention {
+public:
+	DayCountConvention();
+	virtual ~DayCountConvention();
+
+	  virtual double getFraction ( const boost::gregoria::date      d1,
+	                                 const boost::gregorian::date      d2,
+	                                 const bool          finalPeriod   = FALSE,
+	                                 const bool          stubPeriod    = FALSE,
+	                                 const int           periodPerYear = 0 ) const = 0 ;
+
+
+	   virtual double getPeriodFraction ( const boost::gregorian::date      & actualStart,
+	                                       const boost::gregorian::date      & actualEnd,
+	                                       const boost::gregorian::date      & psuedoStart,
+	                                       const boost::gregorian::date      & psuedoEnd,
+	                                       const int             numPeriodPerYear,
+	                                       const bool            finalPeriod = FALSE ) const = 0;
+
+	    virtual int getDays ( const boost::gregorian::date & startDate,
+	                          const boost::gregorian::date & endDate ) const
+	    {
+	        return endDate - startDate;
+	    }
+
+
+	    virtual double getDaysInYear( Year year ) const = 0;
+	    static const DayCountConvention * find ( const std::string & name ) ;
+
+	    //virtual void setCalendar ( const SimpleCalendarList & ) {} ;
+	    //virtual const SimpleCalendarList * getCalendar ()       { return 0 ; }
+
+	protected:
+
+	    DayCountConvention (const std::string name);
+
+
+	private:
+
+	    static void init    () ;
+	    static void cleanup ();
+
+
+	    DayCountConvention ( const DayCountConvention & );
+	    void operator = ( const DayCountConvention & );
+
+
+	       typedef std::map<std::string, const DayCountConvention *> DccMap ;
+	       static DccMap & getDccMap ( ) ;
+
+
+};
+
+#endif /* DAYCOUNTCONVENTION_H_ */

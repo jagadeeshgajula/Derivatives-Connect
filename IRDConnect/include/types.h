@@ -1,0 +1,94 @@
+/*
+ * IRDType.h
+ *
+ *  Created on: 05-Sep-2010
+ *      Author: vishist
+ */
+
+#ifndef IRDTYPES_H_
+#define IRDTYPES_H_
+#include "defines.h"
+//#include "IRDMathConstants.h"
+#include <cstddef>
+
+using namespace std;
+using namespace IRDConnect;
+
+namespace IRDConnect {
+
+
+	typedef QL_INTEGER Integer;
+
+    //! large integer number
+    /*! \ingroup types */
+
+	typedef QL_BIG_INTEGER BigInteger;
+
+    //! positive integer
+    /*! \ingroup types */
+    typedef unsigned QL_INTEGER Natural;
+
+    //! large positive integer
+    typedef unsigned QL_BIG_INTEGER BigNatural;
+
+    //! real number
+    /*! \ingroup types */
+    typedef QL_REAL Real;
+
+    //! large integer number
+    /*! \ingroup types */
+    typedef long BigInteger;
+
+    //! positive integer
+    /*! \ingroup types */
+    typedef unsigned int Natural;
+
+    //! large positive integer
+    typedef unsigned long BigNatural;
+
+    //! real number
+    /*! \ingroup types */
+    typedef double Real;
+
+    //! decimal number
+    /*! \ingroup types */
+    typedef double Decimal;
+
+    //! size of a container
+    /*! \ingroup types */
+    typedef std::size_t Size;
+
+    //! continuous quantity with 1-year units
+    /*! \ingroup types */
+    typedef double Time;
+
+    //! discount factor between dates
+    /*! \ingroup types */
+    typedef double DiscountFactor;
+
+    //! interest rates
+    /*! \ingroup types */
+    typedef double Rate;
+
+    //! spreads on interest rates
+    /*! \ingroup types */
+    typedef double Spread;
+
+    //! volatility
+    /*! \ingroup types */
+    typedef double Volatility;
+
+
+// limits used as such
+#define QL_MIN_INTEGER         ((std::numeric_limits<QL_INTEGER>::min)())
+#define QL_MAX_INTEGER         ((std::numeric_limits<QL_INTEGER>::max)())
+#define QL_MIN_REAL           -((std::numeric_limits<QL_REAL>::max)())
+#define QL_MAX_REAL            ((std::numeric_limits<QL_REAL>::max)())
+#define QL_MIN_POSITIVE_REAL   ((std::numeric_limits<QL_REAL>::min)())
+#define QL_EPSILON             ((std::numeric_limits<QL_REAL>::epsilon)())
+// specific values---these should fit into any Integer or Real
+#define QL_NULL_INTEGER        ((std::numeric_limits<int>::max)())
+#define QL_NULL_REAL           ((std::numeric_limits<float>::max)())
+
+}
+#endif /* IRDTYPES_H_ */

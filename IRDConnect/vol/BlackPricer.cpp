@@ -1,0 +1,104 @@
+/*
+ * BlackPricer.cpp
+ *
+ *  Created on: 15-Feb-2013
+ *      Author: vishist
+ */
+
+#include "BlackPricer.h"
+#include <cmath>
+
+using namespace IRDConnect;
+
+namespace IRDConnect {
+// standard normal density function
+    double normalDensity(double t) {
+        return 0.398942280401433*exp(-t*t/2);
+    }
+
+    // standard normal cumulative distribution function
+    double normalCumDist(double x){
+        double result;
+        if (x<-7.) {
+            result = normalDensity(x)/sqrt(1.+x*x);
+        } else if (x>7.) {
+            result = 1. - normalCumDist(-x);
+        } else {
+            result = 0.2316419;
+            static double a[5] = {0.31938153,-0.356563782,1.781477937,-1.821255978,1.330274429};
+            result=1./(1+result*fabs(x));
+            result=1-normalDensity(x)*(result*(a[0]+result*(a[1]+result*(a[2]+result*(a[3]+result*a[4])))));
+            if (x<=0.) result=1.-result;
+        }
+        return result;
+    }
+
+
+    void calcD1D2(
+    			 double & d1,
+    			 double & d2,
+    			 double   volatility,
+    			 double   dcf,
+    			 double   fwdYield,
+    			 double   strikeYield)
+    {
+
+
+      double logYRatio = log( fwdYield / strikeYield );
+      double sqDcf = sqrt( dcf );
+
+      d1 = ( logYRatio +
+    	 0.5 * volatility * volatility * dcf ) / volatility / sqDcf;
+
+      d2 = d1 - volatility * sqDcf;
+
+    }
+
+}
+
+double
+BlackPricer:: getIntrinsicValue( double price,
+                                        double strikePrice,
+                                        bool   isCall )
+{
+    double result = isCall ? price       - strikePrice
+                           : strikePrice - price;
+
+    if ( result < 0.0 )
+        result = 0.0;
+
+    return result;
+}
+
+double
+BlackPricer::calcBlackValue( double fwd, double strike,
+			       double vol, double t, double phi )
+{
+
+	if( t <= 0.000001 ) return getIntrinsicValue(fwd, strike, (bool)(phi>0.0));
+    double d1, d2;
+
+    // Determine the values of d1 and d2 given the above
+    // input parameters.
+    calcD1D2(d1, d2, vol, t, fwd, strike);
+
+    // Compute and return the black option value.
+
+	double cdfD1 = normalCumDist(phi * d1);
+	double cdfD2 = normalCumDist(phi * d2);
+
+	double finalResult = phi * ((fwd *  cdfD1) - (strike * cdfD2));
+
+
+	return finalResult;
+
+
+}
+BlackPricer::BlackPricer() {
+	// TODO Auto-generated constructor stub
+
+}
+
+BlackPricer::~BlackPricer() {
+	// TODO Auto-generated destructor stub
+}

@@ -1,0 +1,10 @@
+11:34:45 **** Build of configuration Debug for project dataformat ****
+make all 
+Building file: ../dataFormat.cpp
+Invoking: GCC C++ Compiler
+g++ -I/home/vishist/IRDConnect/include -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"dataFormat.d" -MT"dataFormat.o" -o "dataFormat.o" "../dataFormat.cpp"
+/bin/sh: g++: command not found
+make: *** [dataFormat.o] Error 127
+
+11:34:46 Build Failed. 2 errors, 0 warnings. (took 790ms)
+

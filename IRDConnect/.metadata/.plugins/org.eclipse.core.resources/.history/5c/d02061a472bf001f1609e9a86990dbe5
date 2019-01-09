@@ -1,0 +1,105 @@
+################################################################################
+# Automatically-generated file. Do not edit!
+################################################################################
+
+# Add inputs and outputs from these tool invocations to the build variables 
+CPP_SRCS += \
+../IRDDataFormat.cpp \
+../IRDDate.cpp \
+../IRDErrors.cpp \
+../IRDFrequency.cpp \
+../IRDMarchingConv.cpp \
+../IRDPeriod.cpp \
+../IRDString.cpp \
+../IRDTenor.cpp \
+../IRDTimeUnit.cpp \
+../IRDWeekDay.cpp \
+../assetSwaps.cpp \
+../busdayconv.cpp \
+../calendar.cpp \
+../calendarUtil.cpp \
+../compositeCalendar.cpp \
+../dayCountConvention.cpp \
+../externalSystemTrades.cpp \
+../fXResets.cpp \
+../manualPayments.cpp \
+../optionSchedule.cpp \
+../paySchedule.cpp \
+../schedule.cpp \
+../simpleCalendar.cpp \
+../stubResets.cpp \
+../swapLegs.cpp \
+../swapOption.cpp \
+../tradeModificationReasons.cpp \
+../tradeTicket.cpp 
+
+OBJS += \
+./IRDDataFormat.o \
+./IRDDate.o \
+./IRDErrors.o \
+./IRDFrequency.o \
+./IRDMarchingConv.o \
+./IRDPeriod.o \
+./IRDString.o \
+./IRDTenor.o \
+./IRDTimeUnit.o \
+./IRDWeekDay.o \
+./assetSwaps.o \
+./busdayconv.o \
+./calendar.o \
+./calendarUtil.o \
+./compositeCalendar.o \
+./dayCountConvention.o \
+./externalSystemTrades.o \
+./fXResets.o \
+./manualPayments.o \
+./optionSchedule.o \
+./paySchedule.o \
+./schedule.o \
+./simpleCalendar.o \
+./stubResets.o \
+./swapLegs.o \
+./swapOption.o \
+./tradeModificationReasons.o \
+./tradeTicket.o 
+
+CPP_DEPS += \
+./IRDDataFormat.d \
+./IRDDate.d \
+./IRDErrors.d \
+./IRDFrequency.d \
+./IRDMarchingConv.d \
+./IRDPeriod.d \
+./IRDString.d \
+./IRDTenor.d \
+./IRDTimeUnit.d \
+./IRDWeekDay.d \
+./assetSwaps.d \
+./busdayconv.d \
+./calendar.d \
+./calendarUtil.d \
+./compositeCalendar.d \
+./dayCountConvention.d \
+./externalSystemTrades.d \
+./fXResets.d \
+./manualPayments.d \
+./optionSchedule.d \
+./paySchedule.d \
+./schedule.d \
+./simpleCalendar.d \
+./stubResets.d \
+./swapLegs.d \
+./swapOption.d \
+./tradeModificationReasons.d \
+./tradeTicket.d 
+
+
+# Each subdirectory must supply rules for building sources it contributes
+%.o: ../%.cpp
+	@echo 'Building file: $<'
+	@echo 'Invoking: GCC C++ Compiler'
+	g++ -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -o"$@" "$<"
+	@echo 'Finished building: $<'
+	@echo ' '
+
+

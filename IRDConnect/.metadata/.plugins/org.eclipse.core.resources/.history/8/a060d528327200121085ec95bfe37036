@@ -1,0 +1,447 @@
+/*
+ * schedule.cpp
+ *
+ *  Created on: 29-Sep-2010
+ *      Author: vishist
+ */
+
+#include<iostream>
+#include <fstream>
+#include <string>
+#include "tradeTicket.h"
+#include "date.h"
+#include "swapTicket.h"
+#include "swapLeg.h"
+#include "currency.h"
+#include "busDayConv.h"
+#include "marchingConv.h"
+#include "dayCountConv.h"
+#include "frequency.h"
+#include "calendarUtil.h"
+#include "fixingRates.h"
+#include "fraTicket.h"
+#include "capFloorTicket.h"
+#include "swapOption.h"
+#include "util.h"
+#include <set>
+#include "irdXML.h"
+//#include <boost/math/distributions.hpp>
+//#include <ql/quantlib.hpp>
+
+//using namespace QuantLib;
+using namespace std;
+using  namespace IRDConnect;
+using namespace IRDdetail;
+//using namespace boost;
+
+
+
+int main(int arvc, char * arv[])
+{
+/*
+  CMarkup xml("<TradeTicket>hi</TradeTicket>\r\n");
+ 	std::string tradeRef;
+	 xml.FindElem("TradeTicket") ;
+	  tradeRef = MCD_2PCSZ(xml.GetData());
+	  xml.Save("/home/vishist/Activity/" + tradeRef + ".xml");
+*/
+
+	//Date valDate(15,10,2010);
+	//Date::setValuationDate(15,10,2010); // set valuation date i.e. today
+	//cout << "Today is : " << Date::todaysDate() << endl;
+	cout << "Today is : " << Date::todaysDate().string() << endl;
+
+	Util::setValuationDate( Date::todaysDate());
+
+	logFile.close();
+	logFile.open("/home/vishist/IRD.log");
+
+	Currency::init();
+	FixingRates::init();
+
+	Date cDate(05,11,2012);
+	Util::setCurveDate(cDate) ;
+
+	cout << "Curve Date " << Util::getCurveDate() << endl;
+
+	boost::shared_ptr<IRDConnect::Curve>  curvePtr = CurveCache::instance().find(Util::getCurveDate(), "GBPLIBOR") ; //(dates , zcdfs ) ;
+	//curvePtr->print();
+
+	//if (  curvePtr->getZcdf(Util::getCurveDate()) == 1 )
+		//cerr << "Day 1 ZCDF must be equal to 1 - curve failed : " <<  curvePtr->getZcdf(Util::getCurveDate()) << endl;
+
+
+	//logFile.close();
+			//logFile.open("/home/vishist/IRD.log");
+		    const Currency * feeCurrCd =  Currency::find("GBP");
+		        double feeAmount = 100000;
+		        Date feeDate = Date(30,11,2014);
+		        String feeType = "UPFRONT";
+		        String feeComment = "Adjusted Coupon";
+		        const Currency * feeConvCurrCd = Currency::find("GBP");
+		        String feeConvFXIndex = "NA"; // No conversion or Non deliver type currency
+		        int feeConvLag = 1 ; // always preceding
+		        String feeBook = "IRDBOOK";
+		        String feeCustomer = "IRDCUST";
+		        String feeThirdPartyType = "CUSTOMER";
+		        String feeThirdPartyName = "IRDCUST";
+		        String feePayReceive = "PAY";
+		        int feeRef = 0; // auto genrated - no tgenerated yet
+
+		        AdditionalPayments * fee1 = new AdditionalPayments(
+		                feeAmount,
+		                feeComment,
+		                feeConvCurrCd,
+		                feeConvFXIndex,
+		                feeConvLag,
+		                feeCurrCd,
+		                feeCustomer,
+		                feeBook,
+		                feeDate,
+		                feePayReceive,
+		                feeRef,
+		                feeType,
+		                feeThirdPartyType,
+		                feeThirdPartyName);
+
+		        feeAmount = 200000;
+		                feeDate = Date(5,12,2013);
+
+		                AdditionalPayments * fee2 = new AdditionalPayments(
+		                                feeAmount,
+		                                feeComment,
+		                                feeConvCurrCd,
+		                                feeConvFXIndex,
+		                                feeConvLag,
+		                                feeCurrCd,
+		                                feeCustomer,
+		                                feeBook,
+		                                feeDate,
+		                                feePayReceive,
+		                                feeRef,
+		                                feeType,
+		                                feeThirdPartyType,
+		                                feeThirdPartyName);
+
+		                double  			amount = 250000;
+		                const Currency *    curr = Currency::find("GBP");
+		                Date        		paymentDate = Date(23,10,2013);
+		                String  			premPayReceive = "PAY";
+		                double        		premiumBP = 1.00;
+		                String  			premiumType = "BP"; // IT COULD BE 'AMT' then premiumBP is amount value
+
+		                Premiums * prem1 = new Premiums (
+		                amount,
+		                curr,
+		                paymentDate,
+		                premPayReceive,
+		                premiumBP,
+		                premiumType
+		                );
+
+		                amount = 150000;
+		                paymentDate = Date(10,12,2014);
+		                premiumType = "AMT"; // or BP
+		                premiumBP = -1; // not applicable
+
+		                Premiums * prem2 = new Premiums (
+		                amount,
+		                curr,
+		                paymentDate,
+		                premPayReceive,
+		                premiumBP,
+		                premiumType
+		                );
+
+
+	SwapTicketList swapTicketList;
+		string xmlfile;
+
+		//if ( ! Util::loadSwapTicket(swapTicket, xmlfile) )
+			//cout << "Sorry can not load Swap deal from XML" << endl;
+
+		if ( ! Util::loadSwapTicketList(swapTicketList) )
+			cout << "Sorry can not load Swap deal from XML" << endl;
+
+
+		SwapTicketList::const_iterator sd = swapTicketList.begin();
+
+		for ( ; sd != swapTicketList.end () ; ++sd )
+		{
+
+      		(*sd)->setAdditionalPayments(fee1);
+			(*sd)->setAdditionalPayments(fee2);
+
+			(*sd)->getFirstPayLeg()->setIsCustomized(true);
+			(*sd)->getFirstPayLeg()->setIsPSGenerated(false);
+
+		if ( ! (*sd)->getFirstPayLeg()->generateStubs() )
+			cerr << "Stub Generation for Pay Leg is failed " << endl;
+
+		if (  ! (*sd)->getFirstPayLeg()->genLegCashFlows() )
+			{
+			cerr << "failed in generating cashflows " << endl;
+		}
+
+		/*
+		double pv = 0.0;
+		PayScheduleList::const_iterator iterPay = (*sd)->getFirstPayLeg()->displayPaySchedule().begin();
+		for ( ; iterPay != (*sd)->getFirstPayLeg()->displayPaySchedule().end() ; ++iterPay )
+		{
+			// PAY is negative
+
+			pv += (*iterPay)->getAmount() * -1.0 * curvePtr->getZcdf((*iterPay)->getPaymentDate());
+
+		}
+
+		PrincipalScheduleList::const_iterator iterPrin = (*sd)->getFirstPayLeg()->displayPrincipalSchedule().begin();
+
+		for ( ; iterPrin != (*sd)->getFirstPayLeg()->displayPrincipalSchedule().end() ; ++iterPrin )
+		{
+		    pv +=  curvePtr->getZcdf((*iterPrin)->getPaymentDate())  * (*iterPrin)->getPrincipalAmt();
+
+		}
+		*/
+
+		(*sd)->getFirstReceiveLeg()->setIsPSGenerated(false);
+		(*sd)->getFirstReceiveLeg()->setIsCustomized(false);
+
+		if ( ! (*sd)->getFirstReceiveLeg()->generateStubs() )
+			cerr << "Stub Generation for Receive Leg is failed " << endl;
+
+		if (! (*sd)->getFirstReceiveLeg()->genLegCashFlows() )
+		 	{
+		 		cerr << "failed in generating cashflows " << endl;
+		 	}
+
+		/*
+		 pv = 0.0;
+				PayScheduleList::const_iterator iterPayR = (*sd)->getFirstReceiveLeg()->displayPaySchedule().begin();
+				for ( ; iterPayR != (*sd)->getFirstReceiveLeg()->displayPaySchedule().end() ; ++iterPayR )
+				{
+
+					pv += (*iterPayR)->getAmount() * curvePtr->getZcdf((*iterPayR)->getPaymentDate());
+
+				}
+
+				PrincipalScheduleList::const_iterator iterPrinR = (*sd)->getFirstReceiveLeg()->displayPrincipalSchedule().begin();
+
+					for ( ; iterPrinR != (*sd)->getFirstReceiveLeg()->displayPrincipalSchedule().end() ; ++iterPrinR )
+					{
+
+					    pv +=  curvePtr->getZcdf((*iterPrinR)->getPaymentDate())  * (*iterPrinR)->getPrincipalAmt();
+
+					}
+
+					*/
+		//cout << "Writing a XML here " << endl;
+
+					//cout  <<"XML IS:\n" << (*sd)->serialize() << endl;
+		  	  	  	//cout << "PAY XML IS: \n" << (*sd)->getFirstPayLeg()->PaySerialize() << endl;
+				    //cout << "REC XML IS: \n" << (*sd)->getFirstReceiveLeg()->PaySerialize() << endl;
+
+					//cout << "XML IS :\n" << (*sd)->getFirstPayLeg()->CompSerialize() << endl;
+					//  cout << "XML IS: \n" << (*sd)->getFirstReceiveLeg()->CompSerialize() << endl;
+					// cout << "XML IS: \n" << (*sd)->getFirstPayLeg()->SchSerialize() << endl;
+					// cout << "XML IS: \n" << (*sd)->getFirstReceiveLeg()->SchSerialize() << endl;
+
+
+				logFile.close();
+				logFile.open("/home/vishist/IRD.log",  ios::out | ios::app);
+
+				logFile << "PayLeg PV is : " << setprecision(15) << (*sd)->getFirstPayLeg()->calculatePV() << endl;
+
+				logFile << "Receive Leg PV is : " << setprecision(15) << (*sd)->getFirstReceiveLeg()->calculatePV() << endl;
+
+				logFile << "Adjustment PV is : " << setprecision(15) << (*sd)->calcAdjustmentPV() << endl;
+
+				logFile << "Swap Net PV is : " << setprecision(15) << (*sd)->calculateNetPV() << endl;
+
+				logFile << "Break Even Rate is : " << setprecision(15) << (*sd)->calculateBERate() << endl;
+
+				/*
+				boost :: math :: lognormal_distribution <> d(0.4,0.2);
+				cout << "Log normal dist value " <<  pdf(d,2)<< endl;
+				Real callFunc ( Real spot , Real strike ,Rate r, Volatility vol , Time tau , Real x);
+				//SimpsonIntegral numInt;
+
+				Real spot =100.0;
+				Rate r =0.03;
+				Time tau =0.5;
+				Volatility vol =0.20;
+				Real strike =110.0;
+				Real a= strike , b= strike *10.0;
+				boost::function < Real ( Real )> ptrF ;
+				ptrF = boost::bind (& callFunc ,spot , strike ,r,vol ,tau ,_1 );
+				Real absAcc =0.00001;
+				Size maxEval =1000;
+				//using namespace QuantLib;
+
+				QuantLib::SimpsonIntegral numInt (absAcc , maxEval );
+			//std::cout << " Call Value : " << numInt (ptrF ,a,b) << std::endl ;
+
+*/
+
+				logFile << "Swap Deal TOTAL PV is : " << setprecision(15) << (*sd)->calculateTotalPV() << endl;
+	}
+		swapTicketList.clear();
+
+		cout << "ALL FINISHED " << endl;
+		return 0;
+
+		// SWAPOPTION HERE
+
+
+		//SwapOption * swapOption = new SwapOption();
+		SwapOptionList swapOptionList;
+		//string xmlSWTfile = "/home/vishist/swapoption.xml";
+
+		//if ( ! Util::loadSwapOption(swaptionDeal, xmlfile) )
+		//	cout << "Sorry can not load Swap deal from XML" << endl;
+
+		if ( ! Util::loadSwapOptionList(swapOptionList) )
+			cout << "Sorry can not load Swaption deal from XML" << endl;
+
+
+		SwapOptionList::const_iterator swo = swapOptionList.begin();
+
+		for ( ; swo != swapOptionList.end () ; ++swo )
+		{
+
+			(*swo)->getSwapTicket()->setAdditionalPayments(fee1);
+			(*swo)->getSwapTicket()->setAdditionalPayments(fee2);
+
+			(*swo)->getSwapTicket()->setPremiums(prem1);
+			(*swo)->getSwapTicket()->setPremiums(prem2);
+
+			(*swo)->getSwapTicket()->getFirstPayLeg()->setIsCustomized(false);
+		    (*swo)->getSwapTicket()->getFirstPayLeg()->setIsPSGenerated(false);
+
+		if ( ! (*swo)->getSwapTicket()->getFirstPayLeg()->generateStubs() )
+			cerr << "Stub Generation for Swaption - Pay Leg is failed " << endl;
+
+		if (  ! (*swo)->getSwapTicket()->getFirstPayLeg()->genLegCashFlows() )
+			{
+			cerr << "failed in generating Swaption - cashflows " << endl;
+		     }
+
+		   (*swo)->getSwapTicket()->getFirstReceiveLeg()->setIsPSGenerated(false);
+		   (*swo)->getSwapTicket()->getFirstReceiveLeg()->setIsCustomized(false);
+
+		if ( ! (*swo)->getSwapTicket()->getFirstReceiveLeg()->generateStubs() )
+			cerr << "Stub Generation for Swaption - Receive Leg is failed " << endl;
+
+		if (! (*swo)->getSwapTicket()->getFirstReceiveLeg()->genLegCashFlows() )
+		 	{
+		 		cerr << "failed in generating Swaption - cashflows " << endl;
+		 	}
+				logFile.close();
+				logFile.open("/home/vishist/IRD.log",  ios::out | ios::app);
+
+				 //cout << "XML IS: \n" << (*swo)->getSwapTicket()->getFirstPayLeg()->PaySerialize() << endl;
+
+				logFile << "Swaption - PayLeg PV is : " << setprecision(15) << (*swo)->getSwapTicket()->getFirstPayLeg()->calculatePV() << endl;
+				logFile << "Swaption - Receive Leg PV is : " << setprecision(15) << (*swo)->getSwapTicket()->getFirstReceiveLeg()->calculatePV() << endl;
+
+				logFile << "Swaption - Adjustment PV is : " << setprecision(15) << (*swo)->getSwapTicket()->calcAdjustmentPV() << endl;
+
+				logFile << "Swaption - TOTAL PV is : " << setprecision(15) << (*swo)->getSwapTicket()->calculateTotalPV() << endl;
+	}
+		swapOptionList.clear();
+
+
+
+		// FraTicket HERE
+
+
+			//SwapOption * swapOption = new SwapOption();
+			FraTicketList fraTicketList;
+			//string xmlSWTfile = "/home/vishist/swapoption.xml";
+
+			//if ( ! Util::loadSwapOption(swaptionDeal, xmlfile) )
+			//	cout << "Sorry can not load Swap deal from XML" << endl;
+
+			if ( ! Util::loadFraTicketList(fraTicketList) )
+				cout << "Sorry can not load FraTicket from XML" << endl;
+
+			logFile << "Processing FRA Ticket " << endl;
+
+			FraTicketList::const_iterator fra = fraTicketList.begin();
+
+			for ( ; fra != fraTicketList.end () ; ++fra )
+			{
+
+				//(*fra)->setAdditionalPayments(fee1);
+				//(*fra)->setAdditionalPayments(fee2);
+
+					if ( !(*fra)->genPaySchedule() )
+						cerr << "Failed to generate cashflows " << endl;
+
+					logFile.close();
+					logFile.open("/home/vishist/IRD.log",  ios::out | ios::app);
+					logFile << "Reset Schedule is " << (*fra)->fraResetScheduleSerialize() << endl;
+
+					logFile << "FraTicket - TOTAL PV is : " << setprecision(15) << (*fra)->calculateTotalPV() << endl;
+		}
+			fraTicketList.clear();
+
+
+			CapFloorTicketList cfTicketList;
+			string xmlCFfile;
+
+			//if ( ! Util::loadSwapTicket(swapTicket, xmlfile) )
+			//cout << "Sorry can not load Swap deal from XML" << endl;
+
+			if ( ! Util::loadCapFloorTicketList(cfTicketList) )
+				cout << "Sorry can not load CapFloorTicket from XML" << endl;
+
+
+			CapFloorTicketList::const_iterator cf = cfTicketList.begin();
+
+			for ( ; cf != cfTicketList.end () ; ++cf )
+			{
+	      		(*cf)->setAdditionalPayments(fee1);
+				(*cf)->setAdditionalPayments(fee2);
+
+				(*cf)->setPremiums(prem1);
+				(*cf)->setPremiums(prem2);
+
+				(*cf)->setIsPSGenerated(false);
+
+				//if (  ! (*cf)->generateStubs() )
+				//{
+				//	cerr << "failed in generating stubs " << endl;
+				//}
+
+				if (  ! (*cf)->genCashFlows() )
+				{
+					cerr << "failed in generating cashflows " << endl;
+				}
+
+					logFile.close();
+					logFile.open("/home/vishist/IRD.log",  ios::out | ios::app);
+
+					logFile << "CapFloorTicket - TOTAL PV is : " << setprecision(15) << (*cf)->calculateTotalPV() << endl;
+			}
+
+				cfTicketList.clear();
+
+logFile.close();
+
+cout << "Program finished, check IRD.log file for output." << endl;
+
+return 1;
+}
+
+/*
+Real callFunc ( Real spot , Real strike ,Rate r, Volatility vol , Time tau , Real x)
+	{
+	Real mean = log( spot )+(r -0.5* vol * vol )* tau ;
+	Real stdDev = vol * sqrt ( tau );
+	boost :: math :: lognormal_distribution <> d(mean , stdDev );
+	cout << "Printing Black scholes value " << (x- strike )* pdf (d,x)* exp (-r*tau )<< endl;
+
+	return (x- strike )* pdf (d,x)* exp (-r*tau );
+	}
+
+*/

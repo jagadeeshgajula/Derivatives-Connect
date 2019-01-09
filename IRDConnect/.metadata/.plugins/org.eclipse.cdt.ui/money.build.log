@@ -1,0 +1,9 @@
+
+**** Build of configuration Debug for project money ****
+
+make all 
+Building file: ../money.cpp
+Invoking: GCC C++ Compiler
+g++ -I/home/vishist/IRDConnect/include -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"money.d" -MT"money.d" -o"money.o" "../money.cpp"
+/bin/sh: g++: command not found
+make: *** [money.o] Error 127

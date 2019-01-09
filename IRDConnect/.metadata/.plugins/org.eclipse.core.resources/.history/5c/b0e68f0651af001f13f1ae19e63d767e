@@ -1,0 +1,30 @@
+/*
+ * BusDayConvention.cpp
+ *
+ *  Created on: 24-Aug-2010
+ *      Author: vishist
+ */
+
+#include "busDayConvention.h"
+
+
+
+BusDayConvention::~BusDayConvention() {
+	// TODO Auto-generated destructor stub
+}
+
+
+date
+BusDayConvention::adjustToBusDay( const IRDdate &dateInput, const IRDCalendar &primaryCalendar ) const
+{
+	return primaryCalendar.isBusDay( dateInput ) ? dateInput : adjust( dateInput, primaryCalendar );
+}
+
+date
+BusDayConvention::adjustToBusDay( const date &dateInput,
+					const IRDCalendar &primaryCalendar,
+					const IRDCalendar &secondaryCalendar ) const
+{
+    return primaryCalendar.isBusDay( dateInput, secondaryCalendar ) ? dateInput :
+				adjust( dateInput, primaryCalendar, secondaryCalendar );
+}

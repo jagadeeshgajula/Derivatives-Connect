@@ -1,0 +1,123 @@
+/*
+ * IRDNull.h
+ *
+ *  Created on: 06-Sep-2010
+ *      Author: vishist
+ */
+
+#ifndef IRDNULL_H_
+#define IRDNULL_H_
+
+//#include <boost/config.hpp>
+//#include <boost/version.hpp>
+#include "defines.h"
+#include <boost/limits.hpp>
+
+#if BOOST_VERSION < 103100
+    #error using an old version of Boost, please update.
+#endif
+#if !defined(BOOST_ENABLE_ASSERT_HANDLER)
+    #define BOOST_ENABLE_ASSERT_HANDLER
+#endif
+
+
+    //! template class providing a null value for a given type.
+    template <class Type>
+    class Null;
+
+
+#ifdef x64
+    //! template class providing a null value for a given type.
+    template <>
+    class Null<Size> {
+      public:
+        Null() {}
+        operator Size() const { return Size(QL_NULL_INTEGER); }
+    };
+#endif
+
+#if !defined(__DOXYGEN__)
+
+    /* here we're trying to cover a number of types that one would possibly
+       use as Real, Integer and such. Were one to add his own user-defined
+       type, a suitable Null specialization should be added. */
+
+    template <>
+    class Null<int> {
+      public:
+        Null() {}
+        operator int() const { return int(QL_NULL_INTEGER); }
+    };
+
+    template <>
+    class Null<long> {
+      public:
+        Null() {}
+        operator long() const { return long(QL_NULL_INTEGER); }
+    };
+
+    template <>
+    class Null<unsigned int> {
+      public:
+        Null() {}
+        operator unsigned int() const {
+            return (unsigned int)(QL_NULL_INTEGER);
+        }
+    };
+
+    template <>
+    class Null<unsigned long> {
+      public:
+        Null() {}
+        operator unsigned long() const {
+            return (unsigned long)(QL_NULL_INTEGER);
+        }
+    };
+
+    #if defined(QL_HAVE_LONG_LONG)
+
+    template <>
+    class Null<long long> {
+      public:
+        Null() {}
+        operator long long() const { return (long long)(QL_NULL_INTEGER); }
+    };
+
+    template <>
+    class Null<unsigned long long> {
+      public:
+        Null() {}
+        operator unsigned long long() const {
+            return (unsigned long long)(QL_NULL_INTEGER);
+        }
+    };
+
+    #endif
+
+    template <>
+    class Null<float> {
+      public:
+        Null() {}
+        operator float() const { return float(QL_NULL_REAL); }
+    };
+
+    template <>
+    class Null<double> {
+      public:
+        Null() {}
+        operator double() const { return double(QL_NULL_REAL); }
+    };
+
+    template <>
+    class Null<long double> {
+      public:
+        Null() {}
+        operator long double() const { return (long double)(QL_NULL_REAL); }
+    };
+
+
+
+#endif
+
+
+#endif /* IRDNULL_H_ */

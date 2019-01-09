@@ -1,0 +1,439 @@
+/*
+ * swapDeal.cpp
+ *
+ *  Created on: 02-Oct-2010
+ *      Author: vishist
+ */
+
+#include "swapDeal.h"
+#include "swapLeg.h"
+
+static String _PAY = "LONG";
+static String _RECV = "SHORT";
+static String _FIXLEG = "FIXED";
+static String _FLTLEG = "FLOAT";
+
+using namespace IRDConnect;
+
+namespace IRDConnect {
+
+
+SwapDeal::SwapDeal()
+{
+	// do nothing
+}
+
+SwapDeal::~SwapDeal()
+{
+	// do nothing
+}
+
+/*
+ *
+
+SwapDeal::SwapDeal(TradeTicket *tt, SwapLegList * swapLegList)
+{
+	SwapDeal(
+			tt.getAlternateRef(),
+			tt.getBookingType(),
+			tt.getCustomerAccount(),
+		    tt.getEarlyTermDate(),
+			tt.getEarlyTermReason(),
+		    tt.getExternalSystem(),
+			tt.getExternalRef(),
+			tt.getFirmAccount(),
+			tt.getFlowStatus(),
+			tt.getLastModifiedBy(),
+			tt.getLastVerifiedBy(),
+			tt.getLegalEntity(),
+			tt.getLocation(),
+		    tt.getMatchingStatus(),
+			tt.getMaturityDate(),
+			tt.getModifiedTimeStamp(),
+			tt.getOperationsRef(),
+			tt.getOriginalTradeRef(),
+			tt.getProductType(),
+			tt.getSalesPerson(),
+			tt.getStartDate(),
+			tt.getSubType(),
+			tt.getSwapStatus(),
+			tt.getSwaptionRef(),
+			tt.getTradeDate(),
+			tt.getTrader(),
+			tt.getTradeRef(),
+			tt.getTradeStatus(),
+			tt.getTradeType(),
+			tt.getTradeVersion(),
+			tt.getVerifiedTimeStamp(),
+			tt.getWashAccount()
+
+	);
+
+	_swapLegList = swapLegList;
+
+}
+
+*/
+
+
+SwapDeal::SwapDeal (
+String   	alternateRef,
+String  	bookingType,
+String  	customerAccount,
+Date  		earlyTermDate,
+String  	earlyTermReason,
+String  	externalRef,
+String  	externalSystem,
+String  	firmAccount,
+String  	flowStatus,
+String  	lastModifiedBy,
+String  	lastVerifiedBy,
+String  	legalEntity,
+String  	location,
+String  	matchingStatus,
+Date  		maturityDate,
+String  	modifiedTimeStamp,
+String  	operationsRef,
+String  	originalTradeRef,
+String  	productType,
+String  	salesPerson,
+Date  		startDate,
+String  	subType,
+String  	swapStatus,
+String  	swaptionRef,
+Date  		tradeDate,
+String  	trader,
+String  	tradeRef,
+String  	tradeStatus,
+String  	tradeType,
+double  	tradeVersion,
+String  	verifiedTimeStamp,
+String  	washAccount
+)
+: TradeTicket (
+
+				alternateRef,
+				bookingType,
+				customerAccount,
+				earlyTermDate,
+				earlyTermReason,
+				externalSystem,
+				externalRef,
+				firmAccount,
+				flowStatus,
+		 	 	lastModifiedBy,
+		 	 	lastVerifiedBy,
+		 	 	legalEntity,
+		 	 	location,
+		 	 	matchingStatus,
+		 	 	maturityDate,
+		 	 	modifiedTimeStamp,
+		 	 	operationsRef,
+		 	 	originalTradeRef,
+		 	 	productType,
+		 	 	salesPerson,
+		 	 	startDate,
+		 	 	subType,
+		 	 	swapStatus,
+		 	 	swaptionRef,
+		 	 	tradeDate,
+		 	 	trader,
+		 	 	tradeRef,
+		 	 	tradeStatus,
+		 	 	tradeType,
+		 	 	tradeVersion,
+		 	 	verifiedTimeStamp,
+		 	 	washAccount )
+
+{
+
+	// nothing to be done : SwapLeg will be set later.
+
+}
+
+SwapLeg * SwapDeal::getFirstPayLeg()
+{
+
+	SwapLegList::const_iterator swplegIter = _swapLegList.begin () ;
+	         for (; swplegIter != _swapLegList.end() ; ++swplegIter)
+	             if ( (*swplegIter)->getPosition() == _PAY)
+	                 return *swplegIter ;
+
+	         return 0;
+
+}
+
+SwapLeg * SwapDeal::getFirstReceiveLeg()
+{
+
+	SwapLegList::const_iterator swplegIter = _swapLegList.begin () ;
+	         for (; swplegIter != _swapLegList.end() ; ++swplegIter)
+	             if ( (*swplegIter)->getPosition() == _RECV )
+	                 return *swplegIter ;
+
+	         return 0;
+
+}
+
+SwapLeg * SwapDeal::getFirstFloatLeg()
+{
+
+	SwapLegList::const_iterator swplegIter = _swapLegList.begin () ;
+	         for (; swplegIter != _swapLegList.end() ; ++swplegIter)
+	             if ( (*swplegIter)->getLegType() == _FLTLEG )
+	                 return *swplegIter ;
+
+	         return 0;
+
+}
+
+SwapLeg * SwapDeal::getFirstFixedLeg()
+{
+
+	SwapLegList::const_iterator  swplegIter = _swapLegList.begin () ;
+	         for (; swplegIter != _swapLegList.end() ; ++swplegIter)
+	             if ( (*swplegIter)->getLegType() == _FIXLEG )
+	                 return *swplegIter ;
+
+	         return 0;
+
+}
+
+void SwapDeal::setSwapPayLeg(SwapLeg * swapLeg)
+{
+
+	_swapLegList.push_back(swapLeg);
+
+}
+
+void SwapDeal::setSwapRecvLeg(SwapLeg * swapLeg)
+{
+
+	_swapLegList.push_back(swapLeg);
+
+}
+
+SwapLeg * SwapDeal::getFXResetLeg()
+{
+
+	SwapLegList::const_iterator  swplegIter = _swapLegList.begin () ;
+	         for (; swplegIter != _swapLegList.end() ; ++swplegIter)
+	             if ( (*swplegIter)->getLegNo() == getFXReset()->getFXResetLegNo() )
+	                 return *swplegIter ;
+
+	         return 0;
+
+}
+
+bool SwapDeal::genFXResetSchedule()
+{
+	if ( getFXReset() )
+	{
+		SwapLeg * fxResetLeg = getFXResetLeg();
+
+		if ( fxResetLeg )
+		{
+
+			int lagSign = getFXReset->getFXResetQuoteLag() >= 0 ? 1 : -1;
+				logFile << "FX lag sign is : " << lagSign << endl;
+				const BusDayConv * resetBusDay = lagSign > 0 ? BusDayConv::find("FOL") : BusDayConv::find("PRE") ;
+				int lag = getFXResetQuoteLag() * lagSign;
+				logFile << "FX lag is : " << lag << endl;
+
+
+			ResetScheduleList::const_iterator iterReset = fxResetLeg->displayResetSchedule().begin() ;
+
+			for ( ; iterReset != fxResetLeg->displayResetSchedule().end() ; ++iterReset )
+			{
+			    shared_ptr <ResetSchedule> fxResetSchedule( new ResetSchedule());
+
+			    fxResetSchedule->setResetStartDate((*iterReset)->getResetStartDate());
+
+			    Date quoteDate = fxResetSchedule->getResetStartDate();
+
+        		logFile << "FX Reset Dates are : " << fxResetSchedule->getResetStartDate() << endl;
+
+        		int cntReset = lag;
+
+			    while ( cntReset > 0 )
+			    {
+			    	Period period(lagSign * 1,Days);
+			    	quoteDate = quoteDate + period;
+			    	quoteDate = resetBusDay->adjustToBusDay(quoteDate,*CalendarUtil::getCalendar(getFXQuoteCalendars()) );
+			    	cntReset--;
+
+			    }
+
+			    if (  cntReset == 0 )
+			    	quoteDate = resetBusDay->adjustToBusDay(quoteDate,*CalendarUtil::getCalendar(getQuoteCalendars()) );
+
+			    resetSchedule->setQuoteDate( quoteDate );
+			    resetSchedule->setRate(getPeriodRate(FixingRates::getFixingRate(quoteDate, getMarketIndex())));
+
+			    if ( resetSchedule->getResetStartDate() != backStubDate && getBackStubDate() == getEndDate() )
+			    			_resetScheduleList.push_back(resetSchedule);
+			    else if ( getBackStubDate() != getEndDate() )
+			    			_resetScheduleList.push_back(resetSchedule);
+
+			    if ( getBackStubDate() != getEndDate() && getBackStubDate() == resetSchedule->getResetStartDate() )
+			    {
+			    	// we are going to force generate stub tenors
+			    		setIsPSGenerated(true);
+
+			    	if ( ! generateStubs() )
+			    		logFile << "failed stub generation" << endl;
+
+			    	setIsPSGenerated(false);
+
+			    	displayPaySchedule().sort();
+			    	PayScheduleList::const_iterator iterPay = displayPaySchedule().begin();
+
+			    	Date couponStartDate(01,01,1901);
+			    	Date couponEndDate(01,01,1901);
+
+			    	for ( ; iterPay != displayPaySchedule().end() ; ++iterPay )
+			    	{
+
+			    		if ( (*iterPay)->getCouponStartDate() == getBackStubDate() )
+			    		{
+			    			couponStartDate = (*iterPay)->getCouponStartDate();
+			    			couponEndDate = (*iterPay)->getCouponEndDate();
+			    			break; // no need to continue, got the dates
+			    		}
+			    	}
+			    		_stubResetsList.sort();
+
+			    		StubResetsList::const_iterator iterStubReset = _stubResetsList.begin() ;
+			    		String marketIndexA = "";
+			    		String marketIndexB = "";
+			    		Period stubTenorA;
+			    		Period stubTenorB;
+
+			    		for ( ; iterStubReset != _stubResetsList.end() ; ++iterStubReset )
+			    		{
+
+			    			if ( (*iterStubReset)->getStartDate() == resetSchedule->getResetStartDate() && (*iterStubReset)->getStubType() == "BStubA" )
+			    			{
+			    				marketIndexA = (*iterStubReset)->getStubMarketIndex();
+			    				stubTenorA = (*iterStubReset)->getStubTenor();
+
+			    			}
+			    			else if ( (*iterStubReset)->getStartDate() == resetSchedule->getResetStartDate() && (*iterStubReset)->getStubType() == "BStubB" )
+			    			{
+			    				marketIndexB = (*iterStubReset)->getStubMarketIndex();
+			    				stubTenorB = (*iterStubReset)->getStubTenor();
+
+			    			}
+			    		}
+
+			    			resetSchedule->setRate(getPeriodRate(FixingRates::getFixingRate( resetSchedule->getQuoteDate(),
+			    								marketIndexA, marketIndexB, stubTenorA, stubTenorB, couponStartDate ,
+			    								couponEndDate, getAccrualBusDay() )) );
+
+			    		   _resetScheduleList.pop_back();
+			    		   _resetScheduleList.push_back(resetSchedule); // update with latest info
+
+			    		}
+
+			    	}
+
+			    		     // take care of front and back stubs now
+
+			    	    if ( getFrontStubDate() != getStartDate() )
+			    	    {
+			         		     shared_ptr <ResetSchedule> resetScheduleStub( new ResetSchedule());
+
+			    			     resetScheduleStub->setResetStartDate(startDate);
+
+			    			     Date quoteDate = resetScheduleStub->getResetStartDate();
+			    			     int cntReset = lag;
+
+			    			     while ( cntReset > 0 )
+			    			     {
+			    			     	Period period(lagSign * 1,Days);
+			    			     	quoteDate = quoteDate + period;
+			    			     	quoteDate = resetBusDay->adjustToBusDay(quoteDate,*CalendarUtil::getCalendar(getQuoteCalendars()) );
+			    			     	cntReset--;
+
+			    			     }
+
+			    			     if (  cntReset == 0 )
+			    						quoteDate = resetBusDay->adjustToBusDay(quoteDate,*CalendarUtil::getCalendar(getQuoteCalendars()) );
+
+			    			     resetScheduleStub->setQuoteDate( quoteDate );
+			    			     resetScheduleStub->setRate(getPeriodRate(FixingRates::getFixingRate(quoteDate, getMarketIndex())));
+
+			    		    	 displayPaySchedule().sort();
+			    			     PayScheduleList::const_iterator iterPay = displayPaySchedule().begin();
+
+			    			     	_resetScheduleList.push_front(resetScheduleStub);
+
+			    					setIsPSGenerated(true);
+
+			    					if ( ! generateStubs() )
+			    						logFile << "failed stub generation" << endl;
+
+			    					setIsPSGenerated(false);
+
+			    			     	Date couponStartDate(01,01,1901);
+			    			     	Date couponEndDate(01,01,1901);
+
+			    			     		for ( ; iterPay != displayPaySchedule().end() ; ++iterPay )
+			    			     		{
+
+			    			     			if ( (*iterPay)->getCouponEndDate() == getFrontStubDate() )
+			    			     			{
+			    			     				couponStartDate = (*iterPay)->getCouponStartDate();
+			    			     				couponEndDate = (*iterPay)->getCouponEndDate();
+			    			     				break; // no need to continue, got the dates
+			    			     			}
+			    			     		}
+
+			    			     		_stubResetsList.sort();
+
+			    			     		StubResetsList::const_iterator iterStubReset = _stubResetsList.begin() ;
+			    			     		String marketIndexA = "";
+			    			     		String marketIndexB = "";
+			    			     		Period stubTenorA;
+			    			     		Period stubTenorB;
+
+			    			     		for ( ; iterStubReset != _stubResetsList.end() ; ++iterStubReset )
+			    			     		{
+
+			    			     			logFile << "details " << (*iterStubReset)->getStartDate() << " : " << startDate << endl;
+
+			    			     			if ( (*iterStubReset)->getStartDate() == startDate && (*iterStubReset)->getStubType() == "FStubA" )
+			    			     			{
+			    			     				marketIndexA = (*iterStubReset)->getStubMarketIndex();
+			    			     				stubTenorA = (*iterStubReset)->getStubTenor();
+			    			     			}
+			    			     			else if ( (*iterStubReset)->getStartDate() == startDate && (*iterStubReset)->getStubType() == "FStubB" )
+			    			     			{
+			    			     				marketIndexB = (*iterStubReset)->getStubMarketIndex();
+			    			     				stubTenorB = (*iterStubReset)->getStubTenor();
+			    			     			}
+			    			     		}
+
+			    			     			resetScheduleStub->setRate(getPeriodRate(FixingRates::getFixingRate( quoteDate,
+			    			     							marketIndexA, marketIndexB, stubTenorA, stubTenorB, couponStartDate ,
+			    			     								couponEndDate, getAccrualBusDay() )) );
+
+
+			    			     _resetScheduleList.pop_front();
+
+			    			     _resetScheduleList.push_front(resetScheduleStub);
+
+			    			  }
+
+
+			}
+
+
+		}
+
+
+
+	}
+
+
+}

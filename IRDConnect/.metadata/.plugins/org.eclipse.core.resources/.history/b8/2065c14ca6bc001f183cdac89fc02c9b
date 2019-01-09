@@ -1,0 +1,141 @@
+/*
+ * IRDPeriod.h
+ *
+ *  Created on: 28-Aug-2010
+ *      Author: vishist
+ */
+
+#ifndef IRDPERIOD_H_
+#define IRDPERIOD_H_
+
+#include "IRDFrequency.h"
+#include "IRDTimeUnit.h"
+#include "IRDTypes.h"
+#include <ostream>
+
+using namespace std;
+
+
+    //! Time period described by a number of a given time unit
+    /*! \ingroup datetime */
+    class IRDPeriod {
+      public:
+        IRDPeriod()
+        : length_(0), units_(Days) {}
+        IRDPeriod(Integer n, TimeUnit units)
+        : length_(n), units_(units) {}
+        explicit IRDPeriod(IRDFrequency f);
+        Integer length() const { return length_; }
+        TimeUnit units() const { return units_; }
+        IRDFrequency frequency() const;
+      protected:
+        Integer length_;
+        TimeUnit units_;
+    };
+
+    /*! \relates Period */
+    template <typename T> IRDPeriod operator*(T n, TimeUnit units);
+    /*! \relates Period */
+    template <typename T> IRDPeriod operator*(TimeUnit units, T n);
+
+    /*! \relates Period */
+    IRDPeriod operator-(const IRDPeriod&);
+
+    /*! \relates Period */
+    IRDPeriod operator*(Integer n, const IRDPeriod&);
+    /*! \relates Period */
+    IRDPeriod operator*(const IRDPeriod&, Integer n);
+
+    /*! \relates Period */
+    bool operator<(const IRDPeriod&, const IRDPeriod&);
+    /*! \relates Period */
+    bool operator==(const IRDPeriod&, const IRDPeriod&);
+    /*! \relates Period */
+    bool operator!=(const IRDPeriod&, const IRDPeriod&);
+    /*! \relates Period */
+    bool operator>(const IRDPeriod&, const IRDPeriod&);
+    /*! \relates Period */
+    bool operator<=(const IRDPeriod&, const IRDPeriod&);
+    /*! \relates Period */
+    bool operator>=(const IRDPeriod&, const IRDPeriod&);
+
+    /*! \relates Period */
+    std::ostream& operator<<(std::ostream&, const IRDPeriod&);
+
+    namespace IRDdetail {
+
+        struct long_period_holder {
+            long_period_holder(const IRDPeriod& p) : p(p) {}
+            IRDPeriod p;
+        };
+        std::ostream& operator<<(std::ostream&, const long_period_holder&);
+
+        struct short_period_holder {
+            short_period_holder(IRDPeriod p) : p(p) {}
+            IRDPeriod p;
+        };
+        std::ostream& operator<<(std::ostream&, const short_period_holder&);
+
+    }
+
+    namespace IRDio {
+
+        //! output periods in long format (e.g. "2 weeks")
+        /*! \ingroup manips */
+        IRDdetail::long_period_holder long_period(const IRDPeriod&);
+
+        //! output periods in short format (e.g. "2w")
+        /*! \ingroup manips */
+        IRDdetail::short_period_holder short_period(const IRDPeriod&);
+
+    }
+
+    // inline definitions
+
+    template <typename T>
+    inline IRDPeriod operator*(T n, TimeUnit units) {
+        return IRDPeriod(Integer(n),units);
+    }
+
+    template <typename T>
+    inline IRDPeriod operator*(TimeUnit units, T n) {
+        return IRDPeriod(Integer(n),units);
+    }
+
+    inline IRDPeriod operator-(const IRDPeriod& p) {
+        return IRDPeriod(-p.length(),p.units());
+    }
+
+    inline IRDPeriod operator*(Integer n, const IRDPeriod& p) {
+        return IRDPeriod(n*p.length(),p.units());
+    }
+
+    inline IRDPeriod operator*(const IRDPeriod& p, Integer n) {
+        return IRDPeriod(n*p.length(),p.units());
+    }
+
+    inline bool operator==(const IRDPeriod& p1, const IRDPeriod& p2) {
+        return !(p1 < p2 || p2 < p1);
+    }
+
+    inline bool operator!=(const IRDPeriod& p1, const IRDPeriod& p2) {
+        return !(p1 == p2);
+    }
+
+    inline bool operator>(const IRDPeriod& p1, const IRDPeriod& p2) {
+        return p2 < p1;
+    }
+
+    inline bool operator<=(const IRDPeriod& p1, const IRDPeriod& p2) {
+        return !(p1 > p2);
+    }
+
+    inline bool operator>=(const IRDPeriod& p1, const IRDPeriod& p2) {
+        return !(p1 < p2);
+    }
+
+
+
+
+
+#endif /* IRDPERIOD_H_ */

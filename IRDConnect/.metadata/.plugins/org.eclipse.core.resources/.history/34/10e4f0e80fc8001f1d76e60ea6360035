@@ -1,0 +1,41 @@
+#ifndef IDS_BUSDAYCONV_H
+#define IDS_BUSDAYCONV_H
+
+#include "date.h"
+#include <map>
+
+class Calendar ;
+class BusDayConv {
+public:
+
+    Date adjustToBusDay( const Date & d,
+                                           const Calendar & calendar ) const;
+
+    Date adjustToBusDay( const Date & d,
+                    const Calendar &calendar,
+                    const Calendar &secondCalendar ) const;
+    static const BusDayConv * find( const std::string name )  ;
+protected:
+
+    BusDayConv ( std::string name) ;
+    virtual ~BusDayConv () ;
+
+private:
+
+    virtual Date adjust ( const Date     & d,
+                          const Calendar & calendar ) const = 0 ;
+
+    virtual Date adjust ( const Date     & d,
+                          const Calendar & calendar,
+                          const Calendar & secondCalendar ) const = 0 ;
+
+    BusDayConv ( const BusDayConv & );
+    BusDayConv &operator=( const BusDayConv & );
+
+    std::string name_ ;
+    typedef std::map<std::string, const BusDayConv *> BdcMap ;
+    static BdcMap & getBdcMap ( ) ;
+
+};
+#endif
+

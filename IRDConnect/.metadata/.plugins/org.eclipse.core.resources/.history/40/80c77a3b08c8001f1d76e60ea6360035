@@ -1,0 +1,308 @@
+#	include "IRDCurrency.h"
+
+
+
+
+
+using namespace std;
+
+
+const IRDCurrency *
+IRDCurrency::eur = 0;
+
+void
+IRDCurrency::setDiscounterSourceFun(DiscounterSourceFun dsctrSourceFun)
+{
+	_dsctrSourceFun = dsctrSourceFun;
+}
+
+Discounter *
+IRDCurrency::defaultDiscounterSourceFun(const IRDString&)
+{
+	//ApplDebugError err;
+	cerr  << "Internal Error: Currency class requested for a default "
+		"Discounter but no source function registered yet.\n";
+	return 0;
+}
+
+DiscounterSourceFun IRDCurrency::_dsctrSourceFun = defaultDiscounterSourceFun;
+
+
+IRDCurrency::IRDCurrency(
+const IRDString name,
+const IRDString			& fundingTSIRName,
+const DayCountConv		* dcc,
+const BusDayConv		* bdc,
+const Calendar		* cal,
+const Calendar        * secondCal,
+const IRDString			* mktType,
+const IRDString			& timeSeries,
+const IRDString		* roundingConv,
+const IRDString			& defaultONInstrument,
+const IRDFrequency			* defaultSwpFloatSettleFreq,
+const IRDFrequency			* defaultSwpFixSettleFreq,
+const DayCountConv		* defaultSwaFixDcc,
+unsigned int			numDecimal,
+int			        pmtMsgLag,
+int		        	pmtConfirmLag,
+int		        	valueDayLag,
+const IRDString			& emuFlg,
+double				euroConvRate,
+const Date *			euroSettleEffDate,
+
+const IRDString                 & xccyBasisTsirId ) :
+	 name_(name),
+	_fundingTSIRName( fundingTSIRName ),
+	_fundingDiscounter( 0 ),
+	_dcc( dcc ),
+	_bdc( bdc ),
+	_cal( cal ),
+	_secondCal( secondCal ),
+	_mktType( mktType ),
+	_timeSeries( timeSeries ),
+	_roundingConv( roundingConv ),
+	_defaultONInstrument( defaultONInstrument ),
+	_defaultSwpFloatSettleFreq( defaultSwpFloatSettleFreq ),
+	_defaultSwpFixSettleFreq( defaultSwpFixSettleFreq ),
+	_defaultSwaFixDcc( defaultSwaFixDcc ),
+	_numDecimal( numDecimal ),
+	_pmtMsgLag( pmtMsgLag ),
+	_pmtConfirmLag( pmtConfirmLag ),
+	_valueDayLag( valueDayLag ),
+	_emuFlg( emuFlg ),
+	_euroConvRate( euroConvRate ),
+        _xccyBasisTsirId ( xccyBasisTsirId )
+{
+	if (euroSettleEffDate)
+		_euroSettleEffDate = *euroSettleEffDate;
+	else {
+		//Year      yr = Date::ERROR_YEAR;
+        //	Month     mn = (Month) Date::ERROR_MONTH;
+        	//Day       dy = Date::ERROR_DAY;
+        	Date      dummyDate( 1900, 01, 01 );
+		_euroSettleEffDate = dummyDate;
+	}
+}
+
+IRDCurrency::~IRDCurrency()
+{
+	if (_fundingDiscounter != 0)
+		delete _fundingDiscounter;
+}
+
+//----------------------------------------------------------------------
+
+
+
+
+const IRDString &
+IRDCurrency::getFundingTSIRName() const
+{
+	return _fundingTSIRName;
+}
+
+const IRDString &
+IRDCurrency::getXccyBasisTsirId() const
+{
+	return _xccyBasisTsirId;
+}
+
+// 'getFundingDiscounter()' was added so that clients don't always have to
+// get the TSIR's name and then initiate a search in the environment.
+// This seem to make sense from a performance perspective since the
+// search is only done once.
+
+const Discounter *
+IRDCurrency::getFundingDiscounter() const
+{
+	if ( !_fundingDiscounter ) {
+
+		IRDCurrency *me = (IRDCurrency*) this;
+		me->_fundingDiscounter = (*_dsctrSourceFun) (getFundingTSIRName());
+
+	}
+
+	return _fundingDiscounter;
+}
+
+const DayCountConv *
+IRDCurrency::getDayCountConv() const
+{
+	return _dcc;
+}
+
+const BusDayConv *
+IRDCurrency::getBusDayConv() const
+{
+	return _bdc;
+}
+
+const Calendar *
+IRDCurrency::getCalendar() const
+{
+	return _cal;
+}
+
+const Calendar *
+IRDCurrency::getSecondCalendar() const
+{
+    return _secondCal;
+}
+
+const IRDString *
+IRDCurrency::getMktType() const
+{
+	return _mktType;
+}
+
+const IRDString &
+IRDCurrency::getTimeSeries() const
+{
+	return _timeSeries;
+}
+
+const IRDString *
+IRDCurrency::getRoundingConv() const
+{
+	return _roundingConv;
+}
+
+unsigned int
+IRDCurrency::getNumDecimal() const
+{
+	return _numDecimal;
+}
+
+int
+IRDCurrency::getPmtMsgLag() const
+{
+	return _pmtMsgLag;
+}
+
+int
+IRDCurrency::getPmtConfirmLag() const
+{
+	return _pmtConfirmLag;
+}
+
+int
+IRDCurrency::getValueDayLag() const
+{
+	return _valueDayLag;
+}
+
+double
+IRDCurrency::getEuroConvRate() const
+{
+	return _euroConvRate;
+}
+
+const Date &
+IRDCurrency::getEuroSettleEffDate() const
+{
+	return _euroSettleEffDate;
+}
+
+const bool
+IRDCurrency::isEuroSettleEffDateNull() const
+{
+	//if (_euroSettleEffDate.year() == Date::ERROR_YEAR &&
+    //        _euroSettleEffDate.month() == Date::ERROR_MONTH &&
+      //      _euroSettleEffDate.dayOfMonth() == Date::ERROR_DAY )
+	if (_euroSettleEffDate.year() == 1900 &&
+	            _euroSettleEffDate.month() == 01 &&
+	            _euroSettleEffDate.dayOfMonth() == 01 )
+
+		return true;
+	return false;
+}
+
+const bool
+IRDCurrency::isInEMU() const
+{
+	return ( _emuFlg == "Y" );
+}
+
+// added by nagesh for testing currency get
+
+const IRDString IRDCurrency::getIRDCurrencyCode()
+{
+	return name_;
+}
+
+const bool
+IRDCurrency::isEur() const
+{
+	return ( "EUR" == name_);
+			//getIRDCurrencyCode();
+}
+
+const IRDCurrency *
+IRDCurrency::find( unsigned int index )
+{
+
+	return (const IRDCurrency *)find();
+}
+
+const IRDCurrency *
+IRDCurrency::find()
+{
+
+	return (const IRDCurrency *)find( );
+}
+
+const IRDCurrency *
+IRDCurrency::find( const std::string & name_ )
+{
+
+	return (const IRDCurrency *)find( name_ );
+}
+
+const IRDCurrency *
+IRDCurrency::getEUR( )
+{
+	if (!eur)
+		eur = find(std::string("EUR"));
+	return eur;
+}
+/*int
+IRDCurrency::getNumCurrencies()
+{
+	const NameableList & nl = getList();
+	return nl.length();
+}
+
+void
+IRDCurrency::resetAllFundingDiscounters()
+{
+	const NameableList& nl = getList();
+	for (NameableListCtl ctl(nl) ; !ctl.done() ; ctl.next()) {
+		Currency * ccy = (Currency*)ctl.get();
+		if (ccy->_fundingDiscounter != 0) {
+			delete ccy->_fundingDiscounter;
+			ccy->_fundingDiscounter = 0;
+		}
+	}
+}*/
+
+//-----------Date::ERROR_DAY-----------------------------------------------------------
+
+void
+IRDCurrency::init()
+{
+}
+
+
+
+std::istream &
+operator >> ( std::istream & is, const IRDCurrency ** currency )
+{
+    std::string name_;
+
+    is >>name_;
+
+    *currency = IRDCurrency::find( name_ );
+
+    return is;
+
+}

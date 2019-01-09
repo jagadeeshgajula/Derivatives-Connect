@@ -1,0 +1,50 @@
+/*
+ * roundingConv.h
+ *
+ *  Created on: 25-Sep-2010
+ *      Author: vishist
+ */
+
+#ifndef ROUNDINGCONV_H_
+#define ROUNDINGCONV_H_
+
+namespace IRDConnect {
+
+class RoundingConv  {
+public:
+
+	virtual double					round( double			v,
+										   unsigned int		nd ) const = 0;
+
+	static bool getRoundingFlag();
+
+	static RoundingConv				* _nearest;
+	static RoundingConv				* _sciNotaNearest;
+	static RoundingConv				* _down;
+
+	static const RoundingConv		* find( );
+
+
+	static const RoundingConv		* find( const std::string	& name_ );
+
+protected:
+
+	RoundingConv(  const std::string	& name_ );
+
+	virtual ~RoundingConv();
+
+private:
+
+	//static void						init();
+	//static void						cleanup();
+	//friend class					RoundingConvInit;
+
+
+
+	RoundingConv( const RoundingConv & );
+	void operator = ( const RoundingConv & );
+};
+
+}
+
+#endif /* ROUNDINGCONV_H_ */

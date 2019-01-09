@@ -1,0 +1,1527 @@
+/*
+ * DayCountConvention.cpp
+ *
+ *  Created on: 26-Aug-2010
+ *      Author: vishist
+ */
+
+#include "dayCountConvention.h"
+
+DayCountConvention::DayCountConvention() {
+	// TODO Auto-generated constructor stub
+
+}
+
+DayCountConvention::~DayCountConvention() {
+	// TODO Auto-generated destructor stub
+}
+
+DayCountConvention::DayCountConvention ( const DBName      & dbname)
+{
+}
+
+
+class ActAct : public DayCountConvention {
+
+public:
+
+    ActAct();
+
+    virtual ~ActAct();
+
+    virtual double getFraction(
+        const boost::gregorian::datetime d1,
+        const boost::gregorian::datetime  d2,
+        const bool finalPeriod = FALSE,
+        const bool stubPeriod = FALSE,
+        const int periodsPerYear = 0 ) const;
+
+    virtual double getPeriodFraction(
+        const boost::gregorian::datetime & actualStart,
+        const boost::gregorian::datetime & actualEnd,
+        const boost::gregorian::datetime & psuedoStart,
+        const boost::gregorian::datetime & psuedoEnd,
+        const int numPeriodPerYear,
+        const bool finalPeriod = FALSE ) const;
+
+    virtual double getDaysInYear( Year year ) const;
+
+protected:
+    ActAct ( const IRDStringDB & dayCountConvdb);
+
+//private:
+protected:
+
+    // calculate d2 - d1
+    virtual double getDiffInDay(
+        const DateTime & dd1,
+        const DateTime & dd2 ) const;
+    virtual int includeFeb29(const DateTime & start,
+                             const DateTime & end) const;
+};
+
+ActAct::ActAct() :
+
+    DayCountConv( UIName( "Actual/Actual" ), DBName( "ACTACT" ),
+                  UIShortName( "Act/Act ISDA" ) )
+{
+}
+
+ActAct::ActAct ( const UIName & uiname,
+                 const DBName & dbname,
+                 const UIShortName & shortname ) :
+     DayCountConv( uiname, dbname, shortname )
+{
+}
+
+ActAct::~ActAct()
+{
+}
+
+double
+ActAct::getDiffInDay( const DateTime & dd1, const DateTime & dd2 ) const
+{
+    double retVal;
+
+    if (dd1 == dd2)  return 0.0;
+
+    int sign = dd1<dd2 ? 1 : -1;
+
+    // Construct two dates d1 and d2, with d1 < d2.
+    const DateTime & d1(sign>0 ? dd1 : dd2);
+    const DateTime & d2(sign>0 ? dd2 : dd1);
+
+    // are the dates in the same year?
+    if (d1.year() == d2.year()) {
+        retVal = (double)(d2.julian() - d1.julian());
+        retVal += d2.getDayFraction() - d1.getDayFraction();
+    } else {
+        // dates in different years...
+        // first, find fraction to end of first year...
+        Date endYr1(d1.year() + 1,JANUARY,(Day)1);
+        retVal = (double)(endYr1.julian() - d1.julian()) - d1.getDayFraction();
+
+        // next, add in fraction for whole intervening years...
+        retVal += (double)(d2.year()-d1.year()-1);
+
+        // lastly, add in fraction in last year to get us to d2...
+        Date startYr2(d2.year(),JANUARY,(Day)1);
+        retVal += (double)(d2.julian() - startYr2.julian()) + d2.getDayFraction();
+    }
+
+    return sign * retVal;
+}
+
+double
+ActAct::getPeriodFraction( const DateTime & actualStart, const DateTime & actualEnd,
+                           const DateTime & psuedoStart, const DateTime & psuedoEnd,
+                           const int, const Bool ) const
+{
+   // test for division by zero
+   double denominator = getDiffInDay(psuedoStart, psuedoEnd);
+   denominator = denominator ? denominator : 1.0 ;
+   return getDiffInDay(actualStart, actualEnd) / denominator;
+}
+
+double
+ActAct::getFraction( const DateTime dd1, const DateTime dd2, const Bool,
+                        const Bool, const int ) const
+{
+    double retVal;
+
+    if (dd1 == dd2)
+        return 0;
+
+    int sign = dd1<dd2 ? 1 : -1;
+
+    const DateTime & d1 = sign > 0 ? dd1 : dd2;
+    const DateTime & d2 = sign > 0 ? dd2 : dd1;
+
+    // are the dates in the same year?
+    if (d1.year() == d2.year()) {
+        retVal = (double)(d2.julian() - d1.julian());
+        retVal += d2.getDayFraction() - d1.getDayFraction();
+        retVal /= (double)(d1.daysInYear());
+    } else {
+        // dates in different years...
+        // first, find fraction to end of first year...
+        Date endYr1(d1.year() + 1,JANUARY,(Day)1);
+        retVal =
+            ((double)(endYr1.julian() - d1.julian()) - d1.getDayFraction())
+            / ((double)d1.daysInYear());
+
+        // next, add in fraction for whole intervening years...
+        retVal += (double)(d2.year()-d1.year()-1);
+
+        // lastly, add in fraction in last year to get us to d2...
+        Date startYr2(d2.year(),JANUARY,(Day)1);
+        retVal +=
+            ((double)(d2.julian() - startYr2.julian()) + d2.getDayFraction())
+            / ((double)d2.daysInYear());
+    }
+
+    return sign * retVal;
+}
+
+
+double
+ActAct::getDaysInYear( Year year ) const
+{
+    Date firstDate( year, JANUARY, 1 );
+    return firstDate.daysInYear();
+}
+
+
+int
+ActAct::includeFeb29( const DateTime & start, const DateTime & end ) const
+{
+    if ( start.isInLeapYear() ) {
+       Date feb29(start.year(), Month(2), Day(29));
+       if ( (Date)start < feb29 ) {
+          return 1;
+       }
+    }
+    if ( end.isInLeapYear() ) {
+       Date feb29(end.year(), Month(2), Day(29));
+       if ( feb29 <= (Date)end ) {
+          return 1;
+       }
+    }
+    return 0;
+}
+
+//----------------------------------------------------------------------
+
+class ActActISMA251 : public ActAct {
+
+public:
+
+    ActActISMA251();
+
+    virtual ~ActActISMA251();
+
+    virtual double getFraction(
+        const DateTime d1,
+        const DateTime d2,
+        const Bool finalPeriod = FALSE,
+        const Bool subtPeriod = FALSE,
+        const int numPeriodPerYear = 0) const;
+
+    virtual double getPeriodFraction(
+        const DateTime & actualStart,
+        const DateTime & actualEnd,
+        const DateTime & psuedoStart,
+        const DateTime & psuedoEnd,
+        const int numPeriodPerYear,
+        const Bool finalPeriod = FALSE ) const;
+};
+
+ActActISMA251::ActActISMA251() :
+
+    ActAct( UIName( "Actual/Actual ICMA 251" ),
+                  DBName( "ACT251" ),
+                  UIShortName( "Act/Act ICMA 251" ) )
+{
+}
+
+ActActISMA251::~ActActISMA251()
+{
+}
+
+// ============================================================
+// I'm not sure what exactly getPeriodFraction() below
+// does.  To me, it seems to be quite confused.  And, anyway,
+// it is not called from any file other than couponval.
+// Hence, decided to write a new getFraction(), which is
+// called by swapperiod and periodSchedule.
+// Please ensure that the last three parameters are correctly
+// specified while calling this function.
+// ============================================================
+
+double
+ActActISMA251::getFraction(
+    const DateTime d1,
+    const DateTime d2,
+    const Bool finalPeriod ,
+    const Bool stubPeriod ,
+    const int numPeriodPerYear ) const
+{
+
+    if (!numPeriodPerYear)
+        return 0;
+
+    if (!stubPeriod)
+        return (1.0 / numPeriodPerYear) ;
+
+
+    // Initial and final irregular period calculations
+
+    int monthsInPeriod = 12 / numPeriodPerYear;
+    Date tmpStart;
+    Date tmpEnd;
+    double ret = 0.0;
+    double d = 0.0;
+    DateTime dt1 = tmpStart;
+    DateTime dt2 = tmpEnd;
+
+    if (finalPeriod)        // Back stub calculation
+    {
+        tmpStart = (Date) d1;
+        tmpEnd = tmpStart;
+        tmpEnd.addMonth (monthsInPeriod, 1);
+
+        while ( tmpEnd < Date(d2) )
+        {
+            ret += 1.0 / numPeriodPerYear;
+            tmpStart = tmpEnd;
+            tmpEnd.addMonth (monthsInPeriod, 1);
+        }
+        dt1 = tmpStart;
+        dt2 = tmpEnd;
+
+        d = getDiffInDay(dt1, d2);
+        d /= (getDiffInDay (dt1, dt2) * numPeriodPerYear);
+        ret += d;
+
+    }
+    else                        // Font stub calculation
+    {
+        monthsInPeriod *= -1;
+        tmpEnd = (Date) d2;
+        tmpStart = tmpEnd;
+        tmpStart.addMonth (monthsInPeriod, 1);
+
+        while ( tmpStart > Date(d1) )
+        {
+            ret += 1.0 / numPeriodPerYear;
+            tmpEnd = tmpStart;
+            tmpStart.addMonth (monthsInPeriod, 1);
+        }
+        dt1 = tmpStart;
+        dt2 = tmpEnd;
+
+        d = getDiffInDay(d1, dt2);
+        d /= (getDiffInDay (dt1, dt2) * numPeriodPerYear);
+        ret += d;
+
+    }
+
+    return ret;
+}
+
+
+double
+ActActISMA251::getPeriodFraction(
+                  const DateTime & actualStart,
+                  const DateTime & actualEnd,
+                  const DateTime & psuedoStart,
+                  const DateTime & psuedoEnd,
+                  const int numPeriodPerYear, const Bool ) const
+{
+   if ( !numPeriodPerYear ) return 0.0;
+
+   double ret = 0.0;
+   double d = 0.0;
+   double denominator = getDiffInDay(psuedoStart, psuedoEnd);
+   denominator = denominator ? denominator : 1.0;
+
+   if ( (Date) psuedoStart < (Date) actualStart &&
+        (Date) psuedoEnd   < (Date) actualEnd ) {
+        //
+        // long first period:
+        //       (psuedoEnd - actualStart)
+        // ----------------------------------------
+        // (psuedoEnd-psuedoStart)*numPeriodPerYear
+        // +
+        //       (actualEnd - psuedoEnd)
+        // -------------------------------------
+        // (actualEnd-psuedoEnd)*numPeriodPerYear
+        //
+        d = getDiffInDay(actualStart, psuedoEnd);
+        ret = (d / denominator) * ( 1.0 + 1.0 / numPeriodPerYear);
+   }
+   else if ( (Date) psuedoStart > (Date) actualStart &&
+             (Date) psuedoEnd   > (Date) actualEnd ) {
+        //
+        // long final period:
+        //        (psuedoStart - actualStart)
+        // ------------------------------------------
+        // (psuedoStart-actualStart)*numPeriodPerYear
+        // +
+        //        (actualEnd - psuedoStart)
+        // ----------------------------------------
+        // (psuedoEnd-psuedoStart)*numPeriodPerYear
+        //
+        d = getDiffInDay(psuedoStart, actualEnd);
+        ret = ( 1.0 + 1.0 / numPeriodPerYear ) * ( d / denominator );
+   } else {
+        //
+        //       (actualEnd - actualStart)
+        //  ----------------------------------------
+        //  (psuedoEnd-psuedoStart)*numPeriodPerYear
+        //
+        d = getDiffInDay(actualStart, actualEnd);
+        ret = (d / denominator ) * ( 1.0 / numPeriodPerYear );
+   }
+
+   return ret;
+}
+
+//----------------------------------------------------------------------
+
+class ActActAFB : public ActAct {
+
+public:
+
+    ActActAFB();
+
+    virtual ~ActActAFB();
+
+    virtual double getFraction(
+        const DateTime d1,
+        const DateTime d2,
+        const Bool finalPeriod = FALSE,
+        const Bool stubPeriod = FALSE,
+        const int periodsPerYear = 0 ) const;
+
+    virtual double getPeriodFraction(
+        const DateTime & actualStart,
+        const DateTime & actualEnd,
+        const DateTime & psuedoStart,
+        const DateTime & psuedoEnd,
+        const int numPeriodPerYear,
+        const Bool finalPeriod = FALSE ) const;
+        int
+        ActActAFB::includeFeb29( const DateTime & start, const DateTime & end ) const;
+};
+
+ActActAFB::ActActAFB() :
+
+    ActAct( UIName( "Actual/Actual AFB" ), DBName( "ACTAFB" ),
+            UIShortName( "Act/Act AFB" ) )
+{
+}
+
+ActActAFB::~ActActAFB()
+{
+}
+
+int
+ActActAFB::includeFeb29( const DateTime & start, const DateTime & end ) const
+{
+
+    Date feb29 (Year(0), Month(2), Day(29));
+
+    if ( start.isInLeapYear() )
+       feb29 = Date (start.year(), Month(2), Day(29));
+    else if ( end.isInLeapYear() )
+       feb29 = Date (end.year(), Month(2), Day(29));
+
+    // Neither start nor end date are in leap year
+
+    if (feb29.year() == 0)
+        return 0;
+
+    if ( ((Date)start < feb29 ) && (feb29 <= (Date)end) )
+          return 1;
+
+    return 0;
+}
+
+double
+ActActAFB::getFraction(
+                const DateTime d1,
+                const DateTime d2,
+                const Bool finalPeriod, const Bool, const int ) const
+{
+   double ret = 0.0;
+   double denominator = 365.0;
+    Date actualStart;
+    Date actualEnd;
+   if (d1 >d2)
+   {
+        actualStart = (Date) d2;
+        actualEnd = (Date) d1;
+   }
+   else
+   {
+        actualEnd = (Date) d2;
+        actualStart = (Date) d1;
+   }
+   Date tmpDate = actualEnd;
+   tmpDate.addYear(-1, 1);
+
+   if ( actualStart >= tmpDate ) {
+      // Period less than one year - just use ACT/ACT logic
+
+      double d = getDiffInDay(actualStart, actualEnd);
+      if ( includeFeb29(actualStart, actualEnd) )
+         denominator = 366.0;
+      ret = d / denominator;
+
+   } else {
+      // Period longer than one year -
+      // Calculate for every one year period.
+
+      Date tmp = tmpDate;
+      while ( tmp > (Date) actualStart ) {
+         ret += 1.0;
+         tmpDate = tmp;
+         tmp.addYear(-1, 1);
+      }
+      double d = getDiffInDay(actualStart, tmpDate);
+      if ( includeFeb29(actualStart, tmpDate) ) {
+         denominator = 366.0;
+      }
+      ret += d / denominator;
+   }
+
+   return ret;
+}
+
+double
+ActActAFB::getPeriodFraction(
+                const DateTime & actualStart,
+                const DateTime & actualEnd,
+                const DateTime & psuedoStart,
+                const DateTime & psuedoEnd,
+                const int, const Bool ) const
+{
+   double ret = 0.0;
+   double denominator = 365.0;
+   double d = getDiffInDay(actualStart, actualEnd);
+   if ( d <= 366.0 ) {
+      if ( includeFeb29(actualStart, actualEnd) )
+         denominator = 366.0;
+      ret = d / denominator;
+   } else {
+      Date& tmpEnd((Date)actualEnd); //COSL Solaris8 upgrade
+      Date& tmp = tmpEnd.addYear(-1, 1);
+      while ( tmp > (Date) actualStart ) {
+         ret += 1.0;
+         tmpEnd = tmp;
+         tmp = tmpEnd.addYear(-1, 1);
+      }
+      d = getDiffInDay(actualStart, tmp);
+      if ( includeFeb29(actualStart, tmp) ) {
+         denominator = 366.0;
+      }
+      ret += d / 366.0;
+   }
+
+   return ret;
+}
+
+//----------------------------------------------------------------------
+// Name of this class should be changed to 'Act365'.  Don't know
+// why it was called 'Act365F' to begin with.
+
+class Act365F : public DayCountConv {
+
+public:
+
+    Act365F();
+
+    virtual ~Act365F();
+
+    virtual double getFraction(
+        const DateTime d1,
+        const DateTime d2,
+        const Bool finalPeriod = FALSE,
+        const Bool stubPeriod = FALSE,
+        const int periodsPerYear = 0 ) const;
+
+    virtual double getPeriodFraction(
+        const DateTime & actualStart,
+        const DateTime & actualEnd,
+        const DateTime & psuedoStart,
+        const DateTime & psuedoEnd,
+        const int numPeriodPerYear,
+        const Bool finalPeriod = FALSE ) const;
+
+    virtual double getDaysInYear( Year year ) const;
+
+private:
+
+};
+
+Act365F::Act365F() :
+    DayCountConv(
+        UIName( "Actual/365 (Fixed)" ),
+        DBName( "ACT365" ),
+        UIShortName( "Act/365F" ) )
+
+{
+}
+
+Act365F::~Act365F()
+{
+}
+
+double
+Act365F::getFraction( const DateTime dd1, const DateTime dd2, const Bool,
+                        const Bool, const int ) const
+{
+    double retVal = (double) (dd2.julian() - dd1.julian());
+    retVal += dd2.getDayFraction() - dd1.getDayFraction();
+    retVal /= 365.0;
+    return retVal;
+}
+
+
+double
+Act365F::getPeriodFraction( const DateTime & actualStart,
+                            const DateTime & actualEnd,
+                            const DateTime & psuedoStart,
+                            const DateTime & psuedoEnd,
+                            const int numOfPeriodPerYear,
+                            const Bool ) const
+{
+   if ( numOfPeriodPerYear == 0 )
+      return 0.0;
+
+   double result = getFraction(actualStart, actualEnd)
+                   * numOfPeriodPerYear;
+
+   // adjustment is necessary if the (actualStart - actualEnd) result
+   // is greater than 365/numOfPeriodPerYear
+   if ( result > 1.0 ) {
+      result  = psuedoEnd.julian()   - actualEnd.julian();
+      result -= psuedoStart.julian() - actualStart.julian();
+      if ( result <= 2.0 ) {   // make sure do not over-adjusted, kludgy
+         double tmp = 365.0 / numOfPeriodPerYear;
+         result = ( tmp - result ) / tmp;
+      }
+      else
+         result = 0.0;
+   }
+   return result;
+}
+
+
+double
+Act365F::getDaysInYear( Year ) const
+{
+   return 365.0;
+}
+
+//----------------------------------------------------------------------
+
+class Act360 : public DayCountConv {
+
+public:
+
+    Act360();
+
+    virtual ~Act360();
+
+    virtual double getFraction(
+        const DateTime d1,
+        const DateTime d2,
+        const Bool finalPeriod = FALSE,
+        const Bool stubPeriod = FALSE,
+        const int periodsPerYear = 0 ) const;
+
+    virtual double getPeriodFraction(
+        const DateTime & actualStart,
+        const DateTime & actualEnd,
+        const DateTime & psuedoStart,
+        const DateTime & psuedoEnd,
+        const int numPeriodPerYear,
+        const Bool finalPeriod = FALSE ) const;
+
+    virtual double getDaysInYear( Year year ) const;
+
+private:
+
+};
+
+Act360::Act360() :
+    DayCountConv( UIName( "Actual/360" ), DBName( "ACT360" ),
+                  UIShortName( "Act/360" ) )
+{
+}
+
+Act360::~Act360()
+{
+}
+
+double
+Act360::getFraction( const DateTime dd1, const DateTime dd2, const Bool,
+                        const Bool, const int ) const
+{
+    double retVal = (double) (dd2.julian() - dd1.julian());
+    retVal += dd2.getDayFraction() - dd1.getDayFraction();
+    retVal /= 360.0;
+    return retVal;
+}
+
+double
+Act360::getPeriodFraction( const DateTime & actualStart, const DateTime & actualEnd,
+                           const DateTime & , const DateTime & ,
+                           const int numOfPeriodPerYear, const Bool ) const
+{
+   return getFraction(actualStart, actualEnd) * numOfPeriodPerYear;
+}
+
+
+double
+Act360::getDaysInYear( Year ) const
+{
+   return 360.0;
+}
+
+class Bus360 : public DayCountConv
+{
+public:
+        Bus360();
+        virtual ~Bus360();
+
+        virtual int getDays ( const DateTime & startDate, const DateTime & endDate ) const ;
+
+        virtual double getFraction ( const DateTime d1,
+                                     const DateTime d2,
+                                     const Bool     finalPeriod    = FALSE,
+                                     const Bool     stubPeriod     = FALSE,
+                                     const int      periodsPerYear = 0 ) const
+        {
+            return getDays ( d1, d2 ) / 360.0 ;
+        }
+
+        virtual double getPeriodFraction ( const DateTime & actualStart,
+                                           const DateTime & actualEnd,
+                                           const DateTime & psuedoStart,
+                                           const DateTime & psuedoEnd,
+                                           const int        numPeriodPerYear,
+                                           const Bool       finalPeriod = FALSE ) const
+        {
+            return getFraction(actualStart, actualEnd) * numPeriodPerYear;
+        }
+
+        virtual double getDaysInYear ( Year year ) const ;
+        virtual void setCalendar ( const SimpleCalendarList & calendar )
+        {
+            _calendar = calendar ;
+        }
+
+private:
+        SimpleCalendarList _calendar;
+};
+
+Bus360::Bus360()
+    : _calendar(),
+      DayCountConv ( UIName      ( "BussinessDay/360" ),
+                     DBName      ( "Bus360" ),
+                     UIShortName ( "Bus/360" ) )
+{
+}
+
+Bus360::~Bus360 ()
+{
+}
+
+int Bus360::getDays(const DateTime& startDate, const DateTime& endDate) const
+{
+    int retValue = 0;
+
+    if (startDate == endDate)
+        return 0;
+
+    int sign = startDate < endDate ? 1 : -1;
+
+    DateTime d1 = sign > 0 ? startDate : endDate;
+    const DateTime& d2 = sign > 0 ? endDate : startDate;
+
+    while ( d1 < d2 )
+    {
+        int isBusDay = 1;
+        for ( SimpleCalendarListCtl sctl(_calendar); !sctl.done(); sctl.next())
+        {
+            const SimpleCalendar *sc = sctl.get();
+            isBusDay = isBusDay && sc->isBusDay(d1);
+        }
+
+        if ( isBusDay )
+            ++retValue ;
+
+        ++d1 ;
+    }
+
+    return retValue * sign;
+}
+
+double
+Bus360::getDaysInYear( Year ) const
+{
+   return 360.0;
+}
+
+class Bus252 : public DayCountConv
+{
+public:
+        Bus252();
+        virtual ~Bus252();
+
+        virtual int getDays ( const DateTime & startDate,
+                              const DateTime & endDate ) const ;
+
+        virtual double getFraction ( const DateTime d1,
+                                     const DateTime d2,
+                                     const Bool     finalPeriod    = FALSE,
+                                     const Bool     stubPeriod     = FALSE,
+                                     const int      periodsPerYear = 0 ) const
+        {
+            return getDays ( d1, d2 ) / 252.0 ;
+        }
+
+        virtual double getPeriodFraction ( const DateTime & actualStart,
+                                           const DateTime & actualEnd,
+                                           const DateTime & psuedoStart,
+                                           const DateTime & psuedoEnd,
+                                           const int        numPeriodPerYear,
+                                           const Bool       finalPeriod = FALSE ) const
+        {
+            return getFraction ( actualStart, actualEnd ) * numPeriodPerYear ;
+        }
+
+        virtual double getDaysInYear ( Year year ) const ;
+
+        virtual void setCalendar ( const SimpleCalendarList & calendar )
+        {
+            _calendar = calendar ;
+        }
+
+        virtual const SimpleCalendarList * getCalendar () { return & _calendar ; }
+
+private:
+        SimpleCalendarList _calendar;
+};
+
+Bus252::Bus252 ()
+    : _calendar(),
+      DayCountConv ( UIName      ( "BussinessDay/252" ),
+                     DBName      ( "BUS252" ),
+                     UIShortName ( "BUS/252" ) )
+{
+}
+
+Bus252::~Bus252 ()
+{
+}
+
+int Bus252::getDays ( const DateTime & startDate,
+                      const DateTime & endDate ) const
+{
+    int retValue = 0;
+
+    if ( startDate == endDate )
+         return 0;
+
+    int sign = startDate < endDate ? 1 : -1;
+
+    DateTime d1 = sign > 0 ? startDate : endDate;
+
+    const DateTime & d2 = sign > 0 ? endDate : startDate;
+
+    int isBusDay = 1;
+
+    while ( d1 < d2 )
+    {
+        isBusDay = _calendar.isBusDay ( d1 ) ;
+
+        if ( isBusDay == 1 )
+            retValue++ ;
+
+        ++d1 ;
+    }
+
+    return retValue * sign;
+}
+
+double
+Bus252::getDaysInYear ( Year ) const
+{
+   return 252.0;
+}
+
+//----------------------------------------------------------------------
+// Any day count convention based on the 30/360 calendar is derived
+// from this abstract base class.  The class implements the major
+// portion of the 'getFraction()' method and just requires derived
+// classes to implement the 'd2minusd1()' method.  The class also
+// provides some useful methods for implementing 'd2minusd1()'.
+
+class Dcc30360Based : public DayCountConv {
+public:
+
+    Dcc30360Based( const UIName & uiname, const DBName & dbname );
+    virtual ~Dcc30360Based();
+
+    virtual double getFraction(
+        const DateTime      d1,
+        const DateTime      d2,
+        const Bool finalPeriod = FALSE,
+        const Bool stubPeriod = FALSE,
+        const int periodsPerYear = 0 ) const;
+
+    virtual double getPeriodFraction(
+        const DateTime      & actualStart,
+        const DateTime      & actualEnd,
+        const DateTime      & psuedoStart,
+        const DateTime      & psuedoEnd,
+        const int           numPeriodPerYear,
+        const Bool          finalPeriod = FALSE ) const;
+
+    double getDaysInYear( Year year ) const;
+
+protected :
+
+    virtual double d2minusd1(
+        const DateTime      & dd1,
+        const DateTime      & dd2,
+        const Bool          finalPeriod = FALSE ) const = 0;
+
+    // Returns non-zero if 'd' is the last day of february otherwise
+    // it returns zero.
+
+    static int isLastDayOfFebruary( const DateTime & d );
+
+    // Returns the minimum of 'd1' and 'd2'.
+
+    static Day min( Day d1, Day d2 );
+
+private:
+
+    // No Copying ...
+
+    Dcc30360Based( const Dcc30360Based & );
+    void operator = ( const Dcc30360Based & );
+};
+
+Dcc30360Based::Dcc30360Based( const UIName & uiname, const DBName & dbname ) :
+    DayCountConv( uiname, dbname )
+{
+}
+
+Dcc30360Based::~Dcc30360Based()
+{
+}
+
+double
+Dcc30360Based::getFraction(
+const DateTime      dd1,
+const DateTime      dd2,
+const Bool          finalPeriod,
+const Bool,
+const int ) const
+
+{
+    if ( dd1 == dd2 )
+        return 0;
+
+    const int sign = dd1 < dd2 ? 1 : -1;
+
+    const DateTime & d1 = sign > 0 ? dd1 : dd2;
+    const DateTime & d2 = sign > 0 ? dd2 : dd1;
+
+    assert( d1 < d2 );
+
+    double retVal = 360.0 * (d2.year() - d1.year());
+    retVal += 30.0 * (d2.month() - d1.month());
+    retVal += d2minusd1( d1, d2, finalPeriod );
+
+    retVal += d2.getDayFraction() - d1.getDayFraction();
+
+    retVal /= 360.0;
+
+    return sign * retVal;
+}
+
+double
+Dcc30360Based::getPeriodFraction(
+const DateTime      & actualStart,
+const DateTime      & actualEnd,
+const DateTime      & /** psuedoStart **/,
+const DateTime      & /** psuedoEnd **/,
+const int           numOfPeriodPerYear,
+const Bool          finalPeriod ) const
+{
+   return getFraction( actualStart, actualEnd, finalPeriod ) * numOfPeriodPerYear;
+}
+
+int
+Dcc30360Based::isLastDayOfFebruary( const DateTime & d )
+{
+    if ( FEBRUARY == d.month() )
+        if ( d.day() == d.daysInMonth() )
+            return 1;
+
+    return 0;
+}
+
+inline Day
+Dcc30360Based::min( Day d1, Day d2 )
+{
+    return d1 < d2 ? d1 : d2;
+}
+
+
+double
+Dcc30360Based::getDaysInYear( Year ) const
+{
+   return 360.0;
+}
+
+//----------------------------------------------------------------------
+
+class Dcc30S360 : public Dcc30360Based {
+public:
+
+    Dcc30S360();
+    ~Dcc30S360();
+
+protected:
+
+    double d2minusd1(
+        const DateTime  & dd1,
+        const DateTime  & dd2,
+        const Bool      finalPeriod ) const;
+
+private:
+
+    // No Copying ...
+
+    Dcc30S360( const Dcc30S360 & );
+    void operator = ( const Dcc30S360 & );
+};
+
+Dcc30S360::Dcc30S360() :
+    //Dcc30360Based( UIName( "30S/360" ), DBName( "30S360" ) )
+    Dcc30360Based( UIName( "30E/360" ), DBName( "30E06" ) )
+{
+}
+
+Dcc30S360::~Dcc30S360()
+{
+}
+
+
+double
+Dcc30S360::d2minusd1( const DateTime & dd1, const DateTime & dd2, const Bool finalPeriod) const
+{
+    assert( dd1 < dd2 );
+    Day d1, d2;
+    if (locationIs("NY")) {
+        d1 = isLastDayOfFebruary( dd1 ) ? 30 : min( dd1.day(), 30 );
+        d2 = (isLastDayOfFebruary( dd2 ) && !finalPeriod) ? 30 : min( dd2.day(), 30 );
+    }
+    else {
+        d1 = min( dd1.day(), 30 );
+        d2 = min( dd2.day(), 30 );
+    }
+    return d2 - d1;
+}
+
+
+//----------------------------------------------------------------------
+
+class Dcc30I360 : public Dcc30360Based {
+public:
+
+    Dcc30I360();
+    ~Dcc30I360();
+
+protected:
+
+    double d2minusd1(
+        const DateTime  & dd1,
+        const DateTime  & dd2,
+        const Bool      finalPeriod ) const;
+
+private:
+
+    // No Copying ...
+
+    Dcc30I360( const Dcc30I360 & );
+    void operator = ( const Dcc30I360 & );
+};
+
+Dcc30I360::Dcc30I360() :
+    Dcc30360Based( UIName( "30I/360" ), DBName( "30I360" ) )
+{
+}
+
+Dcc30I360::~Dcc30I360()
+{
+}
+
+double
+Dcc30I360::d2minusd1( const DateTime & dd1, const DateTime & dd2, const Bool ) const
+{
+    assert( dd1 < dd2 );
+
+    const Day d1 = min( dd1.day(), 30 );
+    const Day d2 = (dd2.day() == 31) && (d1 == 30) ? 30 : dd2.day();
+
+    return d2 - d1;
+}
+
+
+//----------------------------------------------------------------------
+
+class Dcc30B360 : public Dcc30360Based {
+public:
+
+    Dcc30B360();
+    ~Dcc30B360();
+
+protected:
+
+    double d2minusd1(
+        const DateTime  & dd1,
+        const DateTime  & dd2,
+        const Bool      finalPeriod ) const;
+
+private:
+
+    // No Copying ...
+
+    Dcc30B360( const Dcc30B360 & );
+    void operator = ( const Dcc30B360 & );
+};
+
+Dcc30B360::Dcc30B360() :
+    Dcc30360Based( UIName( "30B/360" ), DBName( "30B360" ) )
+{
+}
+
+Dcc30B360::~Dcc30B360()
+{
+}
+
+double
+Dcc30B360::d2minusd1( const DateTime & dd1, const DateTime & dd2, const Bool ) const
+{
+    assert( dd1 < dd2 );
+
+    const Day d1 = isLastDayOfFebruary( dd1 ) ? 30 : min( dd1.day(), 30 );
+    const Day d2 = (dd2.day() == 31) && (d1 == 30) ? 30 : dd2.day();
+
+    return d2 - d1;
+}
+
+
+//----------------------------------------------------------------------
+
+// the ISDA specification for Eurobond (30E/360) requires special
+// treatment for deals that terminate on the last day of February
+// and so calls to get daycount fractions must signify if the
+// period in question is the final period (hence the addition of
+// the finalPeriod flag in the DayCountConv interfaces - note
+// this parameter defaults to false and  will only hav an effect
+// when the day count convention is 30E/360 and the termination
+// date of the deal coincides with the last day of Feb.)
+
+class Dcc30E360 : public Dcc30360Based {
+public:
+
+    Dcc30E360();
+    ~Dcc30E360();
+
+protected:
+
+    double d2minusd1(
+        const DateTime  & dd1,
+        const DateTime  & dd2,
+        const Bool      finalPeriod ) const;
+
+private:
+
+    // No Copying ...
+
+    Dcc30E360( const Dcc30E360 & );
+    void operator = ( const Dcc30E360 & );
+};
+
+Dcc30E360::Dcc30E360() :
+    Dcc30360Based( UIName( "ISDA 30E/360" ), DBName( "30E00" ) )
+{
+}
+
+Dcc30E360::~Dcc30E360()
+{
+}
+
+double
+Dcc30E360::d2minusd1( const DateTime & dd1, const DateTime & dd2, const Bool finalPeriod ) const
+{
+    assert( dd1 < dd2 );
+    Day d1, d2;
+    if (locationIs("NY")) {
+        d1 = min( dd1.day(), 30 );
+        d2 = min( dd2.day(), 30 );
+    }
+    else {
+        d1 = isLastDayOfFebruary( dd1 ) ? 30 : min( dd1.day(), 30 );
+        d2 = (isLastDayOfFebruary( dd2 ) && !finalPeriod) ? 30 : min( dd2.day(), 30 );
+    }
+
+    return d2 - d1;
+}
+
+
+//----------------------------------------------------------------------
+
+// a "special" day count convention to be assigned to the last
+// periods of schedules when the day count convention is
+// eurobond (30E/360) - used to hide last period considerations
+// from various apps (TermStruct calculations)
+// this day count convention provides no special treatment for
+// the final period fraction calculations when the deal terminates
+// on the last day of February
+
+class Dcc30E360last : public Dcc30360Based {
+public:
+
+    Dcc30E360last();
+    ~Dcc30E360last();
+
+protected:
+
+    double d2minusd1(
+        const DateTime  & dd1,
+        const DateTime  & dd2,
+        const Bool      finalPeriod ) const;
+
+private:
+
+    // No Copying ...
+
+    Dcc30E360last( const Dcc30E360last & );
+    void operator = ( const Dcc30E360last & );
+};
+
+Dcc30E360last::Dcc30E360last() :
+    Dcc30360Based( UIName( "30E/360last" ), DBName( "30E360LAST" ) )
+{
+}
+
+Dcc30E360last::~Dcc30E360last()
+{
+}
+
+double
+Dcc30E360last::d2minusd1( const DateTime & dd1, const DateTime & dd2, const Bool finalPeriod ) const
+{
+    assert( dd1 < dd2 );
+
+    const Day d1 = isLastDayOfFebruary( dd1 ) ? 30 : min( dd1.day(), 30 );
+    const Day d2 = min( dd2.day(), 30 );
+
+    return d2 - d1;
+}
+
+//----------------------------------------------------------------------
+
+// Actual/365.25 is _not_ an ISDA standard, but may be used internally.
+
+class Act36525 : public DayCountConv {
+
+public:
+
+    Act36525();
+
+    virtual ~Act36525();
+
+    virtual double getFraction(
+        const DateTime d1,
+        const DateTime d2,
+        const Bool finalPeriod = FALSE,
+        const Bool stubPeriod = FALSE,
+        const int periodsPerYear = 0 ) const;
+
+
+    virtual double getPeriodFraction(
+        const DateTime & actualStart,
+        const DateTime & actualEnd,
+        const DateTime & psuedoStart,
+        const DateTime & psuedoEnd,
+        const int numPeriodPerYear,
+        const Bool finalPeriod = FALSE ) const;
+
+    virtual double getDaysInYear( Year year ) const;
+
+private:
+
+};
+
+Act36525::Act36525() :
+    DayCountConv( UIName( "Actual/365.25" ), DBName(  "AC365J" ),
+                  UIShortName( "Act/365.25" ) )
+{
+}
+
+Act36525::~Act36525()
+{
+}
+
+double
+Act36525::getFraction( const DateTime dd1, const DateTime dd2, const Bool,
+                        const Bool, const int ) const
+{
+    double retVal = (double)(dd2.julian() - dd1.julian());
+    retVal += (dd2.getDayFraction() - dd1.getDayFraction());
+    retVal /= 365.25;
+    return retVal;
+}
+
+double
+Act36525::getPeriodFraction( const DateTime & actualStart, const DateTime & actualEnd,
+                             const DateTime & , const DateTime & ,
+                             const int numOfPeriodPerYear, const Bool ) const
+{
+   return getFraction(actualStart, actualEnd) * numOfPeriodPerYear;
+}
+
+
+double
+Act36525::getDaysInYear( Year ) const
+{
+   return 365.25;
+}
+
+
+//----------------------------------------------------------------------
+// Equal Payment is __not__ an ISDA standard, but it is defined
+// in NKC so it is required in CDS.
+//
+// Period daycount fractions for Equal Payment are actually calculated
+// in SwapPeriod::getDcf() if you are a swap or in BasicPeriod::calculateDcf()
+// if you are a cap.  A dcf of 1/freq is assigned to each period
+// in the schedule.  There are, however, times when a dcf will have
+// to be calculated directly from the EqualPayment class (say freq = ZC);
+// in these cases we need to provide a measure for the dcf - the original
+// code selected 30B/360 (the claim was that is was not meaningful so
+// it simply replicated an earlier case).
+// The final word on this issue: 30I/360 should be the default measure
+// for equal payment dcc (i.e. stub period dcfs will be measured using this
+// 30I/360)
+
+class EqualPayment : public DayCountConv {
+public:
+
+    EqualPayment();
+    virtual ~EqualPayment();
+
+    virtual double getFraction(
+        const DateTime      d1,
+        const DateTime      d2,
+        const Bool          finalPeriod,
+        const Bool          stubPeriod = FALSE,
+        const int periodPerYear = 0 ) const;
+
+    virtual double getPeriodFraction(
+        const DateTime      & actualStart,
+        const DateTime      & actualEnd,
+        const DateTime      & psuedoStart,
+        const DateTime      & psuedoEnd,
+        const int           numPeriodPerYear,
+        const Bool          finalPeriod ) const;
+
+    virtual double getDaysInYear( Year year ) const;
+
+private:
+
+    // No Copying ...
+    EqualPayment( const EqualPayment & );
+    void operator = ( const EqualPayment & );
+};
+
+EqualPayment::EqualPayment() :
+    DayCountConv( UIName( "Equal" ), DBName( "360360" ) )
+{
+}
+
+EqualPayment::~EqualPayment()
+{
+}
+
+double EqualPayment::getFraction( const DateTime d1, const DateTime d2, const Bool,
+                                const Bool, const int ) const
+{
+   return DayCountConv::_thirtyI360->getFraction(d1,d2);
+}
+
+double
+EqualPayment::getPeriodFraction(
+const DateTime      & actualStart,
+const DateTime      & actualEnd,
+const DateTime      & psuedoStart,
+const DateTime      & psuedoEnd,
+const int           numOfPeriodPerYear,
+const Bool                  ) const
+{
+
+       if (locationIs("NY"))
+          return DayCountConv::_thirtyB360->getPeriodFraction( actualStart, actualEnd,
+                                                     psuedoStart, psuedoEnd,
+                                                     numOfPeriodPerYear );
+       else
+          return DayCountConv::_thirtyI360->getPeriodFraction( actualStart, actualEnd,
+                                                     psuedoStart, psuedoEnd,
+                                                     numOfPeriodPerYear );
+}
+
+double EqualPayment::getDaysInYear( Year year ) const
+{
+   return locationIs("NY")?DayCountConv::_thirtyB360->getDaysInYear(year):DayCountConv::_thirtyI360->getDaysInYear(year);
+}
+
+class FullPayment : public DayCountConv {
+public:
+
+    FullPayment();
+    virtual ~FullPayment();
+
+    virtual double getFraction(
+        const DateTime      d1,
+        const DateTime      d2,
+        const Bool          finalPeriod,
+        const Bool          stubPeriod = FALSE,
+        const int           periodsPerYear = 0) const;
+
+    virtual double getPeriodFraction(
+        const DateTime & actualStart,
+        const DateTime & actualEnd,
+        const DateTime & psuedoStart,
+        const DateTime & psuedoEnd,
+        const int numPeriodPerYear,
+        const Bool finalPeriod = FALSE ) const;
+
+    virtual double getDaysInYear( Year year ) const;
+
+private:
+
+    // No Copying ...
+    FullPayment( const FullPayment & );
+    void operator = ( const FullPayment & );
+};
+
+FullPayment::FullPayment() :
+    DayCountConv( UIName( "FULL" ), DBName( "FULL" ), UIShortName("Full") )
+{
+}
+
+FullPayment::~FullPayment()
+{
+}
+
+double
+FullPayment::getPeriodFraction( const DateTime & actualStart,
+                            const DateTime & actualEnd,
+                            const DateTime & psuedoStart,
+                            const DateTime & psuedoEnd,
+                            const int numOfPeriodPerYear,
+                            const Bool ) const
+{
+    return 1/numOfPeriodPerYear;
+}
+
+double
+FullPayment::getFraction( const DateTime d1, const DateTime d2, const Bool,
+                                const Bool, const int ) const
+{
+    return 1;
+}
+
+double
+FullPayment::getDaysInYear( Year year ) const
+{
+    return DayCountConv::_act365F->getDaysInYear( year );
+}
+
+//----------------------------------------------------------------------
+// Supported conventions ...
+
+DayCountConv * DayCountConv::_actAct        = 0;
+DayCountConv * DayCountConv::_actActISMA251 = 0;
+DayCountConv * DayCountConv::_actActAFB     = 0;
+DayCountConv * DayCountConv::_act365F       = 0;
+DayCountConv * DayCountConv::_act360        = 0;
+DayCountConv * DayCountConv::_thirtyE360    = 0;
+DayCountConv * DayCountConv::_thirtyE360last = 0;
+DayCountConv * DayCountConv::_thirtyI360    = 0;
+DayCountConv * DayCountConv::_thirtyS360    = 0;
+DayCountConv * DayCountConv::_thirtyB360    = 0;
+DayCountConv * DayCountConv::_equalPayment  = 0;
+DayCountConv * DayCountConv::_act36525      = 0;
+DayCountConv * DayCountConv::_bus360        = 0;
+DayCountConv * DayCountConv::_bus252        = 0;
+DayCountConv * DayCountConv::_fullPayment   = 0;
+
+//----------------------------------------------------------------------
+
+
+
+const DayCountConv *
+DayCountConv::find( unsigned int index )
+{
+    return( (const DayCountConv *)((*nameableList)[ index ]) );
+}
+
+const DayCountConv *
+DayCountConv::find( const DBName & dbname )
+{
+    return( (const DayCountConv *)nameableList -> find( dbname ) );
+}
+
+const DayCountConv *
+DayCountConv::find( const UIName & uiname )
+{
+    return( (const DayCountConv *)nameableList -> find( uiname ) );
+}
+
+void
+DayCountConv::init()
+{
+    nameableList = new NameableList;
+
+    nameableList -> append ( _actAct        = new ActAct ) ;
+    nameableList -> append ( _actActISMA251 = new ActActISMA251 ) ;
+    nameableList -> append ( _act365F       = new Act365F ) ;
+    nameableList -> append ( _act360        = new Act360 ) ;
+    nameableList -> append ( _thirtyE360    = new Dcc30E360 ) ;
+    nameableList -> append ( _thirtyI360    = new Dcc30I360 ) ;
+    nameableList -> append ( _thirtyB360    = new Dcc30B360 ) ;
+    nameableList -> append ( _thirtyS360    = new Dcc30S360 ) ;
+    nameableList -> append ( _equalPayment  = new EqualPayment ) ;
+    nameableList -> append ( _act36525      = new Act36525 ) ;
+    nameableList -> append ( _bus360        = new Bus360 ) ;
+    nameableList -> append ( _bus252        = new Bus252 ) ;
+    nameableList -> append ( _fullPayment   = new FullPayment ) ;
+
+
+
+    _thirtyE360last =   new Dcc30E360last;
+
+    assert ( ACT_ACT         == *_actAct ) ;
+    assert ( ACT_ACT_ISMA251 == *_actActISMA251 ) ;
+    assert ( ACT_365F        == *_act365F ) ;
+    assert ( ACT_360         == *_act360 ) ;
+    assert ( THIRTY_E_360    == *_thirtyE360 ) ;
+    assert ( THIRTY_I_360    == *_thirtyI360 ) ;
+    assert ( THIRTY_B_360    == *_thirtyB360 ) ;
+    assert ( THIRTY_S_360    == *_thirtyS360 ) ;
+    assert ( EQUAL_PAYMENT   == *_equalPayment ) ;
+    assert ( ACT_36525       == *_act36525 ) ;
+    assert ( BUS_360         == *_bus360 ) ;
+    assert ( BUS_252         == *_bus252 ) ;
+    assert ( FULL_PAYMENT    == *_fullPayment ) ;
+
+}
+
+
+
+
+// End-Of-File ---------------------------------------------------------
+

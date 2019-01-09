@@ -1,0 +1,88 @@
+#include<iostream>
+#include<string>
+#include "string.h"
+
+
+using namespace std;
+class AssetSwaps
+{
+
+public:
+AssetSwaps(){;};
+AssetSwaps(
+double accruedInterest,
+String bonds,
+String bondId,
+String currency,
+String issuer,
+int legNumber,
+String londId,
+String  maturityDate,
+String market,
+String tradeRef,
+double yield)
+{
+
+ _accruedInterest=accruedInterest;
+ _bonds=bonds;
+ _bondId=bondId;
+ _currency=currency;
+ _issuer=issuer;
+ _legNumber=legNumber;
+ _londId=londId;
+ _maturityDate=maturityDate;
+ _market=market;
+ _tradeRef=tradeRef;
+ _yield=yield;
+}
+
+double getAccruedInterest() {return _accruedInterest;}     
+void setAccruedInterest(double accruedInterest) { _accruedInterest =accruedInterest; }
+
+String getBonds(){return _bonds;}
+void setBonds(String bonds){ _bonds = bonds; }
+
+String getBondId(){return _bondId;}
+void setBondId(String bondId){ _bondId = bondId;}
+
+String getCurrency(){return _currency;}
+void setCurrency(String currency){ _currency = currency;}
+
+String getIssuer(){return _issuer;}
+void setIssuer (String issuer ){ _issuer=issuer ;}
+
+
+
+int getLegNumber() {return _legNumber;}     
+void setLegNumber(int legNumber) { _legNumber =legNumber; }
+
+String getLondId(){return _londId;}
+void setLondId(String londId){ _londId = londId; }
+
+String getMaturityDate(){return _maturityDate;}
+void setMaturityDate(String maturityDate){ _maturityDate= maturityDate;}
+
+String getMarket(){return _market;}
+void setMarket(String market){ _market = market;}
+
+String getTradeRef(){return _tradeRef;}
+void setTradeRef (String tradeRef ){ _tradeRef=tradeRef ;}
+
+double getYield(){return _yield;}
+void setYield (double yield ){ _yield=yield ;}
+
+protected:
+
+float _accruedInterest;
+String _bonds;
+String _bondId;
+String _currency;
+String _issuer;
+int _legNumber;
+String _londId;
+String _maturityDate;
+String _market;
+String _tradeRef;
+double _yield;
+};
+  

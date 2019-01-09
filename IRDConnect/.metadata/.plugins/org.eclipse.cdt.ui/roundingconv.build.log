@@ -1,0 +1,9 @@
+
+**** Build of configuration Debug for project roundingconv ****
+
+make all 
+Building file: ../roundingConv.cpp
+Invoking: GCC C++ Compiler
+g++ -I/home/vishist/IRDConnect/include -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"roundingConv.d" -MT"roundingConv.d" -o"roundingConv.o" "../roundingConv.cpp"
+/bin/sh: g++: command not found
+make: *** [roundingConv.o] Error 127

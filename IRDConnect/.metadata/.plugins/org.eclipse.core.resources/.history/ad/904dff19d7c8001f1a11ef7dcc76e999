@@ -1,0 +1,92 @@
+#include <stddef.h>
+#include<iostream>
+
+using namespace std;
+
+namespace IRDConnect{
+
+
+class String  {
+
+public:
+
+    String( const char * = 0 );
+    String( const String  & );
+ 
+    String( const char * str, const int len );
+
+    ~String();
+
+    operator const char *() const;
+
+    String& operator=( const char * );
+    String& operator=( const String  & );
+
+  
+    String& operator+=( const char );
+    String& operator+=( const char * );
+    String& operator+=( const String  & );
+
+    String  operator + ( const String  & );
+    String  operator + ( const char *);
+  friend  String  operator + (const char *, const String  & );
+
+    int operator==( const char * ) const;
+    int operator!=( const char * ) const;
+    int operator==( const String  & ) const;
+    int operator!=( const String  & ) const;
+    int operator!() const;
+
+    static int strcmp(const char *, const char *);
+
+    
+    char & operator[] ( const unsigned index ) const;
+
+    void trimRight(); 
+
+    void trimLeft(); 
+
+    static int cmpStringPtr(const char *str1, const char *str2);
+   
+    int isEmpty() const;
+    static int compare( String  ** s1, String  **s2) {
+        return(cmpStringPtr(*(*s1), *(*s2)));
+    }
+    
+    void toLower () ;
+    void toUpper () ;
+
+    char* getStr() const;
+
+private:
+
+    char *_str;
+
+};
+
+
+
+inline int
+String::isEmpty() const
+{
+  return _str ? *_str == '\0' : 1;
+
+} 
+int operator==( const char *spStr, const String  &str );
+int operator!=( const char *spStr, const String  &str );
+
+
+std::ostream &operator <<( std::ostream &, const String  & );
+
+ 
+extern String  insertCharInStr
+    ( 
+    const IRDConnect::String  & str,
+    char cExisting,             
+    char cIns = '\\'           
+    );
+
+}
+
+
+

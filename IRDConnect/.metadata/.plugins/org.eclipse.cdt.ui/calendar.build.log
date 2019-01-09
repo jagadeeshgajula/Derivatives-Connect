@@ -1,0 +1,10 @@
+11:34:40 **** Build of configuration Debug for project calendar ****
+make all 
+Building file: ../calendar.cpp
+Invoking: GCC C++ Compiler
+g++ -I/home/vishist/IRDConnect/include -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"calendar.d" -MT"calendar.o" -o "calendar.o" "../calendar.cpp"
+/bin/sh: g++: command not found
+make: *** [calendar.o] Error 127
+
+11:34:41 Build Failed. 2 errors, 0 warnings. (took 930ms)
+

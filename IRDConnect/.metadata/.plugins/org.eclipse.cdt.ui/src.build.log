@@ -1,0 +1,73 @@
+
+**** Build of configuration Default for project src ****
+
+make all 
+for dir in busdayconv calendar currency curve dataformat date daycountconv errors frequency genSchedule marchingconv money moneymkt period rolldayconv roundingconv string timeunit tradeticket util weekday vol; do \
+	make -C $dir; \
+	done
+make[1]: Entering directory `/home/vishist/IRD2013/src/busdayconv'
+make[1]: `libbusdayconv.so' is up to date.
+make[1]: Leaving directory `/home/vishist/IRD2013/src/busdayconv'
+make[1]: Entering directory `/home/vishist/IRD2013/src/calendar'
+make[1]: `libcalendar.so' is up to date.
+make[1]: Leaving directory `/home/vishist/IRD2013/src/calendar'
+make[1]: Entering directory `/home/vishist/IRD2013/src/currency'
+make[1]: `libcurrency.so' is up to date.
+make[1]: Leaving directory `/home/vishist/IRD2013/src/currency'
+make[1]: Entering directory `/home/vishist/IRD2013/src/curve'
+make[1]: `libcurve.so' is up to date.
+make[1]: Leaving directory `/home/vishist/IRD2013/src/curve'
+make[1]: Entering directory `/home/vishist/IRD2013/src/dataformat'
+make[1]: `libdataformat.so' is up to date.
+make[1]: Leaving directory `/home/vishist/IRD2013/src/dataformat'
+make[1]: Entering directory `/home/vishist/IRD2013/src/date'
+make[1]: `libdate.so' is up to date.
+make[1]: Leaving directory `/home/vishist/IRD2013/src/date'
+make[1]: Entering directory `/home/vishist/IRD2013/src/daycountconv'
+make[1]: `libdaycountconv.so' is up to date.
+make[1]: Leaving directory `/home/vishist/IRD2013/src/daycountconv'
+make[1]: Entering directory `/home/vishist/IRD2013/src/errors'
+make[1]: `liberrors.so' is up to date.
+make[1]: Leaving directory `/home/vishist/IRD2013/src/errors'
+make[1]: Entering directory `/home/vishist/IRD2013/src/frequency'
+make[1]: `libfrequency.so' is up to date.
+make[1]: Leaving directory `/home/vishist/IRD2013/src/frequency'
+make[1]: Entering directory `/home/vishist/IRD2013/src/genSchedule'
+g++ -L/home/vishist/IRD2013/src/date -ldate -L/home/vishist/IRD2013/src/instr -linstr -L/home/vishist/IRD2013/src/curve -lcurve -L/home/vishist/IRD2013/src/string -lirdstring -L/home/vishist/IRD2013/src/period -lperiod -L/home/vishist/IRD2013/src/roundingconv -lroundingconv -L/home/vishist/IRD2013/src/calendar -lcalendar -L/home/vishist/IRD2013/src/errors -lerrors -L/home/vishist/IRD2013/src/util -lutil -L/home/vishist/IRD2013/src/marchingconv -lmarchingconv -L/home/vishist/IRD2013/src/rolldayconv -lrolldayconv -L/home/vishist/IRD2013/src/tradeticket -ltradeticket -L/home/vishist/IRD2013/src/moneymkt -lmoneymkt -L/home/vishist/IRD2013/src/busdayconv -lbusdayconv -L/home/vishist/IRD2013/src/daycountconv -ldaycountconv -L/home/vishist/IRD2013/src/dataformat -ldataformat -L/home/vishist/IRD2013/src/currency -lcurrency -o genschedule schedule.o
+make[1]: Leaving directory `/home/vishist/IRD2013/src/genSchedule'
+make[1]: Entering directory `/home/vishist/IRD2013/src/marchingconv'
+make[1]: `libmarchingconv.so' is up to date.
+make[1]: Leaving directory `/home/vishist/IRD2013/src/marchingconv'
+make[1]: Entering directory `/home/vishist/IRD2013/src/money'
+make[1]: `libmoney.so' is up to date.
+make[1]: Leaving directory `/home/vishist/IRD2013/src/money'
+make[1]: Entering directory `/home/vishist/IRD2013/src/moneymkt'
+make[1]: `libmoneymkt.so' is up to date.
+make[1]: Leaving directory `/home/vishist/IRD2013/src/moneymkt'
+make[1]: Entering directory `/home/vishist/IRD2013/src/period'
+make[1]: `libperiod.so' is up to date.
+make[1]: Leaving directory `/home/vishist/IRD2013/src/period'
+make[1]: Entering directory `/home/vishist/IRD2013/src/rolldayconv'
+make[1]: `librolldayconv.so' is up to date.
+make[1]: Leaving directory `/home/vishist/IRD2013/src/rolldayconv'
+make[1]: Entering directory `/home/vishist/IRD2013/src/roundingconv'
+make[1]: `libroundingconv.so' is up to date.
+make[1]: Leaving directory `/home/vishist/IRD2013/src/roundingconv'
+make[1]: Entering directory `/home/vishist/IRD2013/src/string'
+make[1]: `libirdstring.so' is up to date.
+make[1]: Leaving directory `/home/vishist/IRD2013/src/string'
+make[1]: Entering directory `/home/vishist/IRD2013/src/timeunit'
+make[1]: `libtimeunit.so' is up to date.
+make[1]: Leaving directory `/home/vishist/IRD2013/src/timeunit'
+make[1]: Entering directory `/home/vishist/IRD2013/src/tradeticket'
+make[1]: `libtradeticket.so' is up to date.
+make[1]: Leaving directory `/home/vishist/IRD2013/src/tradeticket'
+make[1]: Entering directory `/home/vishist/IRD2013/src/util'
+make[1]: `libutil.so' is up to date.
+make[1]: Leaving directory `/home/vishist/IRD2013/src/util'
+make[1]: Entering directory `/home/vishist/IRD2013/src/weekday'
+make[1]: `libweekday.so' is up to date.
+make[1]: Leaving directory `/home/vishist/IRD2013/src/weekday'
+make[1]: Entering directory `/home/vishist/IRD2013/src/vol'
+make[1]: `libvol.so' is up to date.
+make[1]: Leaving directory `/home/vishist/IRD2013/src/vol'

@@ -1,0 +1,39 @@
+#include <iostream>
+#include <string>
+#include "string.h"
+
+namespace IRDConnect {
+
+using namespace std;
+class OptionSchedule
+{
+public:
+ OptionSchedule(){;};
+  OptionSchedule(
+
+int executeFlag,
+String startDate,
+String tradeRef
+)
+{ _executeFlag=executeFlag;
+   _startDate=startDate;   
+   _tradeRef=tradeRef; 
+   }
+   
+int getExecuteFlag(){return _executeFlag;}
+void setExecuteFlag(int executeFlag){ _executeFlag=executeFlag;}
+
+String getStartDate() { return  _startDate;}
+void setStartDate(String startDate) { _startDate =startDate; }
+
+String getTradeRef(){return _tradeRef;}
+void setTradeRef(String tradeRef){ _tradeRef = tradeRef; }
+
+protected:
+   
+int _executeFlag;
+String _startDate;
+String _tradeRef;
+};
+
+}

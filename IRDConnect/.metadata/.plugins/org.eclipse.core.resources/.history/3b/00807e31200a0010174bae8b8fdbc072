@@ -1,0 +1,246 @@
+/*
+ * fixingRates.cpp
+ *
+ *  Created on: 12-Nov-2010
+ *      Author: vishist
+ */
+
+#include <iostream>
+#include "fixingRates.h"
+#include "period.h"
+
+using namespace std;
+using namespace IRDConnect;
+
+FixingRates::FixingRates(
+
+Date 		currentDate,
+String 		lastModifiedBy,
+String 		lastVerifiedBy,
+Date 		modifiedTimestamp,
+Date 		quoteDate,
+String 		quoteId,
+String 		quoteType,
+double		rate,
+String 		ratesetMode,
+Date 		verifiedTimestamp )
+
+{
+
+
+_currentDate  		= 	currentDate;
+_lastModifiedBy		=	lastModifiedBy;
+_lastVerifiedBy     =	lastVerifiedBy;
+_modifiedTimestamp	=	modifiedTimestamp;
+_quoteDate			=	quoteDate;
+_quoteId			=	quoteId;
+_quoteType			=	quoteType;
+_rate				=	rate;
+_ratesetMode		=	ratesetMode;
+_verifiedTimestamp	=	verifiedTimestamp;
+
+}
+
+FixingRates::~FixingRates()
+{
+	//do nothing
+}
+
+void FixingRates::init()
+{
+
+	FixingRates fixingRates;
+
+	int noOfResets = 1;
+	double rate = 0.05;
+
+	_fixingRatesList.clear();
+
+	fixingRates.setQuoteId("GBPDOM_3M.T3750");
+	fixingRates.setQuoteDate(Date(15,10,2010));
+	fixingRates.setRate(0.8456);
+
+	_fixingRatesList.push_back(fixingRates);
+
+	fixingRates.setQuoteId("GBPDOM_3M.T3750");
+	fixingRates.setQuoteDate(Date(17,1,2011));
+	fixingRates.setRate(0.86368);
+
+	_fixingRatesList.push_back(fixingRates);
+
+	fixingRates.setQuoteId("GBPDOM_3M.T3750");
+	fixingRates.setQuoteDate(Date(15,4,2011));
+	fixingRates.setRate(0.99514);
+
+	_fixingRatesList.push_back(fixingRates);
+
+
+	fixingRates.setQuoteId("GBPDOM_3M.T3750");
+	fixingRates.setQuoteDate(Date(15,7,2011));
+	fixingRates.setRate(1.17508);
+
+	_fixingRatesList.push_back(fixingRates);
+
+
+	fixingRates.setQuoteId("GBPDOM_3M.T3750");
+	fixingRates.setQuoteDate(Date(17,10,2011));
+	fixingRates.setRate(1.34175);
+
+	_fixingRatesList.push_back(fixingRates);
+
+
+	fixingRates.setQuoteId("GBPDOM_3M.T3750");
+	fixingRates.setQuoteDate(Date(16,1,2012));
+	fixingRates.setRate(1.56141);
+
+	_fixingRatesList.push_back(fixingRates);
+
+
+
+	fixingRates.setQuoteId("GBPDOM_3M.T3750");
+	fixingRates.setQuoteDate(Date(16,4,2012));
+	fixingRates.setRate(1.60637);
+
+	_fixingRatesList.push_back(fixingRates);
+
+
+	fixingRates.setQuoteId("GBPDOM_3M.T3750");
+	fixingRates.setQuoteDate(Date(16,7,2012));
+	fixingRates.setRate(0.92197);
+
+	_fixingRatesList.push_back(fixingRates);
+
+
+	fixingRates.setQuoteId("GBPDOM_3M.T3750");
+	fixingRates.setQuoteDate(Date(15,10,2012));
+	fixingRates.setRate(1.30809);
+
+	_fixingRatesList.push_back(fixingRates);
+
+
+	while ( noOfResets != 1000 )
+	{
+		rate = rate + 0.0005;
+
+
+
+		fixingRates.setQuoteId("GBPDOM_6M.T3750");
+		fixingRates.setQuoteDate(Date(11,10,2010) + Period(noOfResets,Days));
+		fixingRates.setRate(rate + 0.002);
+
+		_fixingRatesList.push_back(fixingRates);
+
+		fixingRates.setQuoteId("GBPDOM_1M.T3750");
+		fixingRates.setQuoteDate(Date(11,10,2010) + Period(noOfResets,Days));
+		fixingRates.setRate(rate - 0.001);
+
+		_fixingRatesList.push_back(fixingRates);
+
+
+		fixingRates.setQuoteId("GBPDOM_2M.T3750");
+		fixingRates.setQuoteDate(Date(11,10,2010) + Period(noOfResets,Days));
+		fixingRates.setRate(rate + 0.0005);
+
+		_fixingRatesList.push_back(fixingRates);
+		noOfResets++;
+
+	}
+
+	// only when we need to debug
+	/*
+			std::list < FixingRates > ::iterator iterFixingRates = FixingRates::getFixingRatesList().begin () ;
+
+					int resetsCnt = FixingRates::getFixingRatesList().size();
+					cout << "No of Elements are :" << resetsCnt;
+
+
+			         for ( ; iterFixingRates != FixingRates::getFixingRatesList().end () ; ++iterFixingRates )
+			         {
+
+			        	 cout << "Fixing Rates are : ";
+			        	 cout << iterFixingRates->getQuoteId() << " : " <<  iterFixingRates->getQuoteDate() << " : " << iterFixingRates->getRate() << endl;
+			         }
+
+   */
+
+}
+
+double FixingRates::getFixingRate( Date date, String quoteId)
+{
+
+	std::list < FixingRates > ::iterator iterFixingRates = FixingRates::getFixingRatesList().begin () ;
+
+						//int resetsCnt = FixingRates::getFixingRatesList().size();
+						//cout << "No of Elements are :" << resetsCnt << endl;;
+
+
+				         for ( ; iterFixingRates != FixingRates::getFixingRatesList().end () ; ++iterFixingRates )
+				         {
+
+				        	 if ( iterFixingRates->getQuoteDate() == date &&  iterFixingRates->getQuoteId() == quoteId )
+				        	 {
+				        		 //cout << "Fixing Quote, Date and Rate are : ";
+				        		 //cout << iterFixingRates->getQuoteId() << " : " << iterFixingRates->getQuoteDate() << " : " << iterFixingRates->getRate() << endl;
+				        		 return iterFixingRates->getRate()/100;
+				        	 }
+				         }
+return -1.0; // rate not present
+
+}
+
+double FixingRates::getFixingRate( Date quoteDate, String stubAIndex, String stubBIndex, Period ATenor, Period BTenor )
+{
+
+	std::list < FixingRates > ::iterator iterFixingRates = FixingRates::getFixingRatesList().begin () ;
+
+						int resetsCnt = FixingRates::getFixingRatesList().size();
+						cout << "No of Elements are :" << resetsCnt << endl;;
+						double stubARate = 0.0;
+						double stubBRate = 0.0;
+						double stubRate = 0.0; // interpolated rate
+						bool needInterpolation = true;
+						Date periodStartDate(01,01,1901);
+
+				        for ( ; iterFixingRates != FixingRates::getFixingRatesList().end () ; ++iterFixingRates )
+				        {
+				        	 if ( stubAIndex == stubBIndex && ( iterFixingRates->getQuoteDate() == quoteDate ) )
+				        	 {
+				        		stubRate = iterFixingRates->getRate()/100; // no interpolation needed
+				        		needInterpolation = false;
+				        		cout << "Fixing Quote, Date and Rate are : ";
+				        		cout << iterFixingRates->getQuoteId() << " : " << iterFixingRates->getQuoteDate() << " : " << iterFixingRates->getRate() << endl;
+				        	 }
+				        	 else if ( iterFixingRates->getQuoteDate() == quoteDate &&  iterFixingRates->getQuoteId() == stubAIndex )
+				        	 {
+				        		 cout << "Fixing STUB A Quote, Date and Rate are : ";
+				        		 cout << iterFixingRates->getQuoteId() << " : " << iterFixingRates->getQuoteDate() << " : " << iterFixingRates->getRate() << endl;
+				        		 stubARate = iterFixingRates->getRate()/100;
+				        	 }
+				        	 else if ( iterFixingRates->getQuoteDate() == quoteDate &&  iterFixingRates->getQuoteId() == stubBIndex )
+				        	{
+				        			cout << "Fixing STUB B Quote, Date and Rate are : ";
+				        			cout << iterFixingRates->getQuoteId() << " : " << iterFixingRates->getQuoteDate() << " : " << iterFixingRates->getRate() << endl;
+				        			stubBRate = iterFixingRates->getRate()/100;
+				        	}
+				        }
+
+
+				          /* std::vector<int> period ;
+				          time.push_back( 30 );
+				          time.push_back ( 60 ) ;
+
+				          std::vector<double> rates ;
+				          rates.push_back ( 1.75 ) ;
+				          rates.push_back ( 2.345) ;
+
+				          LinearInterpolation<int, double> ( time, rates  ) ;
+				          double r = LinearInterpolation ( 45 ) ;
+				          */
+return -1.0; // rate not present
+
+}
+
+String FixingRates::getFixingQuote( String index, Period stubTenor)
+{
+	return index; // need more logic
+}

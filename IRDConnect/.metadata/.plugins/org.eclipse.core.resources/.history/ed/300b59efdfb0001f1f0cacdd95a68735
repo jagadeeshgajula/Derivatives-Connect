@@ -1,0 +1,17 @@
+/*
+ * DayCountConvention.h
+ *
+ *  Created on: 26-Aug-2010
+ *      Author: vishist
+ */
+
+#ifndef DAYCOUNTCONVENTION_H_
+#define DAYCOUNTCONVENTION_H_
+
+class DayCountConvention {
+public:
+	DayCountConvention();
+	virtual ~DayCountConvention();
+};
+
+#endif /* DAYCOUNTCONVENTION_H_ */
